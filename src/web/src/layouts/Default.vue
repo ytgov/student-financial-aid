@@ -28,6 +28,48 @@
               <v-list-item-title style="font-size: 0.9rem !important">My profile</v-list-item-title>
             </v-list-item>
 
+            <v-list-item to="/applications">
+              <template v-slot:prepend>
+                <v-icon>mdi-file-sign</v-icon>
+              </template>
+              <v-list-item-title style="font-size: 0.9rem !important">My Applications</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/eligibility">
+              <template v-slot:prepend>
+                <v-icon>mdi-file-sign</v-icon>
+              </template>
+              <v-list-item-title style="font-size: 0.9rem !important">Eligibility</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/documents">
+              <template v-slot:prepend>
+                <v-icon>mdi-file-document</v-icon>
+              </template>
+              <v-list-item-title style="font-size: 0.9rem !important">My Documents</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/messages/inbox">
+              <template v-slot:prepend>
+                <v-icon>mdi-message</v-icon>
+              </template>
+              <v-list-item-title style="font-size: 0.9rem !important">My Messages</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/faq">
+              <template v-slot:prepend>
+                <v-icon>mdi-frequently-asked-questions</v-icon>
+              </template>
+              <v-list-item-title style="font-size: 0.9rem !important">FAQs</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/contact">
+              <template v-slot:prepend>
+                <v-icon>mdi-phone</v-icon>
+              </template>
+              <v-list-item-title style="font-size: 0.9rem !important">Contact</v-list-item-title>
+            </v-list-item>
+
             <v-list-item @click="blip">
               <template v-slot:prepend>
                 <v-icon>mdi-information-outline</v-icon>
@@ -84,7 +126,7 @@ export default {
     return {
       isAuthenticated: this.$auth0.isAuthenticated,
       authUser: this.$auth0.user,
-      showOverlay: true,
+      showOverlay: true
     };
   },
   computed: {
@@ -101,7 +143,7 @@ export default {
     returnTo: function () {
       return window.location.origin;
       // return auth.options.logout_redirect;
-    },
+    }
   },
 
   async mounted() {
@@ -112,8 +154,8 @@ export default {
     ...mapActions(useUserStore, ["initialize", "toggleAdmin"]),
     blip: function () {
       this.showNotification = true;
-    },
-  },
+    }
+  }
 };
 </script>
 
