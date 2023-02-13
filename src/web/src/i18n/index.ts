@@ -24,6 +24,23 @@ const messages = {
       },
       more_details: {
         more: "More Details"
+      },
+      address_selector: {
+        labels: {
+          zip_postal_code: "Postal code or zip code",
+          address_first: "Street Address",
+          address_second: "Second Line / Unit"
+        },
+        buttons: {
+          edit: "Edit"
+        }
+      },
+      date_selector: {
+        labels: {
+          year: "Year",
+          month: "Month",
+          day: "Day"
+        }
       }
     },
     eligibility: {
@@ -216,6 +233,23 @@ const messages = {
       },
       more_detials: {
         more: "En savoir plus"
+      },
+      address_selector: {
+        labels: {
+          zip_postal_code: "Code postal",
+          address_first: "Adresse municipale (ligne 1)",
+          address_second: "Ligne 2 / Unité ou appartement"
+        },
+        buttons: {
+          edit: "Éditer"
+        }
+      },
+      date_selector: {
+        labels: {
+          year: "Année",
+          month: "Mois",
+          day: "Jour"
+        }
       }
     },
     eligibility: {

@@ -6,7 +6,7 @@
         }}<span v-html="formatted_address.replace(', ', '<br />')"></span>
         <div style="margin-top: 1rem" v-if="!modify">
           <v-btn color="secondary" @click="update()">
-            {{ $t("buttons.edit") }}
+            {{ $t("components.address_selector.buttons.edit") }}
           </v-btn>
         </div>
       </div>
@@ -16,7 +16,7 @@
         <ValidationProvider name="address_zip_postal_code" rules="notrequired" tag="span" v-slot="{ errors, valid }">
           <TextField
             v-model="address.zip_postal_code"
-            :label="$t('labels.zip_postal_code')"
+            :label="$t('components.address_selector.labels.zip_postal_code')"
             :errors="errors"
             :valid="valid"
             @blur="geocode()"
@@ -27,7 +27,7 @@
         <ValidationProvider name="address_first" rules="notrequired" tag="span" v-slot="{ errors, valid }">
           <TextField
             v-model="address.first"
-            :label="$t('labels.address_first')"
+            :label="$t('components.address_selector.labels.address_first')"
             :errors="errors"
             :valid="valid"
             @blur="geocode()"
@@ -35,7 +35,11 @@
         </ValidationProvider>
       </section>
       <section>
-        <TextField v-model="address.second" :label="$t('labels.address_second')" :valid="true" />
+        <TextField
+          v-model="address.second"
+          :label="$t('components.address_selector.labels.address_second')"
+          :valid="true"
+        />
       </section>
       <section v-if="address.zip_postal_code">
         <div style="padding-bottom: 17px">
@@ -44,7 +48,7 @@
       </section>
       <section>
         <v-btn color="secondary" @click="save()">
-          {{ $t("buttons.edit") }}
+          {{ $t("components.address_selector.buttons.edit") }}
         </v-btn>
         <p>&nbsp;</p>
       </section>
@@ -52,34 +56,9 @@
   </section>
 </template>
 
-<i18n>
-{
-  "en": {
-    "labels": {
-      "zip_postal_code": "Postal code or zip code",
-      "address_first": "Street Address",
-      "address_second": "Second Line / Unit"
-    },
-    "buttons": {
-      "edit": "Edit"
-    }
-  },
-  "fr": {
-    "labels": {
-      "zip_postal_code": "Code postal",
-      "address_first": "Adresse municipale (ligne 1)",
-      "address_second": "Ligne 2 / Unité ou appartement"
-    },
-    "buttons": {
-      "edit": "Éditer"
-    }
-  }
-}
-</i18n>
-
 <script>
 import { ValidationProvider } from "vee-validate";
-import TextField from "~/components/forms/TextField.vue";
+import TextField from "@/components/forms/TextField.vue";
 
 export default {
   props: ["value"],

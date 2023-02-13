@@ -1,40 +1,39 @@
 <template>
   <div class="control">
     <div class="slot">
-      <label>{{label}}</label>
+      <label>{{ label }}</label>
       <span class="selector">
         <span class="year">
           <input type="number" v-model="year" maxlength="4" />
-          <small>{{ $t('labels.year') }}</small>
+          <small>{{ $t("components.data_selector.labels.year") }}</small>
         </span>
         <span class="month">
           <select v-model="month">
-            <option :value="(index+1)" v-for="month, index in months">{{month.name}}</option>
-          </select> 
-          <small>{{ $t('labels.month') }}</small>
+            <option :value="index + 1" v-for="(month, index) in months">{{ month.name }}</option>
+          </select>
+          <small>{{ $t("components.data_selector.labels.month") }}</small>
         </span>
         <span class="day">
           <input type="number" v-model="day" maxlength="2" />
-          <small>{{ $t('labels.day') }}</small>
+          <small>{{ $t("components.data_selector.labels.day") }}</small>
         </span>
       </span>
     </div>
   </div>
 </template>
 
-
 <script>
 export default {
   props: ["value", "label"],
   computed: {
     is_leapyear() {
-      return (this.year % 100 === 0) ? (this.year % 400 === 0) : (this.year % 4 === 0);
+      return this.year % 100 === 0 ? this.year % 400 === 0 : this.year % 4 === 0;
     },
     output() {
-      return new Date(`${this.month} ${this.day} ${this.year}`)
+      return new Date(`${this.month} ${this.day} ${this.year}`);
     },
     timestamp() {
-      return this.$options.filters.formatTimestamp(this.value)
+      return this.$options.filters.formatTimestamp(this.value);
     }
   },
   data() {
@@ -49,7 +48,7 @@ export default {
         },
         {
           name: "February",
-          days: (this.is_leapyear) ? 29 : 28
+          days: this.is_leapyear ? 29 : 28
         },
         {
           name: "March",
@@ -92,59 +91,36 @@ export default {
           days: 31
         }
       ]
-    }
+    };
   },
   mounted() {
-    this.$nextTick(()=>{  
+    this.$nextTick(() => {
       if (this.value) {
-        
         if (this.timestamp) {
-          this.year = new Date(this.timestamp).getFullYear()
-          this.month = new Date(this.timestamp).getMonth()+1
-          this.day = new Date(this.timestamp).getDate()
+          this.year = new Date(this.timestamp).getFullYear();
+          this.month = new Date(this.timestamp).getMonth() + 1;
+          this.day = new Date(this.timestamp).getDate();
         } else {
-          this.year = new Date(this.value).getFullYear()
-          this.month = new Date(this.value).getMonth()+1
-          this.day = new Date(this.value).getDate()
+          this.year = new Date(this.value).getFullYear();
+          this.month = new Date(this.value).getMonth() + 1;
+          this.day = new Date(this.value).getDate();
         }
       }
-      this.$emit('input', this.output)
-    })
+      this.$emit("input", this.output);
+    });
   },
   watch: {
     output(to, from) {
-      this.$emit('input', this.output)
+      this.$emit("input", this.output);
     },
     day(to, from) {
-      if (this.day>this.months[this.month].days) {
-        this.day = this.months[this.month].days 
+      if (this.day > this.months[this.month].days) {
+        this.day = this.months[this.month].days;
       }
     }
   }
-}
+};
 </script>
-
-
-<i18n>
-{
-  "en": {
-    "labels": {
-      "year": "Year",
-      "month": "Month",
-      "day": "Day"
-    }
-  },
-  "fr": {
-    "labels": {
-      "year": "Année",
-      "month": "Mois",
-      "day": "Jour"
-    }
-  }
-}
-</i18n>
-
-
 
 <style lang="scss" scoped>
 span.selector {
@@ -156,13 +132,13 @@ span.selector {
   grid-template-rows: auto auto;
   grid-gap: 0.25rem 1rem;
   > span {
-    input[type=text],
-    input[type=number],
-     select {
+    input[type="text"],
+    input[type="number"],
+    select {
       width: 100%;
-      background: #FFFFFF;
+      background: #ffffff;
       border-radius: 3px;
-      border: 1px solid #D4C7CF !important;
+      border: 1px solid #d4c7cf !important;
       padding: 0.5rem !important;
     }
     &.year {
@@ -176,7 +152,8 @@ span.selector {
     }
   }
 
-  .error, .valid {
+  .error,
+  .valid {
     margin-top: 1rem;
     padding: 1rem;
   }
@@ -185,4 +162,3 @@ span.selector {
   }
 }
 </style>
-
