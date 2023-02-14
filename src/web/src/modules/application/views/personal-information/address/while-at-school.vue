@@ -1,8 +1,8 @@
 <template>
   <article data-layout="application">
-    <h2 class="text-h3 mb-7">{{ $t('title') }}</h2>
+    <h2 class="text-h3 mb-7">{{ $t("title") }}</h2>
     <p>
-      {{ $t('excerpt') }}
+      {{ $t("excerpt") }}
     </p>
 
     <section>
@@ -12,7 +12,8 @@
 
     <div>
       <label>
-        <input type="checkbox" @click="same()" :checked="student.HOME_ADDRESS1==student.HOME_ADDRESS2"> Same as permanent address 
+        <input type="checkbox" @click="same()" :checked="student.HOME_ADDRESS1 == student.HOME_ADDRESS2" /> Same as
+        permanent address
       </label>
     </div>
 
@@ -21,12 +22,11 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from 'vuex'
-import Question from '~/components/forms/Question.vue';
-import Buttons from '~/components/forms/Buttons.vue';
-import RadioList from '~/components/forms/RadioList.vue';
-import AddressSelector from "~/components/forms/AddressSelector.vue";
-
+import { mapMutations, mapGetters } from "vuex";
+import Question from "@/components/forms/Question.vue";
+import Buttons from "@/components/forms/Buttons.vue";
+import RadioList from "@/components/forms/RadioList.vue";
+import AddressSelector from "@/components/forms/AddressSelector.vue";
 
 export default {
   components: {
@@ -38,52 +38,38 @@ export default {
   computed: {
     student: {
       get() {
-        return this.$store.getters['student/GET']
+        return this.$store.getters["student/GET"];
       },
       set(values) {
-        return this.$store.commit('student/SET', values)
+        return this.$store.commit("student/SET", values);
       }
     },
     valid() {
-      var is_valid = this.student.HOME_ADDRESS2!=''
+      var is_valid = this.student.HOME_ADDRESS2 != "";
 
-      return is_valid
+      return is_valid;
     },
     next() {
-      return this.localePath('/application/program-details')
+      return this.localePath("/application/program-details");
     }
   },
   mounted() {
-    this.$emit('input', this.valid)
+    this.$emit("input", this.valid);
   },
   watch: {
     valid(to, from) {
-      this.$store.commit('student/SET', this.student)
-      this.$emit('input', this.valid)
+      this.$store.commit("student/SET", this.student);
+      this.$emit("input", this.valid);
     }
   },
   methods: {
     same() {
-      this.student.HOME_ADDRESS2 = this.student.HOME_ADDRESS1
-      this.$store.commit('student/SET', this.student)
+      this.student.HOME_ADDRESS2 = this.student.HOME_ADDRESS1;
+      this.$store.commit("student/SET", this.student);
     }
   }
-}
+};
 </script>
-
-
-<i18n>
-{
-  "en": {
-    "title": "Address while at school",
-    "excerpt": "If you would like your mail to be sent to an alternative address while you are at school, complete this section. "
-  },
-  "fr": {
-    "title": "Address while at school",
-    "excerpt": "If you would like your mail to be sent to an alternative address while you are at school, complete this section. "
-  }
-}
-</i18n>
 
 <style lang="scss" scoped>
 .balance {
@@ -97,18 +83,16 @@ export default {
 
   > div {
     padding: 1rem;
-     font-size: 1.1em;
-  
+    font-size: 1.1em;
   }
-
 }
 
 .update {
   text-transform: uppercase;
   color: #fff;
-  background:#244C5A;
+  background: #244c5a;
   text-decoration: none;
-  padding: 0.25rem  1rem;
+  padding: 0.25rem 1rem;
   font-size: 1rem;
 }
 </style>

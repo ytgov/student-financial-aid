@@ -208,6 +208,107 @@ const messages = {
           "Have you completed at least (2) two years of secondary school in the Yukon school system?",
         out_of_school_4_years: "Have you been out of high school for 4 years or more?"
       }
+    },
+    application: {
+      title: "ATIPP Collection Statement",
+      note: "<strong>Must read the terms to continue.</strong> Collection of your personal information is required to set up your account on the Student Financial Assistance System (SFAS) and to submit and process your application(s).  We will use your personal information to determine your eligibility for funding programs in accordance with the Occupational Training Act, Student Financial Assistance Act (Yukon), the Canada Student Financial Assistance Act and respective regulations, policies and guidelines. Your information may also be used and disclosed for the administration of the SFAS.  The collection, use and disclosure of your personal information is done under the authority of Yukon’s Access to Information and Protection of Privacy (ATIPP) Act and is managed in accordance with the ATIPP Act. If you have any questions about the collection of this information, contact the Student Financial Assistance office at 867-667-5929.",
+      details: {
+        funding_sources: {
+          statuses: {
+            PENDING: "Application Under Review"
+          }
+        },
+        buttons: {
+          continue: "Continue"
+        }
+      },
+      documents: {
+        title: "Supporting documents",
+        excerpt:
+          "Please upload the following supporting documents... If a document is uploaded incorrectly, you will receive a notification to resubmit your documents.",
+        error: "You cannot submit your application until all your documents are uploaded.",
+        buttons: {
+          delete: "Delete",
+          cancel: "Cancel",
+          upload: "Upload"
+        },
+        resource: {
+          title: "Uploading document",
+          excerpt:
+            "Please upload the following supporting documents... If a document is uploaded incorrectly, you will receive a notification to resubmit your documents.",
+          error: "You cannot sumbit your application until all your documents are uploaded.",
+          buttons: {
+            delete: "Delete",
+            cancel: "Cancel",
+            upload: "Upload"
+          }
+        }
+      },
+      personal_information: {
+        title: "Personal information",
+        use_existing_alias: "Do you want to use your existing?",
+        what_is_your_sin_number: "What is your sin number?",
+        what_is_your_birthday: "What is your birthday?",
+        address: {
+          permanent: {
+            title: "Permanent address",
+            excerpt:
+              "Please provide the address where you normally receive your mail.  This address will be used to send out T4A slips for tax purposes.",
+            legend: {
+              address: "Address"
+            }
+          },
+          while_at_school: {
+            title: "Address while at school",
+            excerpt:
+              "If you would like your mail to be sent to an alternative address while you are at school, complete this section. "
+          }
+        },
+        email: {
+          title: "Email address",
+          would_you_like_to_use_existing_address: "Would you like to use your existing email address?",
+          enter_your_email_address: "Enter your email address:",
+          is_primary_email_address: "This is my primary email address?"
+        }
+      },
+      onboarding: {
+        title: "Your Application Information",
+        csfa: {
+          legends: {
+            "study-period": "CFSA Study Period"
+          },
+          buttons: {
+            save: "Save statistical information"
+          },
+          help: {
+            title: "Need help?",
+            details: "Help text can go in here to make the form more"
+          },
+          problem: {
+            title: "There is a problem"
+          }
+        }
+      },
+      program_details: {
+        title: "Program details",
+        details: {
+          campus: "Name of Campus (if applicable)",
+          program_name: "Name of Program",
+          duration_of_program: "Program Duration",
+          year_entering: "Academic Year",
+          start_date_of_classes: "Start date of your classes",
+          end_date_of_classes: "End date of your classes (including exams)"
+        }
+      },
+      submit: {
+        title: "Review Application",
+        excerpt:
+          "Please review your application to ensure it is correct. If changes are required, click the “edit” button. Once corrected, continue to next section.",
+        buttons: {
+          edit: "Edit",
+          continue: "Continue"
+        }
+      }
     }
   },
   fr: {
@@ -428,6 +529,107 @@ const messages = {
         title: "Admissibilité à la Bourse du Yukon",
         has_completed_two_years: "Avez-vous fait au moins deux années d’études secondaires au Yukon?",
         out_of_school_4_years: "Avez-vous cessé de fréquenter l’école secondaire pendant quatre ans ou plus?"
+      }
+    },
+    application: {
+      title: "Énoncé sur la collecte de renseignements personnels conformément à la LAIPVP",
+      note: "<strong>Lire les conditions d’utilisation avant de continuer.</strong> La collecte de vos renseignements personnels est nécessaire pour créer votre compte sur le portail d’aide financière aux étudiants et pour soumettre et traiter vos demandes. Nous utiliserons vos renseignements personnels aux fins d’établir votre admissibilité aux programmes d’aide financière en conformité avec la Loi sur la formation professionnelle, la Loi sur l’aide financière destinée aux étudiants du Yukon et la Loi fédérale sur l’aide financière aux étudiants, ainsi que les règlements, politiques et directives connexes. Vos renseignements personnels peuvent également être utilisés et communiqués à des fins d’administration du portail d’aide financière aux étudiants. La collecte, l’utilisation et la communication de vos renseignements personnels sont faites en vertu de la Loi sur l’accès à l’information et la protection de la vie privée (LAIPVP) du Yukon et sont gérées en conformité avec celle-ci. Veuillez adresser toute demande relative à la collecte de ces renseignements à la Section de l’aide financière aux étudiants, au 8676675929.",
+      details: {
+        funding_sources: {
+          statuses: {
+            PENDING: "Application Under Review"
+          }
+        },
+        buttons: {
+          continue: "Continue"
+        }
+      },
+      documents: {
+        title: "Documents justificatifs",
+        excerpt:
+          "Veuillez télécharger les pièces justificatives suivantes... Si un document est téléchargé de manière incorrecte, vous recevrez une notification pour soumettre à nouveau vos documents.",
+        error: "Vous ne pouvez pas soumettre votre demande tant que tous vos documents ne sont pas téléchargés.",
+        buttons: {
+          delete: "Supprimer",
+          cancel: "Annuler",
+          upload: "Télécharger"
+        },
+        resource: {
+          title: "Documents justificatifs",
+          excerpt:
+            "Veuillez télécharger les pièces justificatives suivantes... Si un document est téléchargé de manière incorrecte, vous recevrez une notification pour soumettre à nouveau vos documents.",
+          error: "Vous ne pouvez pas soumettre votre demande tant que tous vos documents ne sont pas téléchargés.",
+          buttons: {
+            delete: "Supprimer",
+            cancel: "Annuler",
+            upload: "Télécharger"
+          }
+        }
+      },
+      personal_information: {
+        title: "Renseignements personnels",
+        use_existing_alias: "Do you want to use your existing?",
+        what_is_your_sin_number: "Quel est votre numéro d’assurance sociale (NAS)?",
+        what_is_your_birthday: "Quelle est votre date de naissance?",
+        address: {
+          permanent: {
+            title: "Adresse permanente",
+            excerpt:
+              "Veuillez fournir l’adresse où vous recevez normalement votre courrier postal. Cette adresse sera celle où l’on enverra vos feuillets T4A aux fins de l’impôt.",
+            legend: {
+              address: "Adresse"
+            }
+          },
+          whilte_at_school: {
+            title: "Address while at school",
+            excerpt:
+              "If you would like your mail to be sent to an alternative address while you are at school, complete this section. "
+          }
+        },
+        email: {
+          title: "Email address",
+          would_you_like_to_use_existing_address: "Would you like to use your existing email address?",
+          enter_your_email_address: "Enter your email address:",
+          is_primary_email_address: "This is my primary email address?"
+        }
+      },
+      onboarding: {
+        title: "Your Application Information",
+        csfa: {
+          legends: {
+            personal_details: "Information statistique"
+          },
+          buttons: {
+            save: "Enregistrer les informations statistiques"
+          },
+          help: {
+            title: "Need help?",
+            details: "Le texte d'aide peut aller ici pour rendre le formulaire plus"
+          },
+          problem: {
+            title: "Il ya un problème"
+          }
+        }
+      },
+      program_details: {
+        title: "Program details",
+        details: {
+          campus: "Name of Campus (if applicable)",
+          program_name: "Name of Program",
+          duration_of_program: "Program Duration",
+          year_entering: "Academic Year",
+          start_date_of_classes: "Start date of your classes",
+          end_date_of_classes: "End date of your classes (including exams)"
+        }
+      },
+      submit: {
+        title: "Vérification de votre demande",
+        excerpt:
+          "Veuillez passer en revue votre demande pour vous assurer de l’exactitude des renseignements fournis. Pour faire des changements, cliquez sur le bouton « Edit ». Une fois les corrections entrées, continuez vers la prochaine section.",
+        buttons: {
+          edit: "Edit",
+          continue: "Continue"
+        }
       }
     }
   }

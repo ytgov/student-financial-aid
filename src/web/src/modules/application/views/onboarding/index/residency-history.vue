@@ -89,16 +89,16 @@
 import { mapMutations, mapGetters } from 'vuex'
 
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
-import AddressSelector from "~/components/forms/AddressSelector.vue";
-import SinNumber from "~/components/forms/SinNumber.vue";
-import TextField from "~/components/forms/TextField.vue";
-import RadioField from "~/components/forms/RadioField.vue";
-import DateSelector from '~/components/forms/DateSelector.vue';
-import SelectField from '~/components/forms/SelectField.vue';
-import BlackoutNotice from "~/components/utils/BlackoutNotice.vue";
+import AddressSelector from "@/components/forms/AddressSelector.vue";
+import SinNumber from "@/components/forms/SinNumber.vue";
+import TextField from "@/components/forms/TextField.vue";
+import RadioField from "@/components/forms/RadioField.vue";
+import DateSelector from '@/components/forms/DateSelector.vue';
+import SelectField from '@/components/forms/SelectField.vue';
+import BlackoutNotice from "@/components/utils/BlackoutNotice.vue";
 
-import Buttons from '~/components/forms/Buttons.vue';
-import Question from '~/components/forms/Question.vue';
+import Buttons from '@/components/forms/Buttons.vue';
+import Question from '@/components/forms/Question.vue';
 
 export default {
   components: {

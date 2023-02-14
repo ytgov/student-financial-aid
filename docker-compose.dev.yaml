@@ -1,11 +1,11 @@
 version: "3"
 
 services:
-  sqldb: 
+  sqldb:
     build: db/.
-    ports: 
+    ports:
       - "1433:1433"
-    env_file: 
+    env_file:
       - db/sqlserver.env
       - db/sapassword.env
     environment:

@@ -1,19 +1,17 @@
 <template>
   <section v-if="student">
-    <ValidationObserver ref="observer" v-slot="{ invalid, errors }" >
+    <ValidationObserver ref="observer" v-slot="{ invalid, errors }">
       <v-form @submit.prevent="submit" v-model="valid">
         <fieldset class="group">
           <fieldset>
-            <legend class="text-h5">{{ $t('legends.consent') }}</legend>
+            <legend class="text-h5">{{ $t("legends.consent") }}</legend>
 
             <p>
-              {{ $t('excerpt') }}
+              {{ $t("excerpt") }}
             </p>
 
-            
             <table class="form" cellpadding="0" cellspacing="0" width="100%">
-      
-              <tbody v-for="item, key in other_funding">
+              <tbody v-for="(item, key) in other_funding">
                 <tr>
                   <td>Agency Name</td>
                   <td>
@@ -23,30 +21,33 @@
                   <td>
                     <input type="text" v-model="other_funding[key].amount" placeholder="0.00" />
                   </td>
-               
-                  
                 </tr>
                 <tr>
                   <td colspan="6" class="checkboxes">
-                    <label><input type="checkbox" value="Tuition" v-model="other_funding[key].purposes"/> Tuition</label>
-                    <label><input type="checkbox" value="Books" v-model="other_funding[key].purposes"/> Books</label>
-                    <label><input type="checkbox" value="Living Expenses" v-model="other_funding[key].purposes"/> Living&nbsp;Expenses</label>
-                    <label><input type="checkbox" value="Transportation" v-model="other_funding[key].purposes"/> Transportation</label>
-                    <label><input type="checkbox" value="Other" v-model="other_funding[key].purposes"/> Other</label>
+                    <label
+                      ><input type="checkbox" value="Tuition" v-model="other_funding[key].purposes" /> Tuition</label
+                    >
+                    <label><input type="checkbox" value="Books" v-model="other_funding[key].purposes" /> Books</label>
+                    <label
+                      ><input type="checkbox" value="Living Expenses" v-model="other_funding[key].purposes" />
+                      Living&nbsp;Expenses</label
+                    >
+                    <label
+                      ><input type="checkbox" value="Transportation" v-model="other_funding[key].purposes" />
+                      Transportation</label
+                    >
+                    <label><input type="checkbox" value="Other" v-model="other_funding[key].purposes" /> Other</label>
                   </td>
                 </tr>
                 <tr v-if="other_funding[key].purposes.includes('Other')">
-                  <td>
-                    Other
-                  </td>
+                  <td>Other</td>
                   <td colspan="2">
                     <input type="text" v-model="other_funding[key].other" placeholder="Describe other purposes" />
-
                   </td>
                 </tr>
                 <tr>
                   <td colspan="4">
-                    <textarea  v-model="other_funding[key].comments" placeholder="Comments" />
+                    <textarea v-model="other_funding[key].comments" placeholder="Comments" />
                   </td>
                 </tr>
                 <tr>
@@ -57,13 +58,18 @@
 
             <p class="buttons">
               <v-btn class="blue small" @click="add()">Add funding</v-btn>
-            </p> 
-
+            </p>
           </fieldset>
         </fieldset>
 
-        <v-banner outlined icon="mdi-alert-circle" class="problem mt-4 error" v-if="invalid && errors.length" style="padding-right: 1rem;">
-          <h3>{{ $t('problem.title') }}</h3>
+        <v-banner
+          outlined
+          icon="mdi-alert-circle"
+          class="problem mt-4 error"
+          v-if="invalid && errors.length"
+          style="padding-right: 1rem"
+        >
+          <h3>{{ $t("problem.title") }}</h3>
           <br />
           <ul>
             <li v-for="error in errors" v-if="error[0]">{{ error[0] }}</li>
@@ -77,19 +83,19 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from 'vuex'
+import { mapMutations, mapGetters } from "vuex";
 
-import { ValidationProvider, ValidationObserver } from 'vee-validate';
-import AddressSelector from "~/components/forms/AddressSelector.vue";
-import SinNumber from "~/components/forms/SinNumber.vue";
-import TextField from "~/components/forms/TextField.vue";
-import RadioField from "~/components/forms/RadioField.vue";
-import DateSelector from '~/components/forms/DateSelector.vue';
-import SelectField from '~/components/forms/SelectField.vue';
-import BlackoutNotice from "~/components/utils/BlackoutNotice.vue";
+import { ValidationProvider, ValidationObserver } from "vee-validate";
+import AddressSelector from "@/components/forms/AddressSelector.vue";
+import SinNumber from "@/components/forms/SinNumber.vue";
+import TextField from "@/components/forms/TextField.vue";
+import RadioField from "@/components/forms/RadioField.vue";
+import DateSelector from "@/components/forms/DateSelector.vue";
+import SelectField from "@/components/forms/SelectField.vue";
+import BlackoutNotice from "@/components/utils/BlackoutNotice.vue";
 
-import Buttons from '~/components/forms/Buttons.vue';
-import Question from '~/components/forms/Question.vue';
+import Buttons from "@/components/forms/Buttons.vue";
+import Question from "@/components/forms/Question.vue";
 
 export default {
   components: {
@@ -108,45 +114,45 @@ export default {
   computed: {
     student: {
       get() {
-        return this.$store.getters['student/GET']
+        return this.$store.getters["student/GET"];
       },
       set(values) {
-        this.$store.commit('student/SET')(values)
+        this.$store.commit("student/SET")(values);
       }
     },
     valid() {
-      var is_valid = true
-      return is_valid
+      var is_valid = true;
+      return is_valid;
     },
     next() {
-      return this.localePath('/application/onboarding/dependants')
+      return this.localePath("/application/onboarding/dependants");
     }
   },
   data() {
     return {
       other_funding: [],
       purposes: []
-    }
+    };
   },
   mounted() {
-    this.other_funding = this.student.OTHER_FUNDING||[]
-    
-    this.$emit('input', this.valid)
+    this.other_funding = this.student.OTHER_FUNDING || [];
+
+    this.$emit("input", this.valid);
   },
   watch: {
     valid(to, from) {
-      this.$store.commit('eligibility/SET', this.eligibility)
-      this.$emit('input', this.valid)
+      this.$store.commit("eligibility/SET", this.eligibility);
+      this.$emit("input", this.valid);
     }
   },
   methods: {
     add() {
       this.other_funding.push({
-        agency: '',
-        amount: '',
+        agency: "",
+        amount: "",
         purposes: [],
-        other: ''
-      })
+        other: ""
+      });
     },
     remove(key) {
       if (key > -1) {
@@ -154,9 +160,8 @@ export default {
       }
     }
   }
-}
+};
 </script>
-
 
 <i18n>
 {
