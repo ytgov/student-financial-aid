@@ -190,20 +190,3 @@ export default {
   }
 };
 </script>
-
-<i18n>
-{
-  "en": {
-    "legends": {
-      "expenses": "Pre-Study and Study Period Expenses"
-    },
-    "excerpt": "For each category, enter the estimated or actual costs that you will incur during your pre-study and study periods. "
-  },
-  "fr": {
-    "legends": {
-      "expenses": "re-Study and Study Period Expenses"
-    },
-    "excerpt": "For each category, enter the estimated or actual costs that you will incur during your pre-study and study periods. "
-  }
-}
-</i18n>

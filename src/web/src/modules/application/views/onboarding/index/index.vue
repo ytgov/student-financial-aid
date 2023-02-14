@@ -150,38 +150,3 @@ export default {
   }
 };
 </script>
-
-<i18n>
-{
-  "en": {
-    "legends": {
-      "personal_details": "Personal Details" 
-    },
-    "buttons": {
-      "save": "Save personal details"
-    },
-    "help": {
-      "title": "Need help?",
-      "details": "Help text can go in here to make the form more"
-    },
-    "problem": {
-      "title": "There is a problem"
-    }  
-  },
-  "fr": {
-    "legends": {
-      "personal_details": "Personal Details" 
-    },
-    "buttons": {
-      "save": "Sauver détails personnels"
-    },
-    "help": {
-      "title": "Need help?",
-      "details": "Le texte d'aide peut aller ici pour rendre le formulaire plus"
-    },
-    "problem": {
-      "title": "Il ya un problème"
-    }
-  }
-}
-</i18n>

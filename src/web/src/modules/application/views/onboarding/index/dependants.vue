@@ -196,34 +196,3 @@ export default {
   }
 };
 </script>
-
-<i18n>
-{
-  "en": {
-    "legends": {
-      "dependants": "Student Dependant(s)" 
-    },
-    "excerpt": "A dependant is someone who is 17 years or younger and is wholly dependent on you or your spouse for support, and for whom you or your spouse has, in law or in fact, custody and control.  If you do not have any dependants, please skip this section.",
-    "help": {
-      "title": "Need help?",
-      "details": "Help text can go in here to make the form more"
-    },
-    "problem": {
-      "title": "There is a problem"
-    }  
-  },
-  "fr": {
-    "legends": {
-      "dependants": "Student Dependant(s)" 
-    },
-    "excerpt": "A dependant is someone who is 17 years or younger and is wholly dependent on you or your spouse for support, and for whom you or your spouse has, in law or in fact, custody and control.  If you do not have any dependants, please skip this section.",
-    "help": {
-      "title": "Need help?",
-      "details": "Le texte d'aide peut aller ici pour rendre le formulaire plus"
-    },
-    "problem": {
-      "title": "Il ya un problème"
-    }
-  }
-}
-</i18n>

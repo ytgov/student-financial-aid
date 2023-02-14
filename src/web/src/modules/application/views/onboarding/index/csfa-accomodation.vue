@@ -163,26 +163,3 @@ export default {
   }
 };
 </script>
-
-<i18n>
-{
-  "en": {
-    "legends": {
-      "csfa-accomodation": "Accommodation" 
-    },
-    "excerpt": "Please indicate where you were living during your pre-study and study periods:",
-    "buttons": {
-      "save": "Save statistical information"
-    }
-  },
-  "fr": {
-    "legends": {
-      "csfa-accomodation": "Accommodation" 
-    },
-    "excerpt": "Please indicate where you were living during your pre-study and study periods:",
-    "buttons": {
-      "save": "Enregistrer les informations statistiques"
-    }
-  }
-}
-</i18n>

@@ -162,34 +162,3 @@ export default {
   }
 };
 </script>
-
-<i18n>
-{
-  "en": {
-    "legends": {
-      "consent": "Other funding" 
-    },
-    "excerpt": "Please indicate if you will be receiving funding from another funding source (ie: scholarship, Employment Insurance, etc.)",
-    "help": {
-      "title": "Need help?",
-      "details": "Help text can go in here to make the form more"
-    },
-    "problem": {
-      "title": "There is a problem"
-    }  
-  },
-  "fr": {
-    "legends": {
-      "consent": "Autres financements" 
-    },
-    "excerpt": "Please indicate if you will be receiving funding from another funding source (ie: scholarship, Employment Insurance, etc.)",
-    "help": {
-      "title": "Need help?",
-      "details": "Le texte d'aide peut aller ici pour rendre le formulaire plus"
-    },
-    "problem": {
-      "title": "Il ya un problème"
-    }
-  }
-}
-</i18n>

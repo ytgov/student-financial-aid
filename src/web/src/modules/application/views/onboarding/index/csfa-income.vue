@@ -127,20 +127,3 @@ export default {
   }
 };
 </script>
-
-<i18n>
-{
-  "en": {
-    "legends": {
-      "income": "Study Period Income" 
-    },
-    "excerpt": "Please enter the total income that you received or expect to receive during your study period. (ie: Canada Employment Training Allowance, Childcare subsidy/bursary, Employment insurance Room and board provided by an employer, Scholarship/bursaries/fellowships/etc. (amount for this academic year only), Social assistance for education-related costs, Other government non-repayable grants/bursaries, etc.)"
-  },
-  "fr": {
-    "legends": {
-      "income": "Study Period Income" 
-    },
-    "excerpt": "Please enter the total income that you received or expect to receive during your study period. (ie: Canada Employment Training Allowance, Childcare subsidy/bursary, Employment insurance Room and board provided by an employer, Scholarship/bursaries/fellowships/etc. (amount for this academic year only), Social assistance for education-related costs, Other government non-repayable grants/bursaries, etc.)"
-  }
-}
-</i18n>

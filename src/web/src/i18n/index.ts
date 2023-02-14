@@ -287,6 +287,175 @@ const messages = {
           problem: {
             title: "There is a problem"
           }
+        },
+        consent_release: {
+          legends: {
+            consent: "Consent to release"
+          },
+          excerpt:
+            "Would you like a friend, parent, spouse or other person to communicate with our office on your behalf regarding your funding?  If yes, please complete this section.",
+          buttons: {
+            save: "Save consent release"
+          },
+          help: {
+            title: "Need help?",
+            details: "Help text can go in here to make the form more"
+          },
+          problem: {
+            title: "There is a problem"
+          }
+        },
+        csfa_accommodation: {
+          legends: {
+            "csfa-accomodation": "Accommodation"
+          },
+          excerpt: "Please indicate where you were living during your pre-study and study periods:",
+          buttons: {
+            save: "Save statistical information"
+          }
+        },
+        csfa_employment: {
+          legends: {
+            employment: "CFSA Employment"
+          },
+          buttons: {
+            save: "Save statistical information"
+          },
+          help: {
+            title: "Need help?",
+            details: "Help text can go in here to make the form more"
+          },
+          problem: {
+            title: "There is a problem"
+          }
+        },
+        csfa_expenses: {
+          legends: {
+            expenses: "Pre-Study and Study Period Expenses"
+          },
+          excerpt:
+            "For each category, enter the estimated or actual costs that you will incur during your pre-study and study periods. "
+        },
+        csfa_incone: {
+          legends: {
+            income: "Study Period Income"
+          },
+          excerpt:
+            "Please enter the total income that you received or expect to receive during your study period. (ie: Canada Employment Training Allowance, Childcare subsidy/bursary, Employment insurance Room and board provided by an employer, Scholarship/bursaries/fellowships/etc. (amount for this academic year only), Social assistance for education-related costs, Other government non-repayable grants/bursaries, etc.)"
+        },
+        dependants: {
+          legends: {
+            dependants: "Student Dependant(s)"
+          },
+          excerpt:
+            "A dependant is someone who is 17 years or younger and is wholly dependent on you or your spouse for support, and for whom you or your spouse has, in law or in fact, custody and control.  If you do not have any dependants, please skip this section.",
+          help: {
+            title: "Need help?",
+            details: "Help text can go in here to make the form more"
+          },
+          problem: {
+            title: "There is a problem"
+          }
+        },
+        education_history: {
+          legends: {
+            consent: "Education history"
+          },
+          buttons: {
+            save: "Save consent release"
+          },
+          help: {
+            title: "Need help?",
+            details: "Help text can go in here to make the form more"
+          },
+          problem: {
+            title: "There is a problem"
+          }
+        },
+        index: {
+          legends: {
+            personal_details: "Personal Details"
+          },
+          buttons: {
+            save: "Save personal details"
+          },
+          help: {
+            title: "Need help?",
+            details: "Help text can go in here to make the form more"
+          },
+          problem: {
+            title: "There is a problem"
+          }
+        },
+        other_funding: {
+          legends: {
+            consent: "Other funding"
+          },
+          excerpt:
+            "Please indicate if you will be receiving funding from another funding source (ie: scholarship, Employment Insurance, etc.)",
+          help: {
+            title: "Need help?",
+            details: "Help text can go in here to make the form more"
+          },
+          problem: {
+            title: "There is a problem"
+          }
+        },
+        parent_dependants: {
+          legends: {
+            dependants: "Parent Dependants"
+          },
+          help: {
+            title: "Need help?",
+            details: "Help text can go in here to make the form more"
+          },
+          problem: {
+            title: "There is a problem"
+          }
+        },
+        parents: {
+          legends: {
+            address: "Parents mailing address",
+            information: "Parents information"
+          }
+        },
+        residency_history: {
+          legends: {
+            consent: "Residency history"
+          },
+          buttons: {
+            save: "Save consent release"
+          },
+          help: {
+            title: "Need help?",
+            details: "Help text can go in here to make the form more"
+          },
+          problem: {
+            title: "There is a problem"
+          }
+        },
+        spouse: {
+          legends: {
+            spouse: "Spouse",
+            "study-period": "Study period",
+            "post-secondary": "Post secondary information",
+            "employment-information": "Employment information"
+          }
+        },
+        statistical: {
+          legends: {
+            personal_details: "Statistical information"
+          },
+          buttons: {
+            save: "Save statistical information"
+          },
+          help: {
+            title: "Need help?",
+            details: "Help text can go in here to make the form more"
+          },
+          problem: {
+            title: "There is a problem"
+          }
         }
       },
       program_details: {
@@ -596,6 +765,175 @@ const messages = {
       onboarding: {
         title: "Your Application Information",
         csfa: {
+          legends: {
+            personal_details: "Information statistique"
+          },
+          buttons: {
+            save: "Enregistrer les informations statistiques"
+          },
+          help: {
+            title: "Need help?",
+            details: "Le texte d'aide peut aller ici pour rendre le formulaire plus"
+          },
+          problem: {
+            title: "Il ya un problème"
+          }
+        },
+        consent_release: {
+          legends: {
+            consent: "Libération du consentement"
+          },
+          excerpt:
+            "Would you like a friend, parent, spouse or other person to communicate with our office on your behalf regarding your funding?  If yes, please complete this section.",
+          buttons: {
+            save: "Enregistrer la libération du consentement"
+          },
+          help: {
+            title: "Need help?",
+            details: "Le texte d'aide peut aller ici pour rendre le formulaire plus"
+          },
+          problem: {
+            title: "Il ya un problème"
+          }
+        },
+        csfa_accommodation: {
+          legends: {
+            "csfa-accomodation": "Accommodation"
+          },
+          excerpt: "Please indicate where you were living during your pre-study and study periods:",
+          buttons: {
+            save: "Enregistrer les informations statistiques"
+          }
+        },
+        csfa_employment: {
+          legends: {
+            personal_details: "Information statistique"
+          },
+          buttons: {
+            save: "Enregistrer les informations statistiques"
+          },
+          help: {
+            title: "Need help?",
+            details: "Le texte d'aide peut aller ici pour rendre le formulaire plus"
+          },
+          problem: {
+            title: "Il ya un problème"
+          }
+        },
+        csfa_expenses: {
+          legends: {
+            expenses: "re-Study and Study Period Expenses"
+          },
+          excerpt:
+            "For each category, enter the estimated or actual costs that you will incur during your pre-study and study periods. "
+        },
+        csfa_income: {
+          legends: {
+            income: "Study Period Income"
+          },
+          excerpt:
+            "Please enter the total income that you received or expect to receive during your study period. (ie: Canada Employment Training Allowance, Childcare subsidy/bursary, Employment insurance Room and board provided by an employer, Scholarship/bursaries/fellowships/etc. (amount for this academic year only), Social assistance for education-related costs, Other government non-repayable grants/bursaries, etc.)"
+        },
+        dependants: {
+          legends: {
+            dependants: "Student Dependant(s)"
+          },
+          excerpt:
+            "A dependant is someone who is 17 years or younger and is wholly dependent on you or your spouse for support, and for whom you or your spouse has, in law or in fact, custody and control.  If you do not have any dependants, please skip this section.",
+          help: {
+            title: "Need help?",
+            details: "Le texte d'aide peut aller ici pour rendre le formulaire plus"
+          },
+          problem: {
+            title: "Il ya un problème"
+          }
+        },
+        education_history: {
+          legends: {
+            consent: "Libération du consentement"
+          },
+          buttons: {
+            save: "Enregistrer la libération du consentement"
+          },
+          help: {
+            title: "Need help?",
+            details: "Le texte d'aide peut aller ici pour rendre le formulaire plus"
+          },
+          problem: {
+            title: "Il ya un problème"
+          }
+        },
+        index: {
+          legends: {
+            personal_details: "Personal Details"
+          },
+          buttons: {
+            save: "Sauver détails personnels"
+          },
+          help: {
+            title: "Need help?",
+            details: "Le texte d'aide peut aller ici pour rendre le formulaire plus"
+          },
+          problem: {
+            title: "Il ya un problème"
+          }
+        },
+        other_funding: {
+          legends: {
+            consent: "Autres financements"
+          },
+          excerpt:
+            "Please indicate if you will be receiving funding from another funding source (ie: scholarship, Employment Insurance, etc.)",
+          help: {
+            title: "Need help?",
+            details: "Le texte d'aide peut aller ici pour rendre le formulaire plus"
+          },
+          problem: {
+            title: "Il ya un problème"
+          }
+        },
+        parent_dependants: {
+          legends: {
+            dependants: "Parent Dependants"
+          },
+          help: {
+            title: "Need help?",
+            details: "Le texte d'aide peut aller ici pour rendre le formulaire plus"
+          },
+          problem: {
+            title: "Il ya un problème"
+          }
+        },
+        parents: {
+          legends: {
+            address: "Parents mailing address",
+            information: "Parents information"
+          }
+        },
+        residency_history: {
+          legends: {
+            consent: "Libération du consentement"
+          },
+          buttons: {
+            save: "Enregistrer la libération du consentement"
+          },
+          help: {
+            title: "Need help?",
+            details: "Le texte d'aide peut aller ici pour rendre le formulaire plus"
+          },
+          problem: {
+            title: "Il ya un problème"
+          }
+        },
+        spouse: {
+          legends: {
+            spouse: "Spouse",
+            "study-period": "Study period",
+            "post-secondary": "Post secondary information",
+            "employment-information": "Employment information"
+          }
+        },
+        statistical: {
           legends: {
             personal_details: "Information statistique"
           },

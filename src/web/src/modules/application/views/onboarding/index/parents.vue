@@ -144,20 +144,3 @@ export default {
   }
 };
 </script>
-
-<i18n>
-{
-  "en": {
-    "legends": {
-      "address": "Parents mailing address",
-      "information": "Parents information"
-    }
-  },
-  "fr": {
-    "legends": {
-      "address": "Parents mailing address",
-      "information": "Parents information"
-    }
-  }
-}
-</i18n>

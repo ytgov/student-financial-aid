@@ -185,25 +185,3 @@ export default {
 }
 </script>
 
-
-<i18n>
-{
-  "en": {
-    "legends": {
-      "spouse": "Spouse",
-      "study-period": "Study period",
-      "post-secondary": "Post secondary information",
-      "employment-information": "Employment information"
-    }
-  },
-  "fr": {
-    "legends": {
-      "spouse": "Spouse",
-      "study-period": "Study period",
-      "post-secondary": "Post secondary information",
-      "employment-information": "Employment information"
-    }
-  }
-}
-</i18n>
-
