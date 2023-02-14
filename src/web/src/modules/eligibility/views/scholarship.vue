@@ -113,22 +113,23 @@ export default {
     //   set(values) {
     //     return this.$store.commit("eligibility/SET", values);
     //   }
-  },
-  valid() {
-    var is_valid =
-      this.eligibility.scholarship.is_high_school_student &&
-      this.eligibility.scholarship.is_high_school_graduate &&
-      (this.eligibility.scholarship.is_pursuing_aviation == "Yes" ||
-        this.eligibility.scholarship.are_you_entering_visual_arts == "Yes" ||
-        this.eligibility.scholarship.enrolled_vocational == "Yes" ||
-        (this.eligibility.scholarship.is_pursuing_aviation == "No" &&
-          this.eligibility.scholarship.are_you_entering_visual_arts == "No" &&
-          this.eligibility.scholarship.enrolled_vocational == "No"));
 
-    return is_valid;
-  },
-  next() {
-    return { path: "/eligibility/enrollment" };
+    valid() {
+      var is_valid =
+        this.eligibility.scholarship.is_high_school_student &&
+        this.eligibility.scholarship.is_high_school_graduate &&
+        (this.eligibility.scholarship.is_pursuing_aviation == "Yes" ||
+          this.eligibility.scholarship.are_you_entering_visual_arts == "Yes" ||
+          this.eligibility.scholarship.enrolled_vocational == "Yes" ||
+          (this.eligibility.scholarship.is_pursuing_aviation == "No" &&
+            this.eligibility.scholarship.are_you_entering_visual_arts == "No" &&
+            this.eligibility.scholarship.enrolled_vocational == "No"));
+
+      return is_valid;
+    },
+    next() {
+      return { path: "/eligibility/enrollment" };
+    }
   },
   mounted() {
     this.$emit("input", this.valid);
