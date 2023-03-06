@@ -90,22 +90,3 @@ export default {
   }
 };
 </script>
-
-<i18n>
-{
-  "en": {
-    "title": "Onboarding",
-    "legends": {
-      "address": "Permanent address",
-      "address_at_school": "Address while at school"
-    }
-  },
-  "fr": {
-    "title": "Onboarding",
-    "legends": {
-      "address": "Permanent Adresse",
-      "address_at_school": "Address while at School"
-    }
-  }
-}
-</i18n>

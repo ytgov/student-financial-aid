@@ -53,7 +53,7 @@ const messages = {
         }
       },
       citizenship: {
-        title: "Eligibility",
+        title: "Citizenship",
         body: "To be eligible for potential funding programs, you must be a Canadian citizen or a permanent resident.",
         are_you_a_canadian_citizen: "Are you a Canadian citizen?",
         are_you_a_permanent_resident: "Are you a permanent resident?",
@@ -110,9 +110,9 @@ const messages = {
       scholarship: {
         title: "Scholarship",
         are_you_a_high_school_student:
-          "Are you a grade 12 student attending a Yukon High School and entering the first year of post secondary?",
-        are_you_a_high_school_graduate: "Are you or will you be a high school graduate from a yukon high school?",
-        are_you_pursuing_aviation: "Are you pursuing aviation oriented technical training?",
+          "Are you currently a grade 12 student attending a Yukon high school and entering the first year of post-secondary?",
+        are_you_a_high_school_graduate: "Did you graduate from a Yukon high school?",
+        are_you_pursuing_aviation: "Are you pursuing an aviation oriented technical training program?",
         are_you_entering_visual_arts:
           "Are you entering the first year of a visual arts program in the academic year immediately following graduation?",
         enrolled_vocational:
@@ -182,7 +182,7 @@ const messages = {
         have_you_ever_been_in_a_relationship: "Have you ever been married or in a common law relationship?"
       },
       parent: {
-        title: "Single parent student",
+        title: "Parent",
         responsible_for_child: "Do you currently have physical custody and are responsible for supporting a child?",
         ever_been_a_single_parent:
           "Have you ever been a single parent and your children are currently not in your care?"
@@ -286,6 +286,13 @@ const messages = {
           },
           problem: {
             title: "There is a problem"
+          }
+        },
+        addresses: {
+          title: "Onboarding",
+          legends: {
+            address: "Permanent address",
+            address_at_school: "Address while at school"
           }
         },
         consent_release: {
@@ -532,7 +539,7 @@ const messages = {
         }
       },
       citizenship: {
-        title: "Éligibilité",
+        title: "Citoyenneté",
         body: [
           "Pour être admissible aux programmes d’aide financière, vous devez avoir la citoyenneté canadienne ou la résidence permanente."
         ],
@@ -673,7 +680,7 @@ const messages = {
         have_you_ever_been_in_a_relationship: "Avez-vous déjà été légalement marié ou en union de fait?"
       },
       parent: {
-        title: "Étudiant chef de famille monoparentale",
+        title: "Parent",
         responsible_for_child:
           "Avez-vous actuellement la garde physique d’un enfant et la responsabilité de subvenir à ses besoins?",
         ever_been_a_single_parent:
@@ -777,6 +784,13 @@ const messages = {
           },
           problem: {
             title: "Il ya un problème"
+          }
+        },
+        addresses: {
+          title: "Onboarding",
+          legends: {
+            address: "Permanent Adresse",
+            address_at_school: "Address while at School"
           }
         },
         consent_release: {

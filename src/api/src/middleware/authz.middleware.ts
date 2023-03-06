@@ -13,16 +13,17 @@ export const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `${AUTH0_DOMAIN}.well-known/jwks.json`,
+    jwksUri: `${AUTH0_DOMAIN}.well-known/jwks.json`
   }),
 
   // Validate the audience and the issuer.
   audience: AUTH0_AUDIENCE,
   issuer: [AUTH0_DOMAIN],
-  algorithms: ["RS256"],
+  algorithms: ["RS256"]
 });
 
 export async function loadUser(req: Request, res: Response, next: NextFunction) {
+  console.log(req);
   let sub = req.user.sub;
   const token = req.headers.authorization || "";
 
@@ -35,7 +36,7 @@ export async function loadUser(req: Request, res: Response, next: NextFunction) 
 
   await axios
     .get(`${AUTH0_DOMAIN}userinfo`, { headers: { authorization: token } })
-    .then(async (resp) => {
+    .then(async resp => {
       if (resp.data && resp.data.sub) {
         let email = resp.data.email;
 
@@ -77,7 +78,7 @@ export async function loadUser(req: Request, res: Response, next: NextFunction) 
             last_name: resp.data.family_name,
             ynet_id,
             directory_id,
-            create_date: new Date(),
+            create_date: new Date()
           };
 
           await db.create(createUser);
