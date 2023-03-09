@@ -1,3 +1,10 @@
-<template></template>
+<template>
+  Home
+</template>
 
-<script lang="ts"></script>
+<script lang="ts">
+
+export default {
+  name: "Dashboard",
+}
+</script>

@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
 import TextField from "@/components/forms/TextField.vue";
 import TextArea from "@/components/forms/TextArea.vue";
@@ -49,13 +48,13 @@ export default {
     ValidationObserver,
     BlackoutNotice,
     TextField,
-    TextArea
+    TextArea,
   },
   data() {
     return {
       valid: false,
       message: "",
-      subject: ""
+      subject: "",
     };
   },
   methods: {
@@ -64,12 +63,12 @@ export default {
       if (isValid) {
         await this.$refs.blackout.open({
           text: "Saved",
-          timeout: true
+          timeout: true,
         });
         //await this.$store.commit('student/SET', this.profile)
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

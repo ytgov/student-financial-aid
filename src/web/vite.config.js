@@ -6,6 +6,13 @@ import vuetify from "vite-plugin-vuetify";
 import { defineConfig } from "vite";
 import path from "path";
 
+import { dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const _dirname = typeof __dirname !== 'undefined'
+  ? __dirname
+  : dirname(fileURLToPath(import.meta.url))
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -15,10 +22,14 @@ export default defineConfig({
       autoImport: true,
     }),
   ],
+  build: {
+    outDir: "../app/dist/web",
+  },
   define: { "process.env": {} },
   resolve: {
     alias: {
-      '@/': `${path.resolve(__dirname, 'src')}/`
+      "./runtimeConfig": "./runtimeConfig.browser",
+      '@/': `${path.resolve(_dirname, 'src')}/`
     },
     extensions: [".js", ".json", ".jsx", ".mjs", ".ts", ".tsx", ".vue"],
   },

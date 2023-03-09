@@ -3,10 +3,11 @@ import App from "./App.vue";
 import { createPinia } from "pinia";
 import i18n from "./i18n";
 import { router } from "./routes";
-import store from "./store";
+import { AuthHelper } from "@/plugins/auth";
 
 // Plugins
 import { registerPlugins } from "./plugins";
+import { Auth0Plugin } from "@auth0/auth0-vue";
 
 const pinia = createPinia();
 
@@ -14,7 +15,17 @@ const app = createApp(App);
 app.use(pinia);
 app.use(router);
 app.use(i18n);
-app.use(store);
+
+
+app.config.globalProperties.$auth = AuthHelper;
+
+declare module "@vue/runtime-core" {
+  interface ComponentCustomProperties {
+    $auth: Auth0Plugin;
+  }
+}
+
+export {}; // Important! See note.
 
 registerPlugins(app);
 

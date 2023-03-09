@@ -83,7 +83,7 @@
               <v-list-item-title style="font-size: 0.9rem !important">Administration</v-list-item-title>
             </v-list-item>
             <v-divider />
-            <v-list-item @click="$auth0.logout({ returnTo })">
+            <v-list-item @click="logoutClick">
               <template v-slot:prepend>
                 <v-icon>mdi-exit-run</v-icon>
               </template>
@@ -126,7 +126,7 @@ export default {
     return {
       isAuthenticated: this.$auth0.isAuthenticated,
       authUser: this.$auth0.user,
-      showOverlay: true
+      showOverlay: true,
     };
   },
   computed: {
@@ -143,7 +143,7 @@ export default {
     returnTo: function () {
       return window.location.origin;
       // return auth.options.logout_redirect;
-    }
+    },
   },
 
   async mounted() {
@@ -154,8 +154,11 @@ export default {
     ...mapActions(useUserStore, ["initialize", "toggleAdmin"]),
     blip: function () {
       this.showNotification = true;
-    }
-  }
+    },
+    logoutClick() {
+      this.$auth.logout({ logoutParams: { returnTo: this.returnTo } });
+    },
+  },
 };
 </script>
 

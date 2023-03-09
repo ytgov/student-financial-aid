@@ -1,18 +1,10 @@
-import { defineStore, getActivePinia } from "pinia";
+import { defineStore } from "pinia";
 
 import { useNotificationStore } from "@/store/NotificationStore";
 import { useApiStore } from "@/store/ApiStore";
 import { PROFILE_URL } from "@/urls";
 
 let m = useNotificationStore();
-
-function waitSomeSeconds(seconds: number) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, seconds * 1000);
-  });
-}
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -39,7 +31,6 @@ export const useUserStore = defineStore("user", {
 
       await this.loadCurrentUser();
 
-      //await waitSomeSeconds(3);
       //go and get user details
 
       //await this.getRoles();

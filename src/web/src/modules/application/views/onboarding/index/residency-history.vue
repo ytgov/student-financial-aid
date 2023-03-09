@@ -86,8 +86,6 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from 'vuex'
-
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import AddressSelector from "@/components/forms/AddressSelector.vue";
 import SinNumber from "@/components/forms/SinNumber.vue";
@@ -169,3 +167,5 @@ export default {
       }
     }
   }
+}
+</script>

@@ -26,6 +26,7 @@
 </template>
 <script lang="ts">
 import { mapActions, mapState } from "pinia";
+import { cloneDeep } from "lodash";
 import { useAdminStore } from "../store";
 import UserEditor from "../components/UserEditor.vue";
 
@@ -56,8 +57,8 @@ export default {
     async loadItems() {
       await this.getAllUsers();
     },
-    rowClick(event: Event, { item }) {
-      this.selectUser(item.value);
+    rowClick(event: Event, thing: any) {
+      this.selectUser(cloneDeep(thing.item.raw));
     },
   },
 };
