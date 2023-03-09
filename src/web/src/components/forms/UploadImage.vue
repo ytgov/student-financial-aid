@@ -16,7 +16,7 @@
 </template>
 
 <style lang="scss" scoped>
-@import "~/assets/scss/_mixins.scss";
+@import "@/assets/scss/_mixins.scss";
 
 div.image {
   position: relative;
@@ -146,8 +146,8 @@ div.image {
 </style>
 
 <script>
-import FirebaseUploader from "~/services/firebase-upload.js";
-import ProgressScreen from "~/components/utils/ProgressScreen.vue";
+import FirebaseUploader from "@/services/firebase-upload.js";
+import ProgressScreen from "@/components/utils/ProgressScreen.vue";
 
 // https://codepen.io/blackjacques/pen/bqgNoa
 

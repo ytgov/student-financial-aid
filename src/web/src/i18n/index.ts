@@ -6,13 +6,6 @@ const messages = {
       home: "Home",
       about: "About"
     },
-    menu: {
-      heading: "Government services and information",
-      close: "Close"
-    },
-    faq: {
-      title: "FAQs"
-    },
     components: {
       buttons: {
         disagree: "Disagree",
@@ -41,6 +34,18 @@ const messages = {
           month: "Month",
           day: "Day"
         }
+      },
+      ui: {
+        alerts: {
+          heading: "Your alerts"
+        },
+        menu: {
+          heading: "Government services and information",
+          close: "Close"
+        }
+      },
+      faq: {
+        title: "FAQs"
       }
     },
     eligibility: {
@@ -492,13 +497,7 @@ const messages = {
       home: "Accueil",
       about: "À propos"
     },
-    menu: {
-      heading: "Services gouvernementaux et informations",
-      close: "Fermer"
-    },
-    faq: {
-      title: "Foire aux questions"
-    },
+
     components: {
       buttons: {
         disagree: "Disagree",
@@ -527,6 +526,18 @@ const messages = {
           month: "Mois",
           day: "Jour"
         }
+      },
+      ui: {
+        alerts: {
+          heading: "Vos alertes"
+        },
+        menu: {
+          heading: "Services gouvernementaux et informations",
+          close: "Fermer"
+        }
+      },
+      faq: {
+        title: "Foire aux questions"
       }
     },
     eligibility: {

@@ -82,8 +82,8 @@ div.assets {
 </style>
 
 <script>
-import FirebaseUploader from "~/services/firebase-upload.js";
-import ProgressScreen from "~/components/utils/ProgressScreen.vue";
+import FirebaseUploader from "@/services/firebase-upload.js";
+import ProgressScreen from "@/components/utils/ProgressScreen.vue";
 //import { Cropper } from 'vue-advanced-cropper'
 
 // https://codepen.io/blackjacques/pen/bqgNoa
