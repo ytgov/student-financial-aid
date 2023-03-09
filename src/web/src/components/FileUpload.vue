@@ -20,11 +20,8 @@
 </template>
 
 <script>
-// import { mapMutations, mapGetters } from "vuex";
-import FirebaseUploader from "@/services/firebase-upload.js";
+import { mapState } from "pinia";
 import ProgressScreen from "@/components/utils/ProgressScreen.vue";
-import auth from "@/services/firebase.js";
-// https://www.begueradj.com/file-upload-from-a-nuxt.js-client-to-an-adonisjs-restful-api-server-using-axios/
 
 export default {
   name: "FileUpload",
@@ -41,7 +38,7 @@ export default {
     ProgressScreen
   },
   computed: {
-    ...mapGetters({
+    ...mapState({
       documents: "documents/list"
     }),
     document() {
@@ -77,7 +74,7 @@ export default {
         multiple: false,
         resource: this.path
       };
-      FirebaseUploader.upload(
+      /* FirebaseUploader.upload(
         options,
         function (file) {
           self.file = file;
@@ -85,7 +82,7 @@ export default {
         function (progress) {
           self.progress = progress >= 100 ? false : parseInt(progress);
         }
-      );
+      ); */
     },
     remove() {
       var self = this;

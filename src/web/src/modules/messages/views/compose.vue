@@ -12,16 +12,16 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <ValidationObserver ref="observer" v-slot="{ invalid, errors }">
+       <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
           <v-form @submit.prevent="submit" v-model="valid">
             <fieldset class="group">
-              <ValidationProvider name="First Name" rules="required|max:10" tag="span" v-slot="{ errors, valid }">
+              <!-- <ValidationProvider name="First Name" rules="required|max:10" tag="span" v-slot="{ errors, valid }"> -->
                 <TextField name="Subject" v-model="subject" label="Subject" :errors="errors" :valid="valid" />
-              </ValidationProvider>
+             <!--  </ValidationProvider> -->
 
-              <ValidationProvider name="Bodye" rules="required|max:256" tag="span" v-slot="{ errors, valid }">
+              <!-- <ValidationProvider name="Bodye" rules="required|max:256" tag="span" v-slot="{ errors, valid }"> -->
                 <TextArea name="First Name" v-model="message" label="Message" :errors="errors" :valid="valid" />
-              </ValidationProvider>
+             <!--  </ValidationProvider> -->
             </fieldset>
             <fieldset>
               <v-btn color="primary" class="mr-5" type="submit" :disabled="!valid">
@@ -29,7 +29,7 @@
               </v-btn>
             </fieldset>
           </v-form>
-        </ValidationObserver>
+        <!-- </ValidationObserver> -->
       </v-col>
     </v-row>
     <BlackoutNotice ref="blackout" />
@@ -37,15 +37,12 @@
 </template>
 
 <script>
-import { ValidationProvider, ValidationObserver } from "vee-validate";
 import TextField from "@/components/forms/TextField.vue";
 import TextArea from "@/components/forms/TextArea.vue";
 import BlackoutNotice from "@/components/utils/BlackoutNotice.vue";
 
 export default {
   components: {
-    ValidationProvider,
-    ValidationObserver,
     BlackoutNotice,
     TextField,
     TextArea,
@@ -71,14 +68,3 @@ export default {
   },
 };
 </script>
-
-<i18n>
-{
-  "en": {
-    "title": "Compose"
-  },
-  "fr": {
-    "title": "Compose"
-  }
-}
-</i18n>

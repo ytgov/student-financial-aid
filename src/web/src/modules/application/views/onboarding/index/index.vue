@@ -1,12 +1,12 @@
 <template>
   <section v-if="student">
-    <ValidationObserver ref="observer" v-slot="{ invalid, errors }">
+    <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form @submit.prevent="submit" v-model="valid">
         <fieldset class="group">
           <fieldset>
             <legend class="text-h5">{{ $t("legends.personal_details") }}</legend>
 
-            <ValidationProvider name="First Name" rules="required|max:10" tag="span" v-slot="{ errors, valid }">
+           <!--  <ValidationProvider name="First Name" rules="required|max:10" tag="span" v-slot="{ errors, valid }"> -->
               <TextField
                 name="First Name"
                 v-model="student.FIRST_NAME"
@@ -14,9 +14,9 @@
                 :errors="errors"
                 :valid="valid"
               />
-            </ValidationProvider>
+            <!-- </ValidationProvider> -->
 
-            <ValidationProvider name="Middle Name" rules="notrequired" tag="span" v-slot="{ errors, valid }">
+            <!-- <ValidationProvider name="Middle Name" rules="notrequired" tag="span" v-slot="{ errors, valid }"> -->
               <TextField
                 name="Middle Name"
                 v-model="student.MIDDLE_NAME"
@@ -24,9 +24,9 @@
                 :errors="errors"
                 :valid="valid"
               />
-            </ValidationProvider>
+            <!-- </ValidationProvider> -->
 
-            <ValidationProvider name="Last Name" rules="required|max:10" tag="span" v-slot="{ errors, valid }">
+           <!--  <ValidationProvider name="Last Name" rules="required|max:10" tag="span" v-slot="{ errors, valid }"> -->
               <TextField
                 name="Last Name"
                 v-model="student.LAST_NAME"
@@ -34,13 +34,13 @@
                 :error="errors"
                 :valid="valid"
               />
-            </ValidationProvider>
+           <!--  </ValidationProvider> -->
 
-            <ValidationProvider name="Home Email" rules="required|email" tag="span" v-slot="{ errors, valid }">
+            <!-- <ValidationProvider name="Home Email" rules="required|email" tag="span" v-slot="{ errors, valid }"> -->
               <TextField name="Home Email" v-model="student.HOME_EMAIL" label="Email" :error="errors" :valid="valid" />
-            </ValidationProvider>
+           <!--  </ValidationProvider> -->
 
-            <ValidationProvider name="Home Phone" rules="required|phone" tag="span" v-slot="{ errors, valid }">
+           <!--  <ValidationProvider name="Home Phone" rules="required|phone" tag="span" v-slot="{ errors, valid }"> -->
               <TextField
                 name="Home Phone"
                 v-model="student.HOME_PHONE"
@@ -48,9 +48,9 @@
                 :error="errors"
                 :valid="valid"
               />
-            </ValidationProvider>
+            <!-- </ValidationProvider> -->
 
-            <ValidationProvider name="Social Insurance Number" rules="sin" tag="span" v-slot="{ errors, valid }">
+            <!-- <ValidationProvider name="Social Insurance Number" rules="sin" tag="span" v-slot="{ errors, valid }"> -->
               <SinNumber
                 name="sin"
                 label="Social Insurance Number"
@@ -59,9 +59,9 @@
                 :errors="errors"
                 :valid="valid"
               />
-            </ValidationProvider>
+           <!--  </ValidationProvider> -->
 
-            <ValidationProvider name="Date of Birth" rules="date" tag="span" v-slot="{ errors, valid }">
+            <!-- <ValidationProvider name="Date of Birth" rules="date" tag="span" v-slot="{ errors, valid }"> -->
               <DateSelector
                 name="BIRTH_DATE"
                 label="Date of Birth (optional)"
@@ -70,7 +70,7 @@
                 :errors="errors"
                 :valid="valid"
               />
-            </ValidationProvider>
+            <!-- </ValidationProvider> -->
           </fieldset>
         </fieldset>
 
@@ -88,16 +88,14 @@
           </ul>
         </v-banner>
       </v-form>
-    </ValidationObserver>
+   <!--  </ValidationObserver> -->
 
     <Buttons :valid="valid" :next="next" back="true" />
   </section>
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
 
-import { ValidationProvider, ValidationObserver } from "vee-validate";
 import AddressSelector from "@/components/forms/AddressSelector.vue";
 import SinNumber from "@/components/forms/SinNumber.vue";
 import TextField from "@/components/forms/TextField.vue";
@@ -111,8 +109,6 @@ import Question from "@/components/forms/Question.vue";
 
 export default {
   components: {
-    ValidationProvider,
-    ValidationObserver,
     BlackoutNotice,
     TextField,
     RadioField,

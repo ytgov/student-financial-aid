@@ -1,6 +1,7 @@
-<template lang="html">
+<template>
   <div class="loading-page" v-if="loading">
-    <img src="/images/loading-animation-css.gif" />
+    USED TO BE GIF
+    <!-- <img src="@/assets/loading-animation-css.gif" /> -->
   </div>
 </template>
 

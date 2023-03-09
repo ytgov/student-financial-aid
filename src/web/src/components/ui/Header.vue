@@ -39,12 +39,12 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
+import { mapState } from "pinia";
 import Logo from "@/components/Logo.vue";
 
 export default {
   components: {
-    Logo
+    Logo,
   },
   computed: {
     language() {
@@ -59,15 +59,15 @@ export default {
     menu() {
       return this.$store.getters["menu_open"];
     },
-    ...mapGetters({
-      messages: "messages/count"
-    })
+    ...mapState({
+      messages: "messages/count",
+    }),
   },
   methods: {
     toggleMenu() {
       this.$store.commit("TOGGLE_MENU");
-    }
-  }
+    },
+  },
 };
 </script>
 

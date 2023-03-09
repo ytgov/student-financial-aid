@@ -146,10 +146,7 @@ div.image {
 </style>
 
 <script>
-import FirebaseUploader from "@/services/firebase-upload.js";
 import ProgressScreen from "@/components/utils/ProgressScreen.vue";
-
-// https://codepen.io/blackjacques/pen/bqgNoa
 
 export default {
   props: ["name", "value", "resource", "ratio", "error"],
@@ -187,7 +184,7 @@ export default {
         multiple: false,
         resource: this.resource
       };
-      FirebaseUploader.upload(
+      /* FirebaseUploader.upload(
         options,
         function (image) {
           self.image = image;
@@ -195,7 +192,7 @@ export default {
         function (progress) {
           self.progress = progress >= 100 ? false : parseInt(progress);
         }
-      );
+      ); */
     }
   },
   watch: {

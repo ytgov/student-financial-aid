@@ -49,17 +49,17 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
+import { mapState } from "pinia";
 
 export default {
   computed: {
-    ...mapGetters({
+    ...mapState({
       login_url: "user/login_url",
-      menu_open: "menu_open"
+      menu_open: "menu_open",
     }),
     locale() {
       return this.$i18n.locale;
-    }
+    },
   },
   data() {
     return {
@@ -77,9 +77,9 @@ export default {
               click: () => {
                 this.$auth.logout();
                 this.off();
-              }
-            }
-          ]
+              },
+            },
+          ],
         },
         fr: {
           items: [
@@ -94,11 +94,11 @@ export default {
               click: () => {
                 this.$auth.logout();
                 this.off();
-              }
-            }
-          ]
-        }
-      }
+              },
+            },
+          ],
+        },
+      },
     };
   },
   created() {
@@ -110,8 +110,8 @@ export default {
     },
     off() {
       this.$store.commit("TOGGLE_MENU_OFF");
-    }
-  }
+    },
+  },
 };
 </script>
 

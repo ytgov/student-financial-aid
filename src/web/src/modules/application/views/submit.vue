@@ -162,7 +162,7 @@ table {
 </style>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
+import { mapState } from "pinia";
 import AddressSelector from "@/components/forms/AddressSelector.vue";
 import Buttons from "@/components/forms/Buttons.vue";
 
@@ -172,7 +172,7 @@ export default {
     Buttons
   },
   computed: {
-    ...mapGetters({
+    ...mapState({
       eligibility: "eligibility/GET",
       programs: "applications/programs",
       documents: "documents/list"

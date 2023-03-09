@@ -1,6 +1,6 @@
 <template>
   <section v-if="student">
-    <ValidationObserver ref="observer" v-slot="{ invalid, errors }">
+   <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form @submit.prevent="submit" v-model="valid">
         <fieldset class="group">
           <fieldset>
@@ -8,7 +8,7 @@
 
             <p>Student statistical information for the current year:</p>
 
-            <ValidationProvider name="Language" rules="required" tag="span" v-slot="{ errors, valid }">
+            <!-- <ValidationProvider name="Language" rules="required" tag="span" v-slot="{ errors, valid }"> -->
               <RadioField
                 name="Language"
                 v-model="student.LANGUAGE"
@@ -17,9 +17,9 @@
                 :error="errors"
                 :valid="valid"
               />
-            </ValidationProvider>
-
-            <ValidationProvider name="Gender" rules="required" tag="span" v-slot="{ errors, valid }">
+           <!--  </ValidationProvider>
+ -->
+            <!-- <ValidationProvider name="Gender" rules="required" tag="span" v-slot="{ errors, valid }"> -->
               <RadioField
                 name="Gender"
                 v-model="student.GENDER"
@@ -28,9 +28,9 @@
                 :error="errors"
                 :valid="valid"
               />
-            </ValidationProvider>
+          <!--   </ValidationProvider> -->
 
-            <ValidationProvider name="Marital Status" rules="required" tag="span" v-slot="{ errors, valid }">
+            <!-- <ValidationProvider name="Marital Status" rules="required" tag="span" v-slot="{ errors, valid }"> -->
               <SelectField
                 name="Marital status"
                 v-model="student.MARITAL_STATUS"
@@ -39,9 +39,9 @@
                 :errors="errors"
                 :valid="valid"
               />
-            </ValidationProvider>
-
-            <ValidationProvider name="Citizenship" rules="required" tag="span" v-slot="{ errors, valid }">
+            <!-- </ValidationProvider>
+ -->
+           <!--  <ValidationProvider name="Citizenship" rules="required" tag="span" v-slot="{ errors, valid }"> -->
               <SelectField
                 name="Citizenship"
                 v-model="student.CITIZENSHIP"
@@ -50,9 +50,9 @@
                 :errors="errors"
                 :valid="valid"
               />
-            </ValidationProvider>
-
-            <ValidationProvider name="Aboriginal Status" rules="required" tag="span" v-slot="{ errors, valid }">
+           <!--  </ValidationProvider>
+ -->
+          <!--   <ValidationProvider name="Aboriginal Status" rules="required" tag="span" v-slot="{ errors, valid }"> -->
               <SelectField
                 name="Aboriginal Status"
                 v-model="student.ABORIGINAL_STATUS"
@@ -70,7 +70,7 @@
                 :errors="errors"
                 :valid="valid"
               />
-            </ValidationProvider>
+            <!-- </ValidationProvider> -->
           </fieldset>
         </fieldset>
 
@@ -88,16 +88,14 @@
           </ul>
         </v-banner>
       </v-form>
-    </ValidationObserver>
+    <!-- </ValidationObserver> -->
 
     <Buttons :valid="valid" :next="next" back="true" />
   </section>
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
 
-import { ValidationProvider, ValidationObserver } from "vee-validate";
 import AddressSelector from "@/components/forms/AddressSelector.vue";
 import SinNumber from "@/components/forms/SinNumber.vue";
 import TextField from "@/components/forms/TextField.vue";
@@ -111,8 +109,6 @@ import Question from "@/components/forms/Question.vue";
 
 export default {
   components: {
-    ValidationProvider,
-    ValidationObserver,
     BlackoutNotice,
     TextField,
     RadioField,

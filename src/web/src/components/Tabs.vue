@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
   <div>
     <ul class="tabs__header">
       <li

@@ -20,7 +20,7 @@
       <Question>
         {{ $t("what_is_your_sin_number") }}
       </Question>
-      <ValidationProvider name="SIN" rules="sin" tag="span" v-slot="{ errors, valid }">
+     <!--  <ValidationProvider name="SIN" rules="sin" tag="span" v-slot="{ errors, valid }"> -->
         <SinNumber
           name="SIN"
           v-model="student.SIN"
@@ -29,7 +29,7 @@
           :valid="valid"
           class="limit"
         />
-      </ValidationProvider>
+     <!--  </ValidationProvider> -->
     </section>
 
     <section v-if="(!profile.tombstone.alias || profile.tombstone.use_existing_alias == 'No') && student.SIN">
@@ -47,8 +47,6 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
-import { ValidationProvider, ValidationObserver } from "vee-validate";
 import Buttons from "@/components/forms/Buttons.vue";
 import Question from "@/components/forms/Question.vue";
 import RadioList from "@/components/forms/RadioList.vue";
@@ -58,7 +56,6 @@ import DateSelector from "@/components/forms/DateSelector.vue";
 
 export default {
   components: {
-    ValidationProvider,
     Buttons,
     Question,
     RadioList,

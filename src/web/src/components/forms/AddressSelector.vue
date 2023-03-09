@@ -13,7 +13,7 @@
     </section>
     <section v-if="!formatted_address || modify">
       <section>
-        <ValidationProvider name="address_zip_postal_code" rules="notrequired" tag="span" v-slot="{ errors, valid }">
+        <!-- <ValidationProvider name="address_zip_postal_code" rules="notrequired" tag="span" v-slot="{ errors, valid }"> -->
           <TextField
             v-model="address.zip_postal_code"
             :label="$t('components.address_selector.labels.zip_postal_code')"
@@ -21,10 +21,10 @@
             :valid="valid"
             @blur="geocode()"
           />
-        </ValidationProvider>
+        <!-- </ValidationProvider> -->
       </section>
       <section>
-        <ValidationProvider name="address_first" rules="notrequired" tag="span" v-slot="{ errors, valid }">
+        <!-- <ValidationProvider name="address_first" rules="notrequired" tag="span" v-slot="{ errors, valid }"> -->
           <TextField
             v-model="address.first"
             :label="$t('components.address_selector.labels.address_first')"
@@ -32,7 +32,7 @@
             :valid="valid"
             @blur="geocode()"
           />
-        </ValidationProvider>
+       <!--  </ValidationProvider> -->
       </section>
       <section>
         <TextField
@@ -57,13 +57,11 @@
 </template>
 
 <script>
-import { ValidationProvider } from "vee-validate";
 import TextField from "@/components/forms/TextField.vue";
 
 export default {
   props: ["value"],
   components: {
-    ValidationProvider,
     TextField
   },
   $_veeValidate: {

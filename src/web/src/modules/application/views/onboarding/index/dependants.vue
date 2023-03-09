@@ -1,6 +1,6 @@
 <template>
   <section v-if="student">
-    <ValidationObserver ref="observer" v-slot="{ invalid, errors }">
+   <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form @submit.prevent="submit" v-model="valid">
         <fieldset class="group">
           <fieldset>
@@ -97,16 +97,14 @@
           </ul>
         </v-banner>
       </v-form>
-    </ValidationObserver>
+   <!--  </ValidationObserver> -->
 
     <Buttons :valid="valid" :next="next" back="true" />
   </section>
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
 
-import { ValidationProvider, ValidationObserver } from "vee-validate";
 import AddressSelector from "@/components/forms/AddressSelector.vue";
 import SinNumber from "@/components/forms/SinNumber.vue";
 import TextField from "@/components/forms/TextField.vue";
@@ -120,8 +118,6 @@ import Question from "@/components/forms/Question.vue";
 
 export default {
   components: {
-    ValidationProvider,
-    ValidationObserver,
     BlackoutNotice,
     TextField,
     RadioField,

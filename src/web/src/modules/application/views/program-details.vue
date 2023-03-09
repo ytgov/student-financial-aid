@@ -74,7 +74,6 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
 import Buttons from "@/components/forms/Buttons.vue";
 import Question from "@/components/forms/Question.vue";
 import RadioList from "@/components/forms/RadioList.vue";

@@ -3,7 +3,7 @@
     <section data-section="brand">
       <section class="limit-width">
         <section>
-          <img src="/images/footer-logo.svg" />
+          <img src="@/assets/footer-logo.svg" />
         </section>
       </section>
     </section>
@@ -34,8 +34,6 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
-
 export default {
   computed: {
     year() {

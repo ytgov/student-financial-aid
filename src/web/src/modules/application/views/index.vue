@@ -39,23 +39,7 @@
   </v-container>
 </template>
 
-<i18n>
-{
-  "en": {
-  	"buttons": {
-  		"continue": "Continue"
-  	}
-  },
-  "fr": {
-  	"buttons": {
-  		"continue": "Continue"
-  	}
-  }
-}
-</i18n>
-
 <script>
-import { mapMutations, mapGetters } from "vuex";
 import Buttons from "@/components/forms/Buttons.vue";
 import TermsWrapper from "@/components/terms/wrapper.vue";
 import ATIPP from "@/components/terms/atipp.vue";

@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
+import { mapState } from "pinia";
 import Buttons from "@/components/forms/Buttons.vue";
 
 export default {
@@ -41,7 +41,7 @@ export default {
     Buttons
   },
   computed: {
-    ...mapGetters({
+    ...mapState({
       documents: "documents/list"
     }),
     locale() {

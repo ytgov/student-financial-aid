@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
+import {  mapState } from "pinia";
 import Checkbox from "@/components/forms/Checkbox.vue";
 import MoreDetails from "@/components/MoreDetails.vue";
 import YesNoRadio from "@/components/forms/YesNoRadio.vue";
@@ -124,7 +124,7 @@ export default {
     YesNoRadio
   },
   computed: {
-    ...mapGetters({
+    ...mapState({
       programs: "applications/programs"
     }),
     locale() {

@@ -82,11 +82,7 @@ div.assets {
 </style>
 
 <script>
-import FirebaseUploader from "@/services/firebase-upload.js";
 import ProgressScreen from "@/components/utils/ProgressScreen.vue";
-//import { Cropper } from 'vue-advanced-cropper'
-
-// https://codepen.io/blackjacques/pen/bqgNoa
 
 export default {
   props: ["name", "value", "resource"],
@@ -121,7 +117,7 @@ export default {
         multiple: false,
         resource: this.resource
       };
-      FirebaseUploader.upload(
+      /* FirebaseUploader.upload(
         options,
         function (assets) {
           self.assets = assets;
@@ -129,7 +125,7 @@ export default {
         function (progress) {
           self.progress = progress >= 100 ? false : parseInt(progress);
         }
-      );
+      ); */
     },
     remove() {
       var self = this;

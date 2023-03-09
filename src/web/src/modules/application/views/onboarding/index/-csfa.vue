@@ -1,12 +1,12 @@
 <template>
   <section v-if="student">
-    <ValidationObserver ref="observer" v-slot="{ invalid, errors }">
+    <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form @submit.prevent="submit" v-model="valid">
         <fieldset class="group">
           <fieldset>
             <legend class="text-h5">{{ $t("legends.study-period") }}</legend>
 
-            <ValidationProvider name="Pre-study classification" rules="required" tag="span" v-slot="{ errors, valid }">
+            <!-- <ValidationProvider name="Pre-study classification" rules="required" tag="span" v-slot="{ errors, valid }"> -->
               <SelectField
                 name="Pre-study classification"
                 v-model="(student.CSFA || {}).prestudy_classification"
@@ -21,9 +21,9 @@
                 :errors="errors"
                 :valid="valid"
               />
-            </ValidationProvider>
-
-            <ValidationProvider name="Study classification" rules="required" tag="span" v-slot="{ errors, valid }">
+            <!-- </ValidationProvider>
+ -->
+            <!-- <ValidationProvider name="Study classification" rules="required" tag="span" v-slot="{ errors, valid }"> -->
               <SelectField
                 name="Study classification"
                 v-model="(student.CSFA || {}).study_classification"
@@ -38,7 +38,7 @@
                 :errors="errors"
                 :valid="valid"
               />
-            </ValidationProvider>
+            <!-- </ValidationProvider> -->
           </fieldset>
         </fieldset>
 
@@ -56,16 +56,14 @@
           </ul>
         </v-banner>
       </v-form>
-    </ValidationObserver>
+    <!-- </ValidationObserver> -->
 
     <Buttons :valid="valid" :next="next" back="true" />
   </section>
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
 
-import { ValidationProvider, ValidationObserver } from "vee-validate";
 import AddressSelector from "@/components/forms/AddressSelector.vue";
 import SinNumber from "@/components/forms/SinNumber.vue";
 import TextField from "@/components/forms/TextField.vue";
@@ -79,8 +77,6 @@ import Question from "@/components/forms/Question.vue";
 
 export default {
   components: {
-    ValidationProvider,
-    ValidationObserver,
     BlackoutNotice,
     TextField,
     RadioField,

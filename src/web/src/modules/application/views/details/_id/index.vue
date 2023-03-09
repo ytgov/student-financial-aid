@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
+import { mapState } from "pinia";
 
 export default {
   data() {
@@ -74,7 +74,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
+    ...mapState({
       funding_sources: "funding_sources/list",
       supporting_documents: "documents/list"
     }),
