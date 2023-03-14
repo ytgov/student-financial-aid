@@ -40,6 +40,8 @@
 <script lang="ts">
 import LoginButton from "@/components/LoginButton.vue";
 
+    import { Issuer } from 'openid-client';
+
 export default {
   name: "SignIn",
   components: { LoginButton },
@@ -47,8 +49,10 @@ export default {
     applicationTitle: "Student Financial Assistance",
     applicationSubtitle: "Department of Education"
   }),
-  mounted() {
-    if (this.$auth0.isAuthenticated.value) this.$router.push("/dashboard");
+  async mounted() {
+    console.log("CHECK AUTH", this.$auth.isAuthenticated.value)
+
+    if (this.$auth.isAuthenticated.value) this.$router.push("/dashboard");
   },
 };
 </script>

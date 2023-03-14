@@ -101,7 +101,7 @@
   <v-main>
     <!-- Provides the application the proper gutter -->
     <!-- fill-height causes the main content to fill the entire page -->
-    <v-container fluid class="page-wrapper fill-height">
+    <v-container fluid class="page-wrapper">
       <router-view></router-view>
     </v-container>
   </v-main>
@@ -147,7 +147,7 @@ export default {
   },
 
   async mounted() {
-    await this.initialize();
+    //await this.initialize();
     this.showOverlay = false;
   },
   methods: {

@@ -17,6 +17,7 @@
     "express-fileupload": "^1.4.0",
     "express-handlebars": "^6.0.3",
     "express-jwt": "^6.1.2",
+    "express-openid-connect": "^2.12.1",
     "express-validator": "^6.11.1",
     "helmet": "^6.0.1",
     "jwks-rsa": "^2.1.4",

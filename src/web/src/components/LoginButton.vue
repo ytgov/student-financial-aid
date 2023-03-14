@@ -7,11 +7,15 @@
 <script lang="ts">
 export default {
   data: function () {
-    return {};
+    return {
+      thing: {},
+    };
+  },
+  mounted(){
   },
   methods: {
     login() {
-      this.$auth0.loginWithRedirect({
+      this.$auth.loginWithRedirect({
         appState: { target: window.location.pathname },
       });
     },

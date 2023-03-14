@@ -22,38 +22,29 @@
 <script>
 import { mapState } from "pinia";
 import ProgressScreen from "@/components/utils/ProgressScreen.vue";
+import { useDocumentStore } from "@/store/documents";
 
 export default {
   name: "FileUpload",
   props: ["name", "value", "resource"],
-  $_veeValidate: {
-    value() {
-      return this.file;
-    },
-    name() {
-      return "file";
-    }
-  },
   components: {
-    ProgressScreen
+    ProgressScreen,
   },
   computed: {
-    ...mapState({
-      documents: "documents/list"
-    }),
+    ...mapState(useDocumentStore, { documents: "list" }),
     document() {
       return this.documents[this.resource];
     },
     path() {
       return `/uploads/${auth.currentUser.uid}/${this.document.resource.id}`;
-    }
+    },
   },
   data() {
     return {
       types: ["pdf", "doc", "docx"],
       progress: false,
       file: false,
-      error: false
+      error: false,
     };
   },
   mounted() {
@@ -64,7 +55,7 @@ export default {
   watch: {
     file(to, from) {
       this.$emit("input", this.file);
-    }
+    },
   },
   methods: {
     upload() {
@@ -72,7 +63,7 @@ export default {
       var options = {
         types: this.types,
         multiple: false,
-        resource: this.path
+        resource: this.path,
       };
       /* FirebaseUploader.upload(
         options,
@@ -87,8 +78,8 @@ export default {
     remove() {
       var self = this;
       self.file = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

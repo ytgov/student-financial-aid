@@ -12,10 +12,11 @@ import { Auth0Plugin } from "@auth0/auth0-vue";
 const pinia = createPinia();
 
 const app = createApp(App);
-app.use(pinia);
-app.use(router);
-app.use(i18n);
-
+app
+  .use(pinia)
+  .use(router)
+  .use(i18n)
+  .use(AuthHelper as any);
 
 app.config.globalProperties.$auth = AuthHelper;
 

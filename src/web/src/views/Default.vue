@@ -6,21 +6,18 @@
     </div>
   </v-overlay>
 </template>
-<script lang="ts">
-import { useAuth0 } from "@auth0/auth0-vue";
 
+<script lang="ts">
 export default {
   name: "Default",
   components: {},
   mounted() {
-    const auth = useAuth0();
-
     let i = window.setInterval(() => {
-      if (auth.isLoading) {
+      if (this.$auth.isLoading) {
         window.clearInterval(i);
 
-        if (auth.isAuthenticated && auth.user.value) {
-          console.log(auth.user.value);
+        if (this.$auth.isAuthenticated && this.$auth.user.value) {
+          console.log(this.$auth.user.value);
 
           this.$router.push("/dashboard");
         } else this.$router.push("/sign-in");
