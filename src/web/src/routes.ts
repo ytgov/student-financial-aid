@@ -27,6 +27,11 @@ const routes: Array<RouteRecordRaw> = [
       ...studentRoutes,
 
       {
+        path: "/faq",
+        component: () => import("@/components/faq.vue"),
+      },
+
+      {
         path: "*",
         component: () => import("@/views/NotFound.vue"),
       },

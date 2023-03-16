@@ -8,12 +8,12 @@ const routes = [
       {
         path: "messages/inbox",
         component: () => import("../views/inbox.vue"),
-        beforeEnter: authGuard
+        //beforeEnter: authGuard
       },
       {
         path: "messages/compose",
         component: () => import("../views/compose.vue"),
-        beforeEnter: authGuard
+        //beforeEnter: authGuard
       }
     ]
   }

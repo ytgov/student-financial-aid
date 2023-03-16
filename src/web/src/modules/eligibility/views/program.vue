@@ -78,7 +78,8 @@ export default {
         this.eligibility.program.at_least_three_weeks == "No" ||
         (this.eligibility.program.at_least_three_weeks == "Yes" && this.eligibility.program.what_type_of_program);
 
-      return is_valid;
+      //return is_valid;
+      return true;
     },
     next() {
       return { path: "/eligibility/designated-institution" };

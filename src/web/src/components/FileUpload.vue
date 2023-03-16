@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import { mapState } from "pinia";
+//import { mapState } from "pinia";
 import ProgressScreen from "@/components/utils/ProgressScreen.vue";
-import { useDocumentStore } from "@/store/documents";
+//import { useDocumentStore } from "@/store/documents";
 
 export default {
   name: "FileUpload",
@@ -31,7 +31,8 @@ export default {
     ProgressScreen,
   },
   computed: {
-    ...mapState(useDocumentStore, { documents: "list" }),
+    //...mapState(useDocumentStore, { documents: "list" }),
+    documents() {return []},
     document() {
       return this.documents[this.resource];
     },

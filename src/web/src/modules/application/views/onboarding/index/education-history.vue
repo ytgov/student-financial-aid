@@ -117,7 +117,8 @@ export default {
   computed: {
     student: {
       get() {
-        return this.$store.getters["student/GET"];
+       // return this.$store.getters["student/GET"];
+        return {}
       },
       set(values) {
         this.$store.commit("student/SET")(values);
@@ -128,7 +129,8 @@ export default {
       return is_valid;
     },
     next() {
-      return this.localePath("/application/onboarding/other-funding");
+     // return this.localePath("/application/onboarding/other-funding");
+      return "/application/onboarding/other-funding";
     }
   },
   data() {

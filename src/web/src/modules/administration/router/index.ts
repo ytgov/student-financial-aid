@@ -8,12 +8,12 @@ const routes = [
       {
         path: "/administration",
         component: () => import("../views/Administration.vue"),
-        beforeEnter: authGuard,
+        //beforeEnter: authGuard,
       },
       {
         path: "/administration/users",
         component: () => import("../views/UserList.vue"),
-        beforeEnter: authGuard,
+        //beforeEnter: authGuard,
       },
     ],
   },

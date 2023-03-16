@@ -5,7 +5,7 @@
     <v-app-bar-title class="pt-0 font-weight-bold" style="margin-left: -20px">{{ title }}</v-app-bar-title>
 
     <template v-slot:append>
-      <div v-if="isAuthenticated">
+      <div v-if="isAuthenticated || true">
         <v-btn color="primary" class="mr-1" to="/dashboard" icon="mdi-home"></v-btn>
 
         <v-divider class="mr-5" vertical inset></v-divider>
@@ -28,7 +28,7 @@
               <v-list-item-title style="font-size: 0.9rem !important">My profile</v-list-item-title>
             </v-list-item>
 
-            <v-list-item to="/applications">
+            <v-list-item to="/application">
               <template v-slot:prepend>
                 <v-icon>mdi-file-sign</v-icon>
               </template>
@@ -138,7 +138,8 @@ export default {
       // return applicationName;
     },
     username() {
-      return this.authUser.name;
+      return "DEMO"
+      //return this.authUser.name;
     },
     returnTo: function () {
       return window.location.origin;

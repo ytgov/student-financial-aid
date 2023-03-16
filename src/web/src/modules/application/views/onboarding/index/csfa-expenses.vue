@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import _ from "lodash"
 
 import AddressSelector from "@/components/forms/AddressSelector.vue";
 import SinNumber from "@/components/forms/SinNumber.vue";
@@ -85,7 +86,8 @@ export default {
   computed: {
     student: {
       get() {
-        return this.$store.getters["student/GET"];
+       // return this.$store.getters["student/GET"];
+        return {}
       },
       set(values) {
         this.$store.commit("student/SET")(values);
@@ -96,7 +98,8 @@ export default {
       return is_valid;
     },
     next() {
-      return this.localePath("/application/onboarding/parents");
+      //return this.localePath("/application/onboarding/parents");
+      return "/application/onboarding/parents";
     },
     note() {
       return type => {

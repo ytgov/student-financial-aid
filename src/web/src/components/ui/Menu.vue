@@ -49,14 +49,18 @@
 </template>
 
 <script>
-import { mapState } from "pinia";
+//import { mapState } from "pinia";
 
 export default {
   computed: {
-    ...mapState({
+    /* ...mapState({
       login_url: "user/login_url",
       menu_open: "menu_open",
-    }),
+    }), */
+    login_url() {return ""},
+    menu_open() {return false;},
+
+
     locale() {
       return this.$i18n.locale;
     },
@@ -102,7 +106,7 @@ export default {
     };
   },
   created() {
-    this.$store.commit("user/SET_STATE");
+    //this.$store.commit("user/SET_STATE");
   },
   methods: {
     toggleMenu() {

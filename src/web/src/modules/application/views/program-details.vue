@@ -91,17 +91,19 @@ export default {
     DateSelector
   },
   data() {
-    return {};
+    return {
+      eligibility: { designated_institution: {details: { end_date_of_classes: new Date(), start_date_of_classes: new Date()}}}
+    };
   },
   computed: {
-    eligibility: {
+    /* eligibility: {
       get() {
         return this.$store.getters["eligibility/GET"];
       },
       set(values) {
         return this.$store.commit("eligibility/SET", values);
-      }
-    },
+      } 
+    },*/
     valid() {
       var is_valid = true;
       return is_valid;
@@ -115,15 +117,17 @@ export default {
       ];
     },
     next() {
-      this.$store.commit("eligibility/SET", this.eligibility);
-      return this.localePath("/application/documents");
+      //this.$store.commit("eligibility/SET", this.eligibility);
+      //return this.localePath("/application/documents");
+      return "/application/documents"
     }
   },
   mounted() {
     this.$emit("input", this.valid);
 
     if (!this.eligibility.designated_institution.post_secondary_enrolled_in) {
-      this.$router.push(this.localePath(`/application/documents`));
+      //this.$router.push(this.localePath(`/application/documents`));
+      this.$router.push(`/application/documents`);
     }
   },
   watch: {

@@ -23,8 +23,7 @@
 
                 <h2 class="text-h5 mt-4">Sign in</h2>
                 <h6 class="text-subtitle-2 mt-3 mb-5">
-                  This application is only available to authorized users. If you have an account, click the button
-                  below.
+                  This application is used by new and return students to apply for higher education funding assistance.
                 </h6>
 
                 <LoginButton />

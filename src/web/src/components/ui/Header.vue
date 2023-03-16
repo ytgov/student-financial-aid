@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { mapState } from "pinia";
+//import { mapState } from "pinia";
 import Logo from "@/components/Logo.vue";
 
 export default {
@@ -57,11 +57,14 @@ export default {
       return this.$i18n.locale == "fr" ? "/fr" : "/";
     },
     menu() {
-      return this.$store.getters["menu_open"];
+      return false
+      //return this.$store.getters["menu_open"];
     },
-    ...mapState({
+
+    /* ...mapState({
       messages: "messages/count",
-    }),
+    }), */
+    messages() {return 0}
   },
   methods: {
     toggleMenu() {

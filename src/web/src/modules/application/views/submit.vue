@@ -114,8 +114,8 @@
       <section class="content">
         <br />
 
-        <section class="documents">
-          <div v-for="doc in documents" v-if="doc.DESCRIPTION != null">
+        <!-- <section class="documents">
+          <div v-for="doc of documents" v-if="doc.DESCRIPTION != null">
             <div style="width: 5%">
               <i class="far fa-2x fa-check-square" v-if="doc.status == 'VERIFIED'"></i>
               <i class="fas fa-2x fa-cloud-upload-alt" v-else-if="doc.status == 'UPLOADING'"></i>
@@ -128,7 +128,7 @@
             </div>
             <div></div>
           </div>
-        </section>
+        </section> -->
       </section>
     </v-card>
 
@@ -162,7 +162,7 @@ table {
 </style>
 
 <script>
-import { mapState } from "pinia";
+//import { mapState } from "pinia";
 import AddressSelector from "@/components/forms/AddressSelector.vue";
 import Buttons from "@/components/forms/Buttons.vue";
 
@@ -172,18 +172,24 @@ export default {
     Buttons
   },
   computed: {
-    ...mapState({
+    /* ...mapState({
       eligibility: "eligibility/GET",
       programs: "applications/programs",
       documents: "documents/list"
       //ap: 'applications/programs'
-    }),
+    }), */
+    eligibility() { return {details: {}, program: {},  designated_institution: {details: {}}}},
+    programs() {return []},
+    documents() {return []},
+
+
     locale() {
       return this.$i18n.locale;
     },
     profile: {
       get() {
-        return this.$store.getters["student/GET"];
+        return {}
+        //return this.$store.getters["student/GET"];
       },
       set(values) {
         this.$store.commit("student/SET")(values);
@@ -211,7 +217,8 @@ export default {
       return is_valid;
     },
     next() {
-      return this.localePath("/application/thanks");
+      //return this.localePath("/application/thanks");
+      return "/application/thanks";
     }
   },
   watch: {

@@ -83,7 +83,8 @@ export default {
         (this.eligibility.designated_institution.are_you_enrolled_in_post_secondary == "Yes" &&
           this.eligibility.designated_institution.post_secondary_enrolled_in);
 
-      return is_valid;
+      //return is_valid;
+      return true;
     },
     next() {
       if (this.eligibility.designated_institution.are_you_enrolled_in_post_secondary == "No") {

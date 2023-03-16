@@ -103,7 +103,8 @@ export default {
   computed: {
     student: {
       get() {
-        return this.$store.getters["student/GET"];
+        //return this.$store.getters["student/GET"];
+        return {}
       },
       set(values) {
         this.$store.commit("student/SET")(values);
@@ -114,7 +115,8 @@ export default {
       return is_valid;
     },
     next() {
-      return this.localePath("/application/onboarding/spouse");
+      //return this.localePath("/application/onboarding/spouse");
+      return "/application/onboarding/spouse";
     }
   },
   data() {

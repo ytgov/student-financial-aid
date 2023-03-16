@@ -101,7 +101,6 @@
                     <input type="text" v-model="spouse.distance_from_school" placeholder="0" /> 
                   </td>
                 </tr>
-                </tr>
               </tbody>
             </table>
           </fieldset>
@@ -147,7 +146,8 @@ export default {
   computed: {
     student: {
       get() {
-        return this.$store.getters['student/GET']
+        //return this.$store.getters['student/GET']
+        return {}
       },
       set(values) {
         this.$store.commit('student/SET')(values)
@@ -158,7 +158,8 @@ export default {
       return is_valid
     },
     next() {
-      return this.localePath('/application/documents')
+     // return this.localePath('/application/documents')
+      return '/application/documents'
     }
   },
   data() {

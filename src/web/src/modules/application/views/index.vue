@@ -60,10 +60,11 @@ export default {
   computed: {
     profile: {
       get() {
-        return this.$store.getters["profile/GET"];
+        return {atipp:{read_terms: true}};
+        //return this.$store.getters["profile/GET"];
       },
       set(values) {
-        return this.$store.commit("profile/SET", values);
+        //return this.$store.commit("profile/SET", values);
       }
     },
     valid() {
@@ -71,7 +72,8 @@ export default {
       return is_valid;
     },
     next() {
-      return this.localePath("/application/onboarding");
+      //return this.localePath("/application/onboarding");
+      return "/application/onboarding"
     }
   },
   mounted() {

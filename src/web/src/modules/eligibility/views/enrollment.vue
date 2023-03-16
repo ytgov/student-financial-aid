@@ -66,7 +66,8 @@ export default {
     // },
     valid() {
       var is_valid = this.eligibility.enrollment.time;
-      return is_valid;
+      //return is_valid;
+      return true;
     },
     next() {
       return { path: "/eligibility/residency" };

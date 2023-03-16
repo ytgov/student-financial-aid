@@ -5,10 +5,15 @@
     </header>
     <section>
       <aside>
-        <nuxt-link :to="item.uri" v-for="(item, index) in menu" v-if="index <= currentIndex">
-          {{ item.name }}
-        </nuxt-link>
-        <span v-else>{{ item.name }}</span>
+        <div v-for="(item, index) in menu">
+          <router-link :to="item.uri" >
+            {{ item.name }}
+          </router-link>
+          <!-- <router-link :to="item.uri" v-if="index <= currentIndex">
+            {{ item.name }}
+          </router-link>
+          <span v-else>{{ item.name }}</span> -->
+        </div>
       </aside>
       <nuxt-child :keep-alive-props="{ exclude: ['modal'] }" />
     </section>
@@ -16,49 +21,50 @@
 </template>
 
 <script>
+import _ from "lodash";
 export default {
   scrollToTop: true,
   computed: {
     currentIndex() {
-      return _.findIndex(this.menu, o => {
+      return _.findIndex(this.menu, (o) => {
         return o.uri == this.$route.path;
       });
-    }
+    },
   },
   data() {
     return {
       menu: [
         {
           name: "Personal Details",
-          uri: this.localePath("/application/onboarding")
+          uri: this.localePath("/application/onboarding"),
         },
         {
           name: "Addresses",
-          uri: this.localePath("/application/onboarding/addresses")
+          uri: this.localePath("/application/onboarding/addresses"),
         },
         {
           name: "Statistical Information",
-          uri: this.localePath("/application/onboarding/statistical")
+          uri: this.localePath("/application/onboarding/statistical"),
         },
         {
           name: "Consent Release",
-          uri: this.localePath("/application/onboarding/consent-release")
+          uri: this.localePath("/application/onboarding/consent-release"),
         },
         {
           name: "Residency",
-          uri: this.localePath("/application/onboarding/residency-history")
+          uri: this.localePath("/application/onboarding/residency-history"),
         },
         {
           name: "Education History",
-          uri: this.localePath("/application/onboarding/education-history")
+          uri: this.localePath("/application/onboarding/education-history"),
         },
         {
           name: "Other Funding",
-          uri: this.localePath("/application/onboarding/other-funding")
+          uri: this.localePath("/application/onboarding/other-funding"),
         },
         {
           name: "Student Dependents",
-          uri: this.localePath("/application/onboarding/dependants")
+          uri: this.localePath("/application/onboarding/dependants"),
         },
         /*
         {
@@ -68,7 +74,7 @@ export default {
         */
         {
           name: "CSFA Accomodation",
-          uri: this.localePath("/application/onboarding/csfa-accomodation")
+          uri: this.localePath("/application/onboarding/csfa-accomodation"),
         },
         /*
         {
@@ -79,27 +85,32 @@ export default {
 
         {
           name: "CSFA Income",
-          uri: this.localePath("/application/onboarding/csfa-income")
+          uri: this.localePath("/application/onboarding/csfa-income"),
         },
         {
           name: "CSFA Expenses",
-          uri: this.localePath("/application/onboarding/csfa-expenses")
+          uri: this.localePath("/application/onboarding/csfa-expenses"),
         },
         {
           name: "Parents",
-          uri: this.localePath("/application/onboarding/parents")
+          uri: this.localePath("/application/onboarding/parents"),
         },
         {
           name: "Parent Dependants",
-          uri: this.localePath("/application/onboarding/parent-dependants")
+          uri: this.localePath("/application/onboarding/parent-dependants"),
         },
         {
           name: "Spouse",
-          uri: this.localePath("/application/onboarding/spouse")
-        }
-      ]
+          uri: this.localePath("/application/onboarding/spouse"),
+        },
+      ],
     };
-  }
+  },
+  methods: {
+    localePath(input) {
+      return input;
+    },
+  },
 };
 </script>
 

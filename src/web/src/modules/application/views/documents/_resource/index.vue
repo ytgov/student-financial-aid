@@ -35,7 +35,8 @@ export default {
       return this.$route.params.resource;
     },
     doc() {
-      return this.$store.getters["documents/by_resource"](this.resource);
+      return {};
+      //return this.$store.getters["documents/by_resource"](this.resource);
     },
     locale() {
       return this.$i18n.locale;

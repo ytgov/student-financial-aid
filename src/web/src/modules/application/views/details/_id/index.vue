@@ -64,24 +64,27 @@
 </template>
 
 <script>
-import { mapState } from "pinia";
+//import { useDocumentStore } from "@/store/documents";
+//import { mapState } from "pinia";
 
 export default {
   data() {
     return {
       open: false,
-      active: false
+      active: false,
+      funding_sources: [],
+      supporting_documents: []
     };
   },
   computed: {
-    ...mapState({
+    /*...mapState(useDocumentStore, { supporting_documents: "list" }),
+     ...mapState(useFundingSourcesStore, {
       funding_sources: "funding_sources/list",
-      supporting_documents: "documents/list"
-    }),
+    }), */
     locale() {
       return this.$i18n.locale;
-    }
-  }
+    },
+  },
 };
 </script>
 

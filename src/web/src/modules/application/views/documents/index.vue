@@ -5,8 +5,8 @@
       {{ $t("excerpt") }}
     </p>
 
-    <section class="documents">
-      <div v-for="doc in documents" v-if="doc.DESCRIPTION != null">
+    <!-- <section class="documents">
+      <div v-for="doc of documents" v-if="doc.DESCRIPTION != null">
         <div>
           <strong>{{ doc.DESCRIPTION }}</strong
           ><br />
@@ -26,14 +26,14 @@
           </v-btn>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <Buttons :valid="valid" :next="next" :back="true" />
   </article>
 </template>
 
 <script>
-import { mapState } from "pinia";
+//import { mapState } from "pinia";
 import Buttons from "@/components/forms/Buttons.vue";
 
 export default {
@@ -41,9 +41,10 @@ export default {
     Buttons
   },
   computed: {
-    ...mapState({
+   /*  ...mapState({
       documents: "documents/list"
-    }),
+    }), */
+    documents() {return [{}]},
     locale() {
       return this.$i18n.locale;
     },
