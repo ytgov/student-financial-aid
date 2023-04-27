@@ -17,7 +17,7 @@ RUN mkdir /home/node/app/db && chown -R node:node /home/node/app/db
 WORKDIR /home/node/app
 COPY --chown=node:node src/api/package*.json ./
 
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 USER node
 RUN npm install && npm cache clean --force --loglevel=error
 COPY --chown=node:node src/api ./
