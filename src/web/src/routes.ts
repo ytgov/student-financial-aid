@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import homeRoutes from "@/modules/home/router";
-import adminstrationRoutes from "@/modules/administration/router";
 import authenticationRoutes from "@/modules/authentication/router";
 import applicationRoutes from "@/modules/application/router";
 import messageRoutes from "@/modules/messages/router";
@@ -18,7 +17,6 @@ const routes: Array<RouteRecordRaw> = [
       },
       ...authenticationRoutes,
       ...homeRoutes,
-      ...adminstrationRoutes,
       ...applicationRoutes,
       ...messageRoutes,
       ...eligibilityRoutes,
@@ -28,7 +26,7 @@ const routes: Array<RouteRecordRaw> = [
 
       {
         path: "/faq",
-        component: () => import("@/components/faq.vue"),
+        component: () => import("@/components/Faq.vue"),
       },
 
       {

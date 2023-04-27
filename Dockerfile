@@ -35,7 +35,7 @@ COPY --chown=node:node src/api ./
 RUN npm run build
 
 WORKDIR /home/node/web
-RUN npm run build:docker
+RUN npm run build
 
 WORKDIR /home/node/app
 
