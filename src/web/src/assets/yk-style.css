@@ -19,8 +19,10 @@ html {
 
 .text-h3 {
   font-family: Montserrat, Helvetica, Arial, sans-serif !important;
+  font-size: 1.5rem !important;
+  line-height: 2rem !important;
+  font-weight: 600 !important;
 }
-
 
 h1 {
   display: block;
@@ -90,4 +92,16 @@ table.table {
   text-align: left;
   margin-top: 10px;
   font-size: 1.05em;
+}
+
+.v-alert.bg-yg_blue .v-alert-title,
+.v-alert.bg-yg_blue .v-alert__content,
+.v-alert.bg-yg_blue .v-alert__prepend,
+.v-alert.bg-yg_blue .v-alert__close {
+  color: white !important;
+}
+
+.v-card.elevation-0,
+.v-alert.elevation-0 {
+  border: 1px #d7cfbe solid;
 }

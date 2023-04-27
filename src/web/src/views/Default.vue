@@ -19,7 +19,7 @@ export default {
         if (this.$auth.isAuthenticated && this.$auth.user.value) {
           console.log(this.$auth.user.value);
 
-          this.$router.push("/dashboard");
+          this.$router.push("/student");
         } else this.$router.push("/sign-in");
       }
     }, 250);

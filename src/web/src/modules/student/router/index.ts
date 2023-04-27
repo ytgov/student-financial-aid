@@ -8,7 +8,12 @@ export const studentRoutes = [
       {
         path: "/student",
         component: () => import("../views/StudentHome.vue"),
-        //beforeEnter: authGuard,
+        beforeEnter: authGuard,
+      },
+      {
+        path: "/student/edit",
+        component: () => import("../views/StudentEdit.vue"),
+        beforeEnter: authGuard,
       },
     ],
   },

@@ -2,17 +2,12 @@ import { authGuard } from "@auth0/auth0-vue";
 
 const routes = [
   {
-    path: "eligibility/",
+    path: "eligibility-checker/",
     component: () => import("@/layouts/Default.vue"),
     children: [
       {
         path: "",
         component: () => import("../views/index.vue"),
-        //beforeEnter: authGuard
-      },
-      {
-        path: "citizenship",
-        component: () => import("../views/citizenship.vue"),
         //beforeEnter: authGuard
       },
       {
@@ -28,11 +23,6 @@ const routes = [
       {
         path: "disabilities",
         component: () => import("../views/disabilities.vue"),
-        //beforeEnter: authGuard
-      },
-      {
-        path: "enrollment",
-        component: () => import("../views/enrollment.vue"),
         //beforeEnter: authGuard
       },
       {
@@ -83,11 +73,6 @@ const routes = [
       {
         path: "single-parent-student-jurisdiction",
         component: () => import("../views/single-parent-student-jurisdiction.vue"),
-        //beforeEnter: authGuard
-      },
-      {
-        path: "yukon-excellence-award",
-        component: () => import("../views/yukon-excellence-award.vue"),
         //beforeEnter: authGuard
       },
       {

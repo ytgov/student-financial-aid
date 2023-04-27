@@ -1,127 +1,103 @@
 <template>
-  <section v-if="student">
-    <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
-    <v-form @submit.prevent="submit" v-model="valid">
-      <fieldset class="group">
-        <fieldset>
-          <legend class="text-h5">{{ $t("legends.personal_details") }}</legend>
+  <v-card color="#eee5d1" variant="elevated" elevation="0" class="mb-5">
+    <v-card-text>
+      <h3 class="text-h3 mb-6">{{ $t("application.onboarding.statistical.legends.personal_details") }}</h3>
 
-          <p>Student statistical information for the current year:</p>
+      <p>Student statistical information for the current year:</p>
+      <v-divider class="my-3" />
 
-          <!-- <ValidationProvider name="Language" rules="required" tag="span" v-slot="{ errors, valid }"> -->
-          <RadioField
-            name="Language"
-            v-model="student.LANGUAGE"
-            label="Language"
-            :options="['English', 'French']"
-            :error="errors"
-            :valid="valid" />
-          <!--  </ValidationProvider>
+      <v-form @submit.prevent="submit" v-model="valid">
+
+        <v-radio-group v-model="student.language" inline :label="$t('Langauge')">
+          <v-radio label="English" value="English"></v-radio>
+          <v-radio label="French" value="French"></v-radio>
+        </v-radio-group>
+
+        <v-radio-group v-model="student.gender" inline :label="$t('Gender')">
+          <v-radio label="Male" value="Male"></v-radio>
+          <v-radio label="Female" value="Female"></v-radio>
+          <v-radio label="Other" value="Other"></v-radio>
+        </v-radio-group>
+
+        <Select
+          class="mb-5"
+          name="Marital status"
+          v-model="student.marital_status"
+          label="Marital status"
+          :options="['Married', 'Single', 'Divorced', 'Widowed']"
+          :errors="errors"
+          :valid="valid" />
+        <!-- </ValidationProvider>
  -->
-          <!-- <ValidationProvider name="Gender" rules="required" tag="span" v-slot="{ errors, valid }"> -->
-          <RadioField
-            name="Gender"
-            v-model="student.GENDER"
-            label="Gender"
-            :options="['Male', 'Female', 'Other']"
-            :error="errors"
-            :valid="valid" />
-          <!--   </ValidationProvider> -->
+        <!--  <ValidationProvider name="Citizenship" rules="required" tag="span" v-slot="{ errors, valid }"> -->
+        <Select
+          class="mb-5"
+          name="Citizenship"
+          v-model="student.citizenship"
+          label="Citizenship"
+          :options="['Not recorded', 'Canadian citizen', 'Perminent resident', 'Protected person', 'Non citizen']"
+          :errors="errors"
+          :valid="valid" />
 
-          <!-- <ValidationProvider name="Marital Status" rules="required" tag="span" v-slot="{ errors, valid }"> -->
-          <SelectField
-            name="Marital status"
-            v-model="student.MARITAL_STATUS"
-            label="Marital status"
-            :options="['Married', 'Single', 'Divorced', 'Widowed']"
-            :errors="errors"
-            :valid="valid" />
-          <!-- </ValidationProvider>
- -->
-          <!--  <ValidationProvider name="Citizenship" rules="required" tag="span" v-slot="{ errors, valid }"> -->
-          <SelectField
-            name="Citizenship"
-            v-model="student.CITIZENSHIP"
-            label="Citizenship"
-            :options="['Not recorded', 'Canadian citizen', 'Perminent resident', 'Protected person', 'Non citizen']"
-            :errors="errors"
-            :valid="valid" />
-          <!--  </ValidationProvider>
- -->
-          <!--   <ValidationProvider name="Aboriginal Status" rules="required" tag="span" v-slot="{ errors, valid }"> -->
-          <SelectField
-            name="Aboriginal Status"
-            v-model="student.ABORIGINAL_STATUS"
-            label="Aboriginal Status"
-            :options="[
-              'Not recorded',
-              'Non aboriginal',
-              'Yukon first nation status',
-              'Yukon first nation non-status',
-              'Metis',
-              'Inuit',
-              'Other first nation status',
-              'Other first nation non-status',
-            ]"
-            :errors="errors"
-            :valid="valid" />
-          <!-- </ValidationProvider> -->
-        </fieldset>
-      </fieldset>
+        <!--   <ValidationProvider name="Aboriginal Status" rules="required" tag="span" v-slot="{ errors, valid }"> -->
+        <Select
+          v-model="student.aboriginal_status"
+          label="Aboriginal Status"
+          :options="[
+            'Not recorded',
+            'Non aboriginal',
+            'Yukon first nation status',
+            'Yukon first nation non-status',
+            'Metis',
+            'Inuit',
+            'Other first nation status',
+            'Other first nation non-status',
+          ]"
+          :errors="errors"
+          :valid="valid" />
+        <!-- </ValidationProvider> -->
 
-      <v-banner
-        outlined
-        icon="mdi-alert-circle"
-        class="problem mt-4 error"
-        v-if="invalid && errors.length"
-        style="padding-right: 1rem">
-        <h3>{{ $t("problem.title") }}</h3>
-        <br />
-        <ul>
-          <li v-for="error in errors" v-if="error[0]">{{ error[0] }}</li>
-        </ul>
-      </v-banner>
-    </v-form>
-    <!-- </ValidationObserver> -->
+        <v-banner
+          outlined
+          icon="mdi-alert-circle"
+          class="problem mt-4 error"
+          v-if="invalid && errors.length"
+          style="padding-right: 1rem">
+          <h3>{{ $t("problem.title") }}</h3>
+          <br />
+          <ul>
+            <li v-for="error in errors" v-if="error[0]">{{ error[0] }}</li>
+          </ul>
+        </v-banner>
+      </v-form>
+      <!-- </ValidationObserver> -->
+    </v-card-text>
+  </v-card>
 
-    <Buttons :valid="valid" :next="next" back="true" />
-  </section>
+  <Buttons :valid="valid" :next="next" back="true" />
 </template>
 
 <script>
-import AddressSelector from "@/components/forms/AddressSelector.vue";
-import SinNumber from "@/components/forms/SinNumber.vue";
 import TextField from "@/components/forms/TextField.vue";
-import RadioField from "@/components/forms/RadioField.vue";
 import DateSelector from "@/components/forms/DateSelector.vue";
-import SelectField from "@/components/forms/SelectField.vue";
-import BlackoutNotice from "@/components/utils/BlackoutNotice.vue";
+import Select from "@/components/forms/Select.vue";
 
 import Buttons from "@/components/forms/Buttons.vue";
-import Question from "@/components/forms/Question.vue";
+import { mapState, mapWritableState } from "pinia";
+import { useStudentStore } from "@/modules/student/store";
+import { useApplicationStore } from "@/modules/application/store";
 
 export default {
   components: {
-    BlackoutNotice,
     TextField,
-    RadioField,
-    SelectField,
+    Select,
     DateSelector,
-    AddressSelector,
-    SinNumber,
     Buttons,
-    Question,
   },
   computed: {
-    student: {
-      get() {
-        //return this.$store.getters["student/GET"];
-        return {};
-      },
-      set(values) {
-        this.$store.commit("student/SET")(values);
-      },
-    },
+    ...mapState(useStudentStore, ["student"]),
+    ...mapWritableState(useApplicationStore, [""]),
+    
     valid() {
       var is_valid = true;
       return is_valid;

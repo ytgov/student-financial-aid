@@ -34,8 +34,8 @@
             <v-card-text>
               <p class="mb-5">
                 Now we need to link your new account to your existing student record. To do that, you must answer a few
-                questions and we will do our best to link our account to the information we already know about you.
-                Please answer as many of these as you can.
+                questions and we will do our best to link our account to the information we already know about you from
+                your previous applications. Please answer as many of these as you can.
               </p>
 
               <v-row>
@@ -98,9 +98,10 @@
                 <v-col cols="12" md="6">
                   <v-text-field
                     v-model="linkStudent.portal_id"
-                    label="Portal ID"
+                    label="Existing student portal ID"
                     variant="outlined"
                     density="comfortable"
+                    hint=""
                     hide-details></v-text-field>
                 </v-col>
               </v-row>
@@ -241,7 +242,6 @@ export default {
     findMatchClick() {
       let result = this.tryLinkStudent();
 
-
       if (this.matchFound) {
         this.step = 5;
       } else this.step = 4;
@@ -249,7 +249,7 @@ export default {
 
     createStudentClick() {
       let result = this.tryCreateStudent();
-      
+
       this.notify({ variant: "success", text: "Student record created" });
       this.step = 6;
     },

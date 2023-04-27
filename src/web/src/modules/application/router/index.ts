@@ -4,19 +4,57 @@ const routes = [
   {
     path: "application/",
     component: () => import("@/layouts/Default.vue"),
+    beforeEnter: authGuard,
     children: [
       {
         path: "",
-        component: () => import("../views/index.vue"),
-        //beforeEnter: authGuard
+        component: () => import("../views/navigation.vue"),
+        children: [
+          {
+            path: "details",
+            component: () => import("../views/details/_id/index.vue"),
+            //beforeEnter: authGuard
+          },
+          {
+            path: "documents/",
+            component: () => import("../views/documents/index.vue"),
+            //beforeEnter: authGuard,
+            children: [
+              {
+                path: "resource",
+                component: () => import("../views/documents/_resource/index.vue"),
+                //beforeEnter: authGuard
+              },
+            ],
+          },
+          {
+            path: "program-details",
+            component: () => import("../views/program-details.vue"),
+            //beforeEnter: authGuard
+          },
+          {
+            path: "submit",
+            component: () => import("../views/submit.vue"),
+            //beforeEnter: authGuard
+          },
+        ],
       },
       {
         path: "onboarding",
+        component: () => import("../views/navigation.vue"),
         //beforeEnter: authGuard
         children: [
           {
-            path: "",
-            component: () => import("../views/onboarding/index.vue"),
+            path: "funding-sources",
+            component: () => import("../views/onboarding/index/funding-sources.vue"),
+          },
+          {
+            path: "personal-details",
+            component: () => import("../views/onboarding/index/personal-details.vue"),
+          },
+          {
+            path: "addresses",
+            component: () => import("../views/onboarding/index/addresses.vue"),
           },
           {
             path: "addresses",
@@ -71,34 +109,6 @@ const routes = [
             component: () => import("../views/onboarding/index/spouse.vue"),
           },
         ],
-      },
-
-      {
-        path: "details",
-        component: () => import("../views/details/_id/index.vue"),
-        //beforeEnter: authGuard
-      },
-      {
-        path: "documents/",
-        component: () => import("../views/documents/index.vue"),
-        //beforeEnter: authGuard,
-        children: [
-          {
-            path: "resource",
-            component: () => import("../views/documents/_resource/index.vue"),
-            //beforeEnter: authGuard
-          },
-        ],
-      },
-      {
-        path: "program-details",
-        component: () => import("../views/program-details.vue"),
-        //beforeEnter: authGuard
-      },
-      {
-        path: "submit",
-        component: () => import("../views/submit.vue"),
-        //beforeEnter: authGuard
       },
     ],
   },

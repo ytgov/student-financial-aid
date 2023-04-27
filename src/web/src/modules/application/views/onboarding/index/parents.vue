@@ -1,53 +1,52 @@
 <template>
-  <section>
-   <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
+  <v-card color="#eee5d1" variant="elevated" elevation="0">
+    <v-card-text>
+      <h3 class="text-h3 mb-6">{{ $t("application.onboarding.parents.legends.address") }}</h3>
+      <v-divider class="my-3" />
+
+      <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form @submit.prevent="submit">
-        <fieldset class="group">
-          <fieldset>
-            <legend class="text-h5">{{ $t("legends.address") }}</legend>
-            <AddressSelector v-model="parents.MAILING_ADDRESS" :value="parents.MAILING_ADDRESS" />
-          </fieldset>
-          <fieldset>
-            <legend class="text-h5">{{ $t("legends.information") }}</legend>
-            <table class="form" cellpadding="0" cellspacing="0" width="100%">
-              <tbody v-for="(item, key) in parents.INFORMATION">
-                <tr>
-                  <td colspan="4">
-                    <h3>{{ parents.INFORMATION[key].heading }}</h3>
-                  </td>
-                </tr>
-                <tr>
-                  <td>First Name</td>
-                  <td>
-                    <input type="text" v-model="parents.INFORMATION[key].first_name" placeholder="" />
-                  </td>
-                  <td>Last Name</td>
-                  <td>
-                    <input type="text" v-model="parents.INFORMATION[key].last_name" placeholder="" />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Relationship</td>
-                  <td>
-                    <input type="text" v-model="parents.INFORMATION[key].relationship" placeholder="" />
-                  </td>
-                  <td>SIN</td>
-                  <td>
-                    <input type="text" v-model="parents.INFORMATION[key].sin" placeholder="" />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </fieldset>
-        </fieldset>
+        <AddressSelector v-model="parents.MAILING_ADDRESS" :value="parents.MAILING_ADDRESS" />
+
+        <h3 class="text-h3 mb-6">{{ $t("application.onboarding.parents.legends.information") }}</h3>
+        <v-divider class="my-3" />
+
+        <table class="form" cellpadding="0" cellspacing="0" width="100%">
+          <tbody v-for="(item, key) in parents.INFORMATION">
+            <tr>
+              <td colspan="4">
+                <h3>{{ parents.INFORMATION[key].heading }}</h3>
+              </td>
+            </tr>
+            <tr>
+              <td>First Name</td>
+              <td>
+                <input type="text" v-model="parents.INFORMATION[key].first_name" placeholder="" />
+              </td>
+              <td>Last Name</td>
+              <td>
+                <input type="text" v-model="parents.INFORMATION[key].last_name" placeholder="" />
+              </td>
+            </tr>
+            <tr>
+              <td>Relationship</td>
+              <td>
+                <input type="text" v-model="parents.INFORMATION[key].relationship" placeholder="" />
+              </td>
+              <td>SIN</td>
+              <td>
+                <input type="text" v-model="parents.INFORMATION[key].sin" placeholder="" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
         <v-banner
           outlined
           icon="mdi-alert-circle"
           class="problem mt-4 error"
           v-if="invalid"
-          style="padding-right: 1rem"
-        >
+          style="padding-right: 1rem">
           <h3>{{ $t("problem.title") }}</h3>
           <br />
           <ul>
@@ -55,14 +54,14 @@
           </ul>
         </v-banner>
       </v-form>
-   <!--  </ValidationObserver> -->
+      <!--  </ValidationObserver> -->
+    </v-card-text>
+  </v-card>
 
-    <Buttons :valid="valid" :next="next" back="true" />
-  </section>
+  <Buttons :valid="valid" :next="next" back="true" />
 </template>
 
 <script>
-
 import AddressSelector from "@/components/forms/AddressSelector.vue";
 import SinNumber from "@/components/forms/SinNumber.vue";
 import TextField from "@/components/forms/TextField.vue";
@@ -83,17 +82,17 @@ export default {
     SinNumber,
     Buttons,
     Question,
-    RadioList
+    RadioList,
   },
   computed: {
     student: {
       get() {
         //return this.$store.getters["student/GET"];
-        return {}
+        return {};
       },
       set(values) {
         this.$store.commit("student/SET")(values);
-      }
+      },
     },
     valid() {
       var is_valid = true;
@@ -101,8 +100,8 @@ export default {
     },
     next() {
       //return this.localePath("/application/onboarding/parent-dependants");
-      return "/application/onboarding/parent-dependants"
-    }
+      return "/application/onboarding/parent-dependants";
+    },
   },
   data() {
     return {
@@ -115,8 +114,8 @@ export default {
               first_name: "",
               last_name: "",
               relationship: "",
-              sin: ""
-            }
+              sin: "",
+            },
           },
           {
             header: "Parent 2",
@@ -124,11 +123,11 @@ export default {
               first_name: "",
               last_name: "",
               relationship: "",
-              sin: ""
-            }
-          }
-        ]
-      }
+              sin: "",
+            },
+          },
+        ],
+      },
     };
   },
   mounted() {
@@ -138,7 +137,7 @@ export default {
     valid(to, from) {
       this.$store.commit("eligibility/SET", this.eligibility);
       this.$emit("input", this.valid);
-    }
-  }
+    },
+  },
 };
 </script>

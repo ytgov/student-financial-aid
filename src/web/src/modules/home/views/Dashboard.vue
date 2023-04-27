@@ -1,5 +1,7 @@
 <template>
   Home
+<br>
+  {{ $auth.user }}
 </template>
 
 <script lang="ts">

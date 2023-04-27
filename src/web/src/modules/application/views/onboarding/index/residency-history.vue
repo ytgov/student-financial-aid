@@ -1,10 +1,11 @@
 <template>
-  <section v-if="student">
+<v-card color="#eee5d1" variant="elevated" elevation="0">
+    <v-card-text>
+      <h3 class="text-h3 mb-6">{{ $t("application.onboarding.residency_history.legends.consent") }}</h3>
+      <v-divider class="my-3" />
+
     <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }" > -->
       <v-form @submit.prevent="submit" v-model="valid">
-        <fieldset class="group">
-          <fieldset>
-            <legend class="text-h5">{{ $t('legends.consent') }}</legend>
 
             <p>
               Student consent to release information to another person:
@@ -68,8 +69,6 @@
               <v-btn class="blue small" @click="add()">Add residence</v-btn>
             </p> 
 
-          </fieldset>
-        </fieldset>
 
         <v-banner outlined icon="mdi-alert-circle" class="problem mt-4 error" v-if="invalid && errors.length" style="padding-right: 1rem;">
           <h3>{{ $t('problem.title') }}</h3>
@@ -80,9 +79,10 @@
         </v-banner>
       </v-form>
    <!--  </ValidationObserver> -->
+   </v-card-text>
+   </v-card>
 
     <Buttons :valid="valid" :next="next" back="true" />
-  </section>
 </template>
 
 <script>
@@ -96,6 +96,7 @@ import BlackoutNotice from "@/components/utils/BlackoutNotice.vue";
 
 import Buttons from '@/components/forms/Buttons.vue';
 import Question from '@/components/forms/Question.vue';
+import moment from "moment";
 
 export default {
   components: {
@@ -137,8 +138,8 @@ export default {
     this.residency_history = this.student.RESIDENCY_HISTORY||[]
 
     Object.keys(this.residency_history).forEach(key=>{
-      this.residency_history[key].start = this.$options.filters.formatDate(this.residency_history[key].start)
-      this.residency_history[key].end = this.$options.filters.formatDate(this.residency_history[key].end)
+      this.residency_history[key].start = this.formatDate(this.residency_history[key].start)
+      this.residency_history[key].end = this.formatDate(this.residency_history[key].end)
     })
     
     this.$emit('input', this.valid)
@@ -152,8 +153,8 @@ export default {
   methods: {
     add() {
       this.residency_history.push({
-        start:  this.$options.filters.formatDate(new Date()),
-        end:  this.$options.filters.formatDate(new Date()),
+        start:  this.formatDate(new Date()),
+        end:  this.formatDate(new Date()),
         city: '',
         province: 'Yukon',
         country: 'Canada',
@@ -164,6 +165,11 @@ export default {
       if (key > -1) {
         this.residency_history.splice(key, 1); // 2nd parameter means remove one item only
       }
+    },
+    formatDate(input) {
+      if (input)
+      return moment(input).format("YYYY-MM-DD");
+      return ""
     }
   }
 }

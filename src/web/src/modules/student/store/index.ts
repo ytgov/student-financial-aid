@@ -3,11 +3,13 @@ import { defineStore } from "pinia";
 import { useNotificationStore } from "@/store/NotificationStore";
 import { useApiStore } from "@/store/ApiStore";
 import { PROFILE_URL, USERS_URL } from "@/urls";
+import { clone } from "lodash";
 
 let m = useNotificationStore();
 
 interface StudentState {
   student: Student;
+  editStudent: Student | undefined;
   isLoading: Boolean;
 }
 
@@ -23,12 +25,21 @@ export const useStudentStore = defineStore("student", {
       last_name: "",
       portal_id: "",
     },
+    editStudent: undefined,
     isLoading: false,
   }),
   getters: {},
   actions: {
     save() {
+      this.student = this.editStudent || this.student;
       console.log("TRYING TO SVAE STUDENT", this.student);
+      this.doneEdit();
+    },
+    edit() {
+      this.editStudent = clone(this.student);
+    },
+    doneEdit() {
+      this.editStudent = undefined;
     },
   },
 });

@@ -1,72 +1,47 @@
 <template>
   <article data-layout="eligibility">
-    <h2 class="text-h3 mb-7">{{ $t("title") }}</h2>
+    <h2 class="text-h3 mb-7">{{ $t("application.program_details.title") }}</h2>
 
     <section>
-      <Question>
-        {{ $t("details.campus") }}
-      </Question>
-
       <TextField
         v-model="eligibility.designated_institution.details.campus"
         :value="eligibility.designated_institution.details.campus"
-      />
+        :label="$t('application.program_details.details.campus')" />
     </section>
-
     <section>
-      <Question>
-        {{ $t("details.program_name") }}
-      </Question>
-
       <TextField
         v-model="eligibility.designated_institution.details.program_name"
         :value="eligibility.designated_institution.details.program_name"
-      />
+        :label="$t('application.program_details.details.program_name')" />
     </section>
 
     <section>
-      <Question>
-        {{ $t("details.duration_of_program") }}
-      </Question>
-
       <TextField
         v-model="eligibility.designated_institution.details.duration_of_program"
         :value="eligibility.designated_institution.details.duration_of_program"
-      />
+        :label="$t('application.program_details.details.duration_of_program')" />
     </section>
 
     <section>
-      <Question>
-        {{ $t("details.year_entering") }}
-      </Question>
-
       <Select
         v-model="eligibility.designated_institution.details.year_entering"
         :value="eligibility.designated_institution.details.year_entering"
-        :options="years"
-      />
+        :label="$t('application.program_details.details.year_entering')"
+        :options="years" />
     </section>
 
     <section>
-      <Question>
-        {{ $t("details.start_date_of_classes") }}
-      </Question>
-
       <DateSelector
         v-model="eligibility.designated_institution.details.start_date_of_classes"
         :value="eligibility.designated_institution.details.start_date_of_classes || new Date()"
-      />
+        :label="$t('application.program_details.details.start_date_of_classes')" />
     </section>
 
     <section>
-      <Question>
-        {{ $t("details.end_date_of_classes") }}
-      </Question>
-
       <DateSelector
         v-model="eligibility.designated_institution.details.end_date_of_classes"
         :value="eligibility.designated_institution.details.end_date_of_classes || new Date()"
-      />
+        :label="$t('application.program_details.details.end_date_of_classes')" />
     </section>
 
     <Buttons :valid="valid" :next="next" back="true" />
@@ -88,11 +63,13 @@ export default {
     RadioList,
     Select,
     TextField,
-    DateSelector
+    DateSelector,
   },
   data() {
     return {
-      eligibility: { designated_institution: {details: { end_date_of_classes: new Date(), start_date_of_classes: new Date()}}}
+      eligibility: {
+        designated_institution: { details: { end_date_of_classes: new Date(), start_date_of_classes: new Date() } },
+      },
     };
   },
   computed: {
@@ -113,28 +90,28 @@ export default {
         new Date().getFullYear(),
         new Date().getFullYear() + 1,
         new Date().getFullYear() + 2,
-        new Date().getFullYear() + 2
+        new Date().getFullYear() + 2,
       ];
     },
     next() {
       //this.$store.commit("eligibility/SET", this.eligibility);
       //return this.localePath("/application/documents");
-      return "/application/documents"
-    }
+      return "/application/documents";
+    },
   },
   mounted() {
     this.$emit("input", this.valid);
 
     if (!this.eligibility.designated_institution.post_secondary_enrolled_in) {
       //this.$router.push(this.localePath(`/application/documents`));
-      this.$router.push(`/application/documents`);
+      //this.$router.push(`/application/documents`);
     }
   },
   watch: {
     valid(to, from) {
       this.$store.commit("eligibility/SET", this.eligibility);
       this.$emit("input", this.valid);
-    }
-  }
+    },
+  },
 };
 </script>

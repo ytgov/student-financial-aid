@@ -1,31 +1,37 @@
 <template>
-  <section v-if="student">
-    <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
-    <v-form @submit.prevent="submit" v-model="valid">
-      <fieldset class="group">
-        <fieldset>
-          <legend class="text-h5">{{ $t("legends.address") }}</legend>
-          <AddressSelector v-model="student.HOME_ADDRESS1" :value="student.HOME_ADDRESS1 || {}" />
-        </fieldset>
-        <fieldset>
-          <legend class="text-h5">{{ $t("legends.address_at_school") }}</legend>
-          <p class="note">(Optional) If you do not have an address while at school yet just leave this form blank.</p>
-          <AddressSelector v-model="student.HOME_ADDRESS2" :value="student.HOME_ADDRESS2 || {}" />
-        </fieldset>
-      </fieldset>
+  <v-form @submit.prevent="submit" v-model="valid">
+    <v-card color="#eee5d1" variant="elevated" elevation="0" class="mb-5">
+      <v-card-text>
+        <h3 class="text-h3 mb-6">{{ $t("application.onboarding.addresses.legends.address") }}</h3>
+        <v-divider class="my-3" />
+        <AddressSelector v-model="student.HOME_ADDRESS1" :value="student.HOME_ADDRESS1 || {}" />
+      </v-card-text>
+    </v-card>
 
-      <v-banner outlined icon="mdi-alert-circle" class="problem mt-4 error" v-if="invalid" style="padding-right: 1rem">
-        <h3>{{ $t("problem.title") }}</h3>
-        <br />
-        <ul>
-          <li v-for="error in errors" v-if="error[0]">{{ error[0] }}</li>
-        </ul>
-      </v-banner>
-    </v-form>
-    <!-- </ValidationObserver> -->
+    <v-card color="#eee5d1" variant="elevated" elevation="0">
+      <v-card-text>
+        <h3 class="text-h3 mb-6">{{ $t("application.onboarding.addresses.legends.address_at_school") }}</h3>
+        <p class="note">(Optional) If you do not have an address while at school yet just leave this form blank.</p>
+        <v-divider class="my-3" />
+        <AddressSelector v-model="student.HOME_ADDRESS2" :value="student.HOME_ADDRESS2 || {}" />
 
+        <v-banner
+          outlined
+          icon="mdi-alert-circle"
+          class="problem mt-4 error"
+          v-if="invalid"
+          style="padding-right: 1rem">
+          <h3>{{ $t("problem.title") }}</h3>
+          <br />
+          <ul>
+            <li v-for="error in errors" v-if="error[0]">{{ error[0] }}</li>
+          </ul>
+        </v-banner>
+        <!-- </ValidationObserver> -->
+      </v-card-text>
+    </v-card>
     <Buttons :valid="valid" :next="next" back="true" />
-  </section>
+  </v-form>
 </template>
 
 <script>

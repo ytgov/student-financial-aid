@@ -1,74 +1,69 @@
 <template>
-  <section v-if="student">
-   <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
+  <v-card color="#eee5d1" variant="elevated" elevation="0">
+    <v-card-text>
+      <h3 class="text-h3 mb-6">{{ $t("application.onboarding.other_funding.legends.consent") }}</h3>
+      <v-divider class="my-3" />
+
+      <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form @submit.prevent="submit" v-model="valid">
-        <fieldset class="group">
-          <fieldset>
-            <legend class="text-h5">{{ $t("legends.consent") }}</legend>
+        <p>
+          {{ $t("excerpt") }}
+        </p>
 
-            <p>
-              {{ $t("excerpt") }}
-            </p>
+        <table class="form" cellpadding="0" cellspacing="0" width="100%">
+          <tbody v-for="(item, key) in other_funding">
+            <tr>
+              <td>Agency Name</td>
+              <td>
+                <input type="text" v-model="other_funding[key].agency" placeholder="" />
+              </td>
+              <td>Amount</td>
+              <td>
+                <input type="text" v-model="other_funding[key].amount" placeholder="0.00" />
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6" class="checkboxes">
+                <label><input type="checkbox" value="Tuition" v-model="other_funding[key].purposes" /> Tuition</label>
+                <label><input type="checkbox" value="Books" v-model="other_funding[key].purposes" /> Books</label>
+                <label
+                  ><input type="checkbox" value="Living Expenses" v-model="other_funding[key].purposes" />
+                  Living&nbsp;Expenses</label
+                >
+                <label
+                  ><input type="checkbox" value="Transportation" v-model="other_funding[key].purposes" />
+                  Transportation</label
+                >
+                <label><input type="checkbox" value="Other" v-model="other_funding[key].purposes" /> Other</label>
+              </td>
+            </tr>
+            <tr v-if="other_funding[key].purposes.includes('Other')">
+              <td>Other</td>
+              <td colspan="2">
+                <input type="text" v-model="other_funding[key].other" placeholder="Describe other purposes" />
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4">
+                <textarea v-model="other_funding[key].comments" placeholder="Comments" />
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3"><a @click="remove(key)">Remove funding source</a></td>
+            </tr>
+          </tbody>
+        </table>
 
-            <table class="form" cellpadding="0" cellspacing="0" width="100%">
-              <tbody v-for="(item, key) in other_funding">
-                <tr>
-                  <td>Agency Name</td>
-                  <td>
-                    <input type="text" v-model="other_funding[key].agency" placeholder="" />
-                  </td>
-                  <td>Amount</td>
-                  <td>
-                    <input type="text" v-model="other_funding[key].amount" placeholder="0.00" />
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="6" class="checkboxes">
-                    <label
-                      ><input type="checkbox" value="Tuition" v-model="other_funding[key].purposes" /> Tuition</label
-                    >
-                    <label><input type="checkbox" value="Books" v-model="other_funding[key].purposes" /> Books</label>
-                    <label
-                      ><input type="checkbox" value="Living Expenses" v-model="other_funding[key].purposes" />
-                      Living&nbsp;Expenses</label
-                    >
-                    <label
-                      ><input type="checkbox" value="Transportation" v-model="other_funding[key].purposes" />
-                      Transportation</label
-                    >
-                    <label><input type="checkbox" value="Other" v-model="other_funding[key].purposes" /> Other</label>
-                  </td>
-                </tr>
-                <tr v-if="other_funding[key].purposes.includes('Other')">
-                  <td>Other</td>
-                  <td colspan="2">
-                    <input type="text" v-model="other_funding[key].other" placeholder="Describe other purposes" />
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="4">
-                    <textarea v-model="other_funding[key].comments" placeholder="Comments" />
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="3"><a @click="remove(key)">Remove funding source</a></td>
-                </tr>
-              </tbody>
-            </table>
-
-            <p class="buttons">
-              <v-btn class="blue small" @click="add()">Add funding</v-btn>
-            </p>
-          </fieldset>
-        </fieldset>
+        <p class="buttons">
+          <v-btn class="blue small" @click="add()">Add funding</v-btn>
+        </p>
 
         <v-banner
           outlined
           icon="mdi-alert-circle"
           class="problem mt-4 error"
           v-if="invalid && errors.length"
-          style="padding-right: 1rem"
-        >
+          style="padding-right: 1rem">
           <h3>{{ $t("problem.title") }}</h3>
           <br />
           <ul>
@@ -76,14 +71,14 @@
           </ul>
         </v-banner>
       </v-form>
-    <!-- </ValidationObserver> -->
+      <!-- </ValidationObserver> -->
+    </v-card-text>
+  </v-card>
 
-    <Buttons :valid="valid" :next="next" back="true" />
-  </section>
+  <Buttons :valid="valid" :next="next" back="true" />
 </template>
 
 <script>
-
 import AddressSelector from "@/components/forms/AddressSelector.vue";
 import SinNumber from "@/components/forms/SinNumber.vue";
 import TextField from "@/components/forms/TextField.vue";
@@ -105,17 +100,17 @@ export default {
     AddressSelector,
     SinNumber,
     Buttons,
-    Question
+    Question,
   },
   computed: {
     student: {
       get() {
         //return this.$store.getters["student/GET"];
-        return {}
+        return {};
       },
       set(values) {
         this.$store.commit("student/SET")(values);
-      }
+      },
     },
     valid() {
       var is_valid = true;
@@ -124,12 +119,12 @@ export default {
     next() {
       //return this.localePath("/application/onboarding/dependants");
       return "/application/onboarding/dependants";
-    }
+    },
   },
   data() {
     return {
       other_funding: [],
-      purposes: []
+      purposes: [],
     };
   },
   mounted() {
@@ -141,7 +136,7 @@ export default {
     valid(to, from) {
       this.$store.commit("eligibility/SET", this.eligibility);
       this.$emit("input", this.valid);
-    }
+    },
   },
   methods: {
     add() {
@@ -149,14 +144,14 @@ export default {
         agency: "",
         amount: "",
         purposes: [],
-        other: ""
+        other: "",
       });
     },
     remove(key) {
       if (key > -1) {
         this.other_funding.splice(key, 1); // 2nd parameter means remove one item only
       }
-    }
-  }
+    },
+  },
 };
 </script>

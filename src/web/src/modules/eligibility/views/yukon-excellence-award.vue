@@ -4,11 +4,11 @@
     <p>
       {{ $t("eligibility.yukon_excellence_award.note") }}
     </p>
-
+<!-- 
     <div class="balance">
       <div>Balance:</div>
       <div>${{ balance }}</div>
-    </div>
+    </div> -->
 
     <section>
       <Question>

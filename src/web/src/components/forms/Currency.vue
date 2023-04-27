@@ -1,63 +1,72 @@
 <template>
-  <div class="control">
-    <div class="slot">
-      <input type="number" v-model="output" placeholder="$0" :max="max" @focus="focus()" v-if="focused" />
-      <input type="text" v-model="rendered" placeholder="$0"  @blur="blur()" v-else />
-    </div>
-  </div>
+  <v-text-field
+    :label="label"
+    :placeholder="placeholder"
+    variant="outlined"
+    bg-color="white"
+    density="compact"
+    hide-details
+    v-model="innerValue"
+    @focus="focus"
+    @blur="blur">
+  </v-text-field>
 </template>
+
 <script>
 export default {
-  props: ['value', 'max'],
+  props: ["name", "label", "value", "placeholder"],
   data() {
     return {
-      focused: false,
-      rendered: '$0',
-      output: 0
-    }
+      output: "23.12",
+      isInFocus: false,
+    };
   },
   mounted() {
-    this.rendered = `$${this.value}`
-    this.output = this.value
-  },
-  methods: {
-    focus() {
-      this.focused = true
-    },
-    blur() {
-      this.focused = false
-      this.output = this.rendered.replaceAll('$', '')
-      this.$emit('input', this.output)
+    if (this.value) {
+      this.output = this.value;
     }
   },
   watch: {
-    rendered(to, from) {
-      if (to.length==0) {
-        this.rendered = '$'
-      } else {
-        var value = parseInt(to.replace('$', ''))
-        if (value>this.max) {
-          this.rendered = `$${this.max}`
+    output(to, from) {
+      this.$emit("input", this.output);
+    },
+  },
+  computed: {
+    innerValue: {
+      get: function () {
+        console.log("HERE")
+        return "TESTINGING"
+      },
+      set: function (v) {
+        console.log("SETTYING", v)
+
+        if (v === "") {
+          this.output = "";
+          this.$emit("input", null);
         }
-      }
-    }
-  }
-}
+        if (/^\-?\d+(\.|\,)?\d*$/.test(v)) {
+          this.output = v.replace(",", ".");
+          this.$emit("input", Number(Number(this.output).toFixed(2)));
+        } else {
+          this.output = v.replace(/([^ \d\.\,\-\s]+)|((\.|\,|\-){2,})/g, "");
+        }
+      },
+    },
+  },
+  methods: {
+    blur() {
+      this.isInFocus = false;
+      this.output = !!this.value ? this.value.toString() : "";
+    },
+    focus() {
+      this.output = !!this.value ? this.value.toString() : "";
+      this.isInFocus = true;
+    },
+    format(v) {
+      return !isNaN(+v)
+        ? new Intl.NumberFormat(this.localeCode, { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(+v)
+        : "";
+    },
+  },
+};
 </script>
-
-<style lang="scss" scoped>
-div.control {
-  margin: 1.25rem 0;
-  > div.slot {
-
-    input[type=text], input[type=number] {
-      background: #FFFFFF;
-      border-radius: 3px;
-      border: 1px solid #D4C7CF !important;
-      padding: 0.5rem !important;
-      width: 100%;
-      margin-top: 5px;
-    }
-  }
-}
-</style>

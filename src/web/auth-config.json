@@ -1,5 +1,12 @@
 {
-  "client_id": "8de87183-279c-4b1c-89ce-5033b9faadaa",
-  "audience": "c6b0",
-  "domain": "https://yukon-uat.vivvocloud.com"
+  "production": {
+    "client_id": "Lq0tAnHaGVfu9PLNV8gwA0yocV86ZbZx",
+    "audience": "generic-production",
+    "domain": "https://yukon.eu.auth0.com"
+  },
+  "development": {
+    "client_id": "ZGlOd5wvf0bL0USl6jD4QBqX6eiDsitQ",
+    "audience": "testing",
+    "domain": "https://dev-0tc6bn14.eu.auth0.com"
+  }
 }

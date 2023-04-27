@@ -1,63 +1,41 @@
 <template>
-  <section v-if="student">
-    <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
+  <v-card color="#eee5d1" variant="elevated" elevation="0">
+    <v-card-text>
+      <h3 class="text-h3 mb-6">{{ $t("application.onboarding.consent_release.legends.consent") }}</h3>
+      <p>
+        {{ $t("excerpt") }}
+      </p>
+      <v-divider class="my-3" />
+
+      <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form @submit.prevent="submit">
-        <fieldset class="group">
-          <fieldset>
-            <legend class="text-h5">{{ $t("legends.consent") }}</legend>
+        <v-table density="comfortable">
+          <thead>
+            <tr>
+              <th class="text-left">Consent person</th>
+              <th class="text-left">Academic year start</th>
+              <th class="text-left">Academic year end</th>
+              <th style="width: 80px"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, key) in consents" :key="item.name">
+              <td><TextField v-model="consents[key].person" label="" placeholder="Enter Name" /></td>
+              <td><TextField v-model="consents[key].start_year" label="" placeholder="Enter Name" /></td>
+              <td><TextField v-model="consents[key].end_year" label="" placeholder="Enter Name" /></td>
+              <td><v-btn icon="mdi-delete" color="warning" size="small" @click="remove(key)"></v-btn></td>
+            </tr>
+          </tbody>
+        </v-table>
 
-            <p>
-              {{ $t("excerpt") }}
-            </p>
-
-            <table class="standard" cellpadding="0" cellspacing="0" width="100%">
-              <thead>
-                <tr>
-                  <th width="50%">Consent person</th>
-                  <th>Academic<br />year start</th>
-                  <th>Academic<br />year end</th>
-                  <th class="center">SFA</th>
-                  <th class="center">CSL</th>
-                  <th>&nbsp;</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item, key) in consents">
-                  <td>
-                    <input type="text" v-model="consents[key].person" placeholder="Enter Name" />
-                  </td>
-                  <td class="center">
-                    <input type="text" v-model="consents[key].start_year" maxlength="4" />
-                  </td>
-                  <td class="center">
-                    <input type="text" v-model="consents[key].end_year" maxlength="4" />
-                  </td>
-                  <td class="center">
-                    <input type="checkbox" v-model="consents[key].sfac" value="true" />
-                  </td>
-                  <td class="center">
-                    <input type="checkbox" v-model="consents[key].csl" value="true" />
-                  </td>
-                  <td>
-                    <a @click="remove(key)">Remove</a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <p class="buttons">
-              <v-btn class="blue small" @click="addconsent()">Add Consent</v-btn>
-            </p>
-          </fieldset>
-        </fieldset>
+        <v-btn class="mt-4" color="info" @click="addconsent()">Add Consent</v-btn>
 
         <v-banner
           outlined
           icon="mdi-alert-circle"
           class="problem mt-4 error"
           v-if="invalid && errors.length"
-          style="padding-right: 1rem"
-        >
+          style="padding-right: 1rem">
           <h3>{{ $t("problem.title") }}</h3>
           <br />
           <ul>
@@ -65,14 +43,13 @@
           </ul>
         </v-banner>
       </v-form>
-    <!-- </ValidationObserver> -->
-
-    <Buttons :valid="valid" :next="next" back="true" />
-  </section>
+      <!-- </ValidationObserver> -->
+    </v-card-text>
+  </v-card>
+  <Buttons :valid="valid" :next="next" back="true" />
 </template>
 
 <script>
-
 import AddressSelector from "@/components/forms/AddressSelector.vue";
 import SinNumber from "@/components/forms/SinNumber.vue";
 import TextField from "@/components/forms/TextField.vue";
@@ -94,17 +71,17 @@ export default {
     AddressSelector,
     SinNumber,
     Buttons,
-    Question
+    Question,
   },
   computed: {
     student: {
       get() {
         //return this.$store.getters["student/GET"];
-        return {}
+        return {};
       },
       set(values) {
         this.$store.commit("student/SET")(values);
-      }
+      },
     },
     valid() {
       var is_valid = true;
@@ -113,11 +90,11 @@ export default {
     next() {
       //return this.localePath("/application/onboarding/residency-history");
       return "/application/onboarding/residency-history";
-    }
+    },
   },
   data() {
     return {
-      consents: []
+      consents: [],
     };
   },
   mounted() {
@@ -128,21 +105,28 @@ export default {
     valid(to, from) {
       this.$store.commit("eligibility/SET", this.eligibility);
       this.$emit("input", this.valid);
-    }
+    },
   },
   methods: {
     addconsent() {
       this.consents.push({
         person: "",
         start_year: new Date().getFullYear(),
-        end_year: new Date().getFullYear()
+        end_year: new Date().getFullYear(),
       });
     },
     remove(key) {
       if (key > -1) {
         this.consents.splice(key, 1); // 2nd parameter means remove one item only
       }
-    }
-  }
+    },
+  },
 };
 </script>
+
+<style>
+.v-card .v-table {
+  border: 1px #d7cfbe solid;
+  border-radius: 4px;
+}
+</style>

@@ -23,10 +23,11 @@
 
                 <h2 class="text-h5 mt-4">Sign in</h2>
                 <h6 class="text-subtitle-2 mt-3 mb-5">
-                  This application is used by new and return students to apply for higher education funding assistance.
+                  This application is used by new and returning students to apply for higher education funding
+                  assistance.
                 </h6>
 
-                <LoginButton />
+                <v-btn @click="signInClick" color="primary">Sign in</v-btn>
               </div>
             </v-col>
           </v-row>
@@ -37,21 +38,22 @@
 </template>
 
 <script lang="ts">
-import LoginButton from "@/components/LoginButton.vue";
-
-    import { Issuer } from 'openid-client';
-
 export default {
   name: "SignIn",
-  components: { LoginButton },
   data: () => ({
-    applicationTitle: "Student Financial Assistance",
-    applicationSubtitle: "Department of Education"
+    applicationTitle: "Student Financial Assistance Portal",
+    applicationSubtitle: "Department of Education",
   }),
-  async mounted() {
-    console.log("CHECK AUTH", this.$auth.isAuthenticated.value)
+  async mounted() {},
+  methods: {
+    signInClick() {
+      let target = window.location.pathname;
+      if (target == "/sign-in") target = "/student";
 
-    if (this.$auth.isAuthenticated.value) this.$router.push("/dashboard");
+      this.$auth.loginWithRedirect({
+        appState: { target },
+      });
+    },
   },
 };
 </script>
