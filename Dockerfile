@@ -1,16 +1,6 @@
-FROM node:16-alpine3.15
+FROM node:18-alpine3.17
 
-RUN apk add --no-cache \
-      chromium \
-      nss \
-      freetype \
-      harfbuzz \
-      ca-certificates \
-      ttf-freefont \
-      tzdata
-
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
-    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+RUN apk add --no-cache tzdata
 
 RUN cp /usr/share/zoneinfo/America/Whitehorse /etc/localtime
 RUN echo "America/Whitehorse" > /etc/timezone
@@ -35,10 +25,11 @@ COPY --chown=node:node src/api ./
 RUN npm run build
 
 WORKDIR /home/node/web
+ENV NODE_ENV=production
+
 RUN npm run build
 
 WORKDIR /home/node/app
-
-#COPY --chown=node:node api/src/templates/* /home/node/app/dist/templates/
+EXPOSE 3000
 
 CMD ["node", "./dist/index.js"]
