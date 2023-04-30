@@ -1,33 +1,21 @@
 <template>
-  <article @scroll="onScroll">
-    <slot></slot>
-  </article>
+  <v-card elevation="0" class="mt-4">
+    <v-card-text>
+      <article>
+        <slot></slot>
+      </article>
+    </v-card-text>
+  </v-card>
 </template>
 
-
 <script>
-export default {
-  methods: {
-    onScroll ({ target: { scrollTop, clientHeight, scrollHeight }}) {
-      var self = this;
-      if (scrollTop + clientHeight >= scrollHeight) {
-        self.$emit('input', true)
-      }
-    }
-  }
-}
+export default {};
 </script>
 
-
-
 <style lang="scss" scoped>
-
 article {
-  border: solid 1px #eee;
-  padding: 2rem;
+  padding: 1rem;
   overflow-y: scroll;
-  max-height: 500px;
-  background: #efefef;
+  max-height: 400px;
 }
-
 </style>

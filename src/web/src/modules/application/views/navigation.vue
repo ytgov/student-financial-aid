@@ -29,7 +29,12 @@
           </v-list-item>
           <v-divider class="mb-4" />
 
-          <v-list-item v-for="(item, index) in relevantSections" :to="item.uri" active-color="primary">
+          <v-list-item
+            v-for="(item, index) in relevantSections"
+            :to="item.uri"
+            exact
+            active-color="primary"
+            :disabled="item.disabled">
             <template v-slot:prepend>
               <v-icon
                 :icon="item.is_complete ? 'mdi-checkbox-marked-outline' : 'mdi-checkbox-blank-outline'"
@@ -41,7 +46,7 @@
           </v-list-item>
         </v-list>
 
-        <v-list-item subtitle="Last saved 2023/04/12 @ 2:45pm"> </v-list-item>
+        <v-list-item :subtitle="`Last saved ${application.last_saved}`"> </v-list-item>
       </v-card>
     </v-col>
     <v-col class="pt-3">
@@ -58,7 +63,7 @@ export default {
   name: "Navigation",
   data: () => ({}),
   computed: {
-    ...mapState(useApplicationStore, ["relevantSections"]),
+    ...mapState(useApplicationStore, ["relevantSections", "application"]),
   },
   methods: {
     localePath(val) {

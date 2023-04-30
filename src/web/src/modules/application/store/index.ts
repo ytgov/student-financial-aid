@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { acceptHMRUpdate, defineStore } from "pinia";
 
 import { useNotificationStore } from "@/store/NotificationStore";
 import { useApiStore } from "@/store/ApiStore";
@@ -43,131 +43,191 @@ export const useApplicationStore = defineStore("application", {
         description: "This application was submitted on May 16, 2021 and approved on May 25, 2021.",
       },
     ],
-    funding_sources: new Array<string>(),
-    selectedApplication: {
+    application: {
       id: 12345,
-      fiscal_year: "2023/24",
+      student_id: 123,
+      academic_year: "2023/24",
+      terms_agree: false,
+      last_saved: "2023/04/12 @ 2:45pm",
+      funding_sources: new Array<string>(),
+      program_details: {
+        institution: {
+          id: 1,
+          program_name: "",
+          duration_of_program: "",
+          year_entering: "",
+          start_date_of_classes: "",
+          end_date_of_classes: "",
+        },
+      },
     },
   }),
   getters: {
-    relevantSections() {
+    relevantSections(): any[] {
+      let app = this.application;
+
       let list = [
         {
-          name: "Introduction",
-          uri: "/application/program-details",
+          name: "Terms",
+          uri: `/application/${app.id}`,
+          is_complete: this.completeSectionTerms,
         },
         {
           name: "Program Details",
-          uri: "/application/program-details",
+          uri: `/application/${app.id}/program-details`,
+          is_complete: this.completeSectionProgram,
+          disabled: !this.availableSectionProgram,
         },
         {
           name: "Funding Sources",
-          uri: "/application/onboarding/funding-sources",
-          is_complete: true,
+          uri: `/application/${app.id}/funding-sources`,
+          is_complete: this.completeSectionFunding,
+          disabled: !this.availableSectionFunding,
         },
         {
           name: "Personal Details",
-          uri: "/application/onboarding/personal-details",
-          is_complete: true,
+          uri: `/application/${app.id}/personal-details`,
+          is_complete: this.completeSectionPersonal,
+          disabled: !this.availableSectionPersonal,
         },
         {
           name: "Addresses",
-          uri: "/application/onboarding/addresses",
+          uri: `/application/${app.id}/addresses`,
           is_complete: true,
         },
         {
           name: "Statistical Information",
-          uri: "/application/onboarding/statistical",
+          uri: `/application/${app.id}/statistical`,
         },
         {
           name: "Consent Release",
-          uri: "/application/onboarding/consent-release",
+          uri: `/application/${app.id}/consent-release`,
         },
         {
           name: "Residency",
-          uri: "/application/onboarding/residency-history",
+          uri: `/application/${app.id}/residency-history`,
         },
         {
           name: "Education History",
-          uri: "/application/onboarding/education-history",
+          uri: `/application/${app.id}/education-history`,
         },
         {
           name: "Other Funding",
-          uri: "/application/onboarding/other-funding",
+          uri: `/application/${app.id}/other-funding`,
         },
         {
           name: "Student Dependents",
-          uri: "/application/onboarding/dependants",
+          uri: `/application/${app.id}/dependants`,
         },
         /*
           {
             name: 'CSFA Study Period',
-            uri: '/application/onboarding/csfa'
+            uri: '/application/csfa'
           },
           */
         {
           name: "CSFA Accomodation",
-          uri: "/application/onboarding/csfa-accomodation",
+          uri: `/application/${app.id}/csfa-accomodation`,
         },
         /*
           {
             name: 'CSFA Employment',
-            uri: '/application/onboarding/csfa-employment'
+            uri: '/application/csfa-employment'
           },
           */
 
         {
           name: "CSFA Income",
-          uri: "/application/onboarding/csfa-income",
+          uri: `/application/${app.id}/csfa-income`,
         },
         {
           name: "CSFA Expenses",
-          uri: "/application/onboarding/csfa-expenses",
+          uri: `/application/${app.id}/csfa-expenses`,
         },
         {
           name: "Parents",
-          uri: "/application/onboarding/parents",
+          uri: `/application/${app.id}/parents`,
         },
         {
           name: "Parent Dependants",
-          uri: "/application/onboarding/parent-dependants",
+          uri: `/application/${app.id}/parent-dependants`,
         },
         {
           name: "Spouse",
-          uri: "/application/onboarding/spouse",
+          uri: `/application/${app.id}/spouse`,
           relevantTo: ["Canada"],
         },
         {
           name: "Documents",
-          uri: "/application/documents",
+          uri: `/application/${app.id}/documents`,
         },
         {
-          name: "Submit",
-          uri: "/application/submit",
+          name: "Review and Submit",
+          uri: `/application/${app.id}/submit`,
           relevantTo: ["Canada"],
         },
       ];
 
-      if (this.funding_sources.indexOf("Canada") == -1) list = list.filter((i) => !i.name.startsWith("CSFA"));
-
-      console.log(list.length);
+      if (this.application.funding_sources.indexOf("Canada") == -1)
+        list = list.filter((i) => !i.name.startsWith("CSFA"));
 
       return list;
     },
+
+    completeSectionTerms(): boolean {
+      return this.application.terms_agree;
+    },
+    availableSectionTerms(): boolean {
+      return this.completeSectionTerms;
+    },
+
+    completeSectionProgram(): boolean {
+      return this.application.program_details.institution.program_name.length > 0;
+    },
+    availableSectionProgram(): boolean {
+      return this.completeSectionTerms;
+    },
+    completeSectionFunding(): boolean {
+      return this.application.funding_sources && this.application.funding_sources.length > 0;
+    },
+    availableSectionFunding(): boolean {
+      return this.completeSectionTerms;
+    },
+    completeSectionPersonal(): boolean {
+      return true;
+    },
+    availableSectionPersonal(): boolean {
+      return this.completeSectionTerms;
+    },
   },
   actions: {
-    create() {
+    async create(): Promise<any> {
       console.log("Creating aplicaiton for", ss.student);
 
-      api.secureCall("post", APPLICATION_URL, {
-        academic_year: "2023/24",
-        student_id: ss.student.portal_id,
-      }).then(resp => {
-        console.log(resp.response.data)
-      })
-      .catch(err => {
-        console.log("ERROR HAPPENED", err)
-      })
+      return api
+        .secureCall("post", APPLICATION_URL, {
+          academic_year: "2023/24",
+          student_id: ss.student.portal_id,
+        })
+        .then((resp) => {
+          console.log(resp.response.data);
+          return { id: 2223 };
+        })
+        .catch((err) => {
+          console.log("ERROR HAPPENED", err);
+          return { id: 3334 };
+        });
+    },
+    getNext(current: string): string {
+      if (current == "terms") return `/application/${this.application.id}/program-details`;
+      if (current == "program") return `/application/${this.application.id}/funding-sources`;
+      if (current == "funding") return `/application/${this.application.id}/personal-details`;
+      return "";
     },
   },
 });
+
+// hot reloading for this store
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useApplicationStore, import.meta.hot));
+}

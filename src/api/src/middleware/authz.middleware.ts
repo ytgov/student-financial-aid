@@ -25,8 +25,6 @@ export const checkJwt = jwt({
 console.log("AUTH", AUTH0_AUDIENCE, AUTH0_DOMAIN);
 
 export async function loadUser(req: Request, res: Response, next: NextFunction) {
-  console.log("TEHS1", req.user);
-
   let sub = req.user.sub;
   const token = req.headers.authorization || "";
 
@@ -45,9 +43,9 @@ export async function loadUser(req: Request, res: Response, next: NextFunction) 
 
         //let email = resp.data.email;
 
-      //let subUser = await db.getBySub(resp.data.sub);
+        //let subUser = await db.getBySub(resp.data.sub);
 
-       /*  if (subUser) {
+        /*  if (subUser) {
           req.user = { ...req.user, ...subUser };
           next();
         } else {

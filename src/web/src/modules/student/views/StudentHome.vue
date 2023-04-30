@@ -122,7 +122,11 @@ export default {
   methods: {
     ...mapActions(useApplicationStore, ["create"]),
     createApplicationClick() {
-      this.create();
+      this.create().then((resp) => {
+        console.log(resp.id);
+
+        if (resp && resp.id) this.$router.push(`/application/${resp.id}`);
+      });
     },
   },
 };
