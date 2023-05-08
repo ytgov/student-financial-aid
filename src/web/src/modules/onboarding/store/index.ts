@@ -2,9 +2,11 @@ import { defineStore } from "pinia";
 
 import { useNotificationStore } from "@/store/NotificationStore";
 import { useApiStore } from "@/store/ApiStore";
-import { PROFILE_URL, USERS_URL } from "@/urls";
+import { PROFILE_URL, USERS_URL, STUDENT_URL } from "@/urls";
+import { User } from "@/store/UserStore";
 
 let m = useNotificationStore();
+let api = useApiStore();
 
 interface OnboardingState {
   linkStudent: LinkStudent;
@@ -25,15 +27,58 @@ export const useOnboardingStore = defineStore("onboarding", {
       portal_id: "",
     },
     isLoading: false,
-    createStudent: { first_name: "", last_name: "", sin: "", date_of_birth: "" },
+    createStudent: { first_name: "", last_name: "", sin: "", date_of_birth: "", email: "" },
   }),
-  getters: {},
-  actions: {
-    tryCreateStudent() {
-      console.log("TRYING TO CREATE STUDENT", this.createStudent);
+  getters: {
+    createIsValid(state) {
+      if (
+        state.createStudent.first_name.length < 1 ||
+        state.createStudent.last_name.length < 1 ||
+        state.createStudent.sin.length != 9 ||
+        !state.createStudent.date_of_birth
+      )
+        return false;
+
+      return true;
     },
-    tryLinkStudent() {
-      console.log("TRYING TO LINK STUDENT", this.linkStudent);
+    linkIsValid(state) {
+      if (
+        state.linkStudent.first_name.length < 1 ||
+        state.linkStudent.last_name.length < 1 ||
+        state.linkStudent.sin.length != 9 ||
+        !state.linkStudent.date_of_birth
+      )
+        return false;
+
+      return true;
+    },
+  },
+  actions: {
+    async tryCreateStudent(user: User) {
+      this.createStudent.email = user.email;
+
+      return api
+        .secureCall("post", `${STUDENT_URL}/${user.sub}`, this.createStudent)
+        .then((resp) => {
+          return resp.data;
+        })
+        .catch((err) => {
+          console.log("ERROR IN ", err.response.data);
+        });
+    },
+
+    async tryLinkStudent(user: any) {
+      console.log("TRYING TO LINK STUDENT", this.linkStudent, user);
+
+      return api
+        .secureCall("post", `${STUDENT_URL}/${user.sub}/link`, this.linkStudent)
+        .then((resp) => {
+          console.log("LINKED", resp.data);
+          return resp.data.data;
+        })
+        .catch((err) => {
+          console.log("ERROR IN ", err.response.data);
+        });
     },
   },
 });
@@ -54,4 +99,5 @@ export interface CreateStudent {
   last_name: string;
   sin: string;
   date_of_birth: string;
+  email: string;
 }

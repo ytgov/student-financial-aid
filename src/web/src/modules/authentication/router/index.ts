@@ -8,6 +8,10 @@ const routes = [
         path: "/sign-in",
         component: () => import("../views/SignIn.vue"),
       },
+      {
+        path: "/callback",
+        component: () => import("../views/Callback.vue"),
+      },
     ],
   },
 ];

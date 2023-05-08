@@ -5,60 +5,55 @@
     <v-app-bar-title class="pt-0 font-weight-bold" style="margin-left: -20px">{{ $t("system.name") }}</v-app-bar-title>
 
     <template v-slot:append>
-      <div v-if="isAuthenticated">
-        <v-btn color="primary" class="mr-1" to="/student" icon="mdi-home"></v-btn>
+      <v-btn color="primary" class="mr-1" to="/student" icon="mdi-home"></v-btn>
 
-        <v-divider vertical inset></v-divider>
+      <!-- <v-divider vertical inset></v-divider> -->
 
-        <LangaugeSwitcher></LangaugeSwitcher>
+      <LangaugeSwitcher></LangaugeSwitcher>
 
-        <v-menu offset-y>
-          <template v-slot:activator="{ props }">
-            <v-btn icon="mdi-dots-vertical" color="primary" v-bind="props"></v-btn>
-          </template>
+      <v-menu offset-y>
+        <template v-slot:activator="{ props }">
+          <v-btn icon="mdi-dots-vertical" color="primary" v-bind="props"></v-btn>
+        </template>
 
-          <v-list density="compact">
-            <!-- <v-list-item to="/student">
+        <v-list density="compact">
+          <!-- <v-list-item to="/student">
               <template v-slot:prepend>
                 <v-icon>mdi-account</v-icon>
               </template>
               <v-list-item-title style="font-size: 0.9rem !important">My profile</v-list-item-title>
             </v-list-item> -->
 
-            <v-list-item to="/messages/inbox">
-              <template v-slot:prepend>
-                <v-icon>mdi-message</v-icon>
-              </template>
-              <v-list-item-title style="font-size: 0.9rem !important">My Messages</v-list-item-title>
-            </v-list-item>
+          <v-list-item to="/messages/inbox">
+            <template v-slot:prepend>
+              <v-icon>mdi-message</v-icon>
+            </template>
+            <v-list-item-title style="font-size: 0.9rem !important">My Messages</v-list-item-title>
+          </v-list-item>
 
-            <v-list-item to="/faq">
-              <template v-slot:prepend>
-                <v-icon>mdi-frequently-asked-questions</v-icon>
-              </template>
-              <v-list-item-title style="font-size: 0.9rem !important">FAQs</v-list-item-title>
-            </v-list-item>
+          <v-list-item to="/faq">
+            <template v-slot:prepend>
+              <v-icon>mdi-frequently-asked-questions</v-icon>
+            </template>
+            <v-list-item-title style="font-size: 0.9rem !important">FAQs</v-list-item-title>
+          </v-list-item>
 
-            <v-list-item to="/contact">
-              <template v-slot:prepend>
-                <v-icon>mdi-phone</v-icon>
-              </template>
-              <v-list-item-title style="font-size: 0.9rem !important">Contact</v-list-item-title>
-            </v-list-item>
+          <v-list-item to="/contact">
+            <template v-slot:prepend>
+              <v-icon>mdi-phone</v-icon>
+            </template>
+            <v-list-item-title style="font-size: 0.9rem !important">Contact</v-list-item-title>
+          </v-list-item>
 
-            <v-divider />
-            <v-list-item @click="logoutClick">
-              <template v-slot:prepend>
-                <v-icon>mdi-exit-run</v-icon>
-              </template>
-              <v-list-item-title style="font-size: 0.9rem !important">Sign out</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </div>
-      <div v-else>
-        <login-button />
-      </div>
+          <v-divider />
+          <v-list-item @click="logoutClick">
+            <template v-slot:prepend>
+              <v-icon>mdi-exit-run</v-icon>
+            </template>
+            <v-list-item-title style="font-size: 0.9rem !important">Sign out</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </template>
   </v-app-bar>
 
@@ -82,6 +77,7 @@
 import { useUserStore } from "@/store/UserStore";
 import { useNotificationStore } from "@/store/NotificationStore";
 import LangaugeSwitcher from "../i18n/language-switcher.vue";
+import { LOGOUT_URL } from "../urls";
 
 import { mapState, mapActions, mapWritableState } from "pinia";
 export default {
@@ -89,7 +85,6 @@ export default {
   components: { LangaugeSwitcher },
   data() {
     return {
-      isAuthenticated: this.$auth.isAuthenticated,
       showOverlay: true,
     };
   },
@@ -110,7 +105,7 @@ export default {
     ...mapActions(useUserStore, ["initialize"]),
 
     logoutClick() {
-      this.$auth.logout({ logoutParams: { returnTo: window.location.origin } });
+      window.location.replace(LOGOUT_URL);
     },
   },
 };

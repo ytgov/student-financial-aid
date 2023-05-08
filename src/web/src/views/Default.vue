@@ -8,21 +8,24 @@
 </template>
 
 <script lang="ts">
+import { useUserStore } from "@/store/UserStore";
+import { mapActions, mapState } from "pinia";
+
 export default {
   name: "Default",
   components: {},
-  mounted() {
-    let i = window.setInterval(() => {
-      if (this.$auth.isLoading) {
-        window.clearInterval(i);
+  async mounted() {
+    await this.initialize();
 
-        if (this.$auth.isAuthenticated && this.$auth.user.value) {
-          console.log(this.$auth.user.value);
-
-          this.$router.push("/student");
-        } else this.$router.push("/sign-in");
-      }
-    }, 250);
+    if (this.student && this.student.id) this.$router.push("/student");
+    else if (this.user && this.user.sub) this.$router.push("/welcome");
+    else this.$router.push("/sign-in");
+  },
+  methods: {
+    ...mapActions(useUserStore, ["initialize"]),
+  },
+  computed: {
+    ...mapState(useUserStore, ["user", "student"]),
   },
 };
 </script>

@@ -1,13 +1,8 @@
 import { User } from "../data/models";
-import { Knex } from "knex";
 
 export class UserService {
-  private db: Knex;
-
-  constructor(db: Knex) {
-    this.db = db;
-  }
-
+  constructor() {}
+/* 
   async create(user: User): Promise<any> {
     let existing = await this.db("users").where({ email: user.email }).count("email as cnt");
 
@@ -24,6 +19,5 @@ export class UserService {
 
   async getBySub(sub: string): Promise<User | undefined> {
     return this.db("users").where({ sub }).first();
-  }
-
+  } */
 }

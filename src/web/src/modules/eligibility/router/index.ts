@@ -1,5 +1,3 @@
-import { authGuard } from "@auth0/auth0-vue";
-
 const routes = [
   {
     path: "eligibility-checker/",
@@ -79,9 +77,9 @@ const routes = [
         path: "yukon-grant",
         component: () => import("../views/yukon-grant.vue"),
         //beforeEnter: authGuard
-      }
-    ]
-  }
+      },
+    ],
+  },
 ];
 
 export default routes;

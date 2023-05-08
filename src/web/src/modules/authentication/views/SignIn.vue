@@ -38,21 +38,25 @@
 </template>
 
 <script lang="ts">
+import { useUserStore } from "@/store/UserStore";
+import { LOGIN_URL } from "@/urls";
+
 export default {
   name: "SignIn",
   data: () => ({
     applicationTitle: "Student Financial Assistance Portal",
     applicationSubtitle: "Department of Education",
   }),
-  async mounted() {},
+  async mounted() {
+    let userStore = useUserStore();
+
+    userStore.isAuthenticated(false).then((isAuth) => {
+      if (isAuth == true) this.$router.push("/");
+    });
+  },
   methods: {
     signInClick() {
-      let target = window.location.pathname;
-      if (target == "/sign-in") target = "/student";
-
-      this.$auth.loginWithRedirect({
-        appState: { target },
-      });
+      window.location.replace(LOGIN_URL);
     },
   },
 };

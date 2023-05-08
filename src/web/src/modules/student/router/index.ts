@@ -1,5 +1,3 @@
-import { authGuard } from "@auth0/auth0-vue";
-
 export const studentRoutes = [
   {
     path: "",
@@ -8,12 +6,13 @@ export const studentRoutes = [
       {
         path: "/student",
         component: () => import("../views/StudentHome.vue"),
-        beforeEnter: authGuard,
+        meta: {
+          auth: true,
+        },
       },
       {
         path: "/student/edit",
         component: () => import("../views/StudentEdit.vue"),
-        beforeEnter: authGuard,
       },
     ],
   },

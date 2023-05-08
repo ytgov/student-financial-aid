@@ -68,3 +68,5 @@ export const DB_CONFIG = {
 export const AD_CLIENT_ID = process.env.AD_CLIENT_ID || "";
 export const AD_CLIENT_SECRET = process.env.AD_CLIENT_SECRET || "";
 export const AD_TENANT_ID = process.env.AD_TENANT_ID || "";
+
+export const PROXY_BASE_URL = process.env.PROXY_BASE_URL || "http://localhost:3100/api/portal";

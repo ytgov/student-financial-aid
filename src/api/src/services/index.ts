@@ -1,5 +1,4 @@
 export * from "./email-service";
-export * from "./generic-service";
 export * from "./student-service";
 
 export interface QueryStatement {

@@ -1,164 +1,97 @@
 <template>
-  <div class="control">
-    <div class="slot">
-      <label>{{ label }}</label>
-      <span class="selector">
-        <span class="year">
-          <input type="number" v-model="year" maxlength="4" />
-          <small>{{ $t("components.data_selector.labels.year") }}</small>
-        </span>
-        <span class="month">
-          <select v-model="month">
-            <option :value="index + 1" v-for="(month, index) in months">{{ month.name }}</option>
-          </select>
-          <small>{{ $t("components.data_selector.labels.month") }}</small>
-        </span>
-        <span class="day">
-          <input type="number" v-model="day" maxlength="2" />
-          <small>{{ $t("components.data_selector.labels.day") }}</small>
-        </span>
-      </span>
+  <div class="top" :class="has_focus ? 'hf' : ''">
+    <div style="position: absolute; z-index: 22; height: 5px !important; width: 100%; top: -1px">
+      <div class="inlay">
+        <label>{{ label }}</label>
+      </div>
     </div>
+    <VueDatePicker
+      v-model="output"
+      format="yyyy/MM/dd"
+      :teleport="true"
+      :auto-apply="true"
+      :text-input="true"
+      :enable-time-picker="false"
+      :max-date="maxDate"
+      :prevent-min-max-navigation="true"
+      @open="has_focus = true"
+      @closed="has_focus = false"
+      @update:model-value=""
+      placeholder="YYYY/MM/DD" />
   </div>
 </template>
 
 <script>
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
+
 export default {
-  props: ["value", "label"],
-  computed: {
-    is_leapyear() {
-      return this.year % 100 === 0 ? this.year % 400 === 0 : this.year % 4 === 0;
-    },
-    output() {
-      return new Date(`${this.month} ${this.day} ${this.year}`);
-    },
-    timestamp() {
-      return this.$options.filters.formatTimestamp(this.value);
-    }
-  },
+  props: ["value", "label", "max"],
+  components: { VueDatePicker },
+  computed: {},
   data() {
     return {
-      year: new Date().getFullYear(),
-      month: new Date().getMonth(),
-      day: new Date().getDate(),
-      months: [
-        {
-          name: "January",
-          days: 31
-        },
-        {
-          name: "February",
-          days: this.is_leapyear ? 29 : 28
-        },
-        {
-          name: "March",
-          days: 31
-        },
-        {
-          name: "April",
-          days: 30
-        },
-        {
-          name: "May",
-          days: 31
-        },
-        {
-          name: "June",
-          days: 30
-        },
-        {
-          name: "July",
-          days: 31
-        },
-        {
-          name: "August",
-          days: 31
-        },
-        {
-          name: "September",
-          days: 30
-        },
-        {
-          name: "October",
-          days: 31
-        },
-        {
-          name: "November",
-          days: 30
-        },
-        {
-          name: "December",
-          days: 31
-        }
-      ]
+      output: null,
+      maxDate: null,
+      has_focus: false,
     };
   },
   mounted() {
-    this.$nextTick(() => {
-      if (this.value) {
-        if (this.timestamp) {
-          this.year = new Date(this.timestamp).getFullYear();
-          this.month = new Date(this.timestamp).getMonth() + 1;
-          this.day = new Date(this.timestamp).getDate();
-        } else {
-          this.year = new Date(this.value).getFullYear();
-          this.month = new Date(this.value).getMonth() + 1;
-          this.day = new Date(this.value).getDate();
-        }
-      }
-      this.$emit("input", this.output);
-    });
+    if (this.value) {
+      this.output = this.value;
+    }
+    if (this.max) {
+      this.maxDate = new Date();
+    }
   },
   watch: {
     output(to, from) {
       this.$emit("input", this.output);
+      this.$emit("update:modelValue", this.output);
     },
-    day(to, from) {
-      if (this.day > this.months[this.month].days) {
-        this.day = this.months[this.month].days;
-      }
-    }
-  }
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-span.selector {
-  margin: 0.25rem 0;
-  max-width: 400px;
-  width: 100%;
-  display: grid;
-  grid-template-coulmns: 2fr 2fr 2fr 2fr 2fr 2fr;
-  grid-template-rows: auto auto;
-  grid-gap: 0.25rem 1rem;
-  > span {
-    input[type="text"],
-    input[type="number"],
-    select {
-      width: 100%;
-      background: #ffffff;
-      border-radius: 3px;
-      border: 1px solid #d4c7cf !important;
-      padding: 0.5rem !important;
-    }
-    &.year {
-      grid-column: 1;
-    }
-    &.month {
-      grid-column: 2/6;
-    }
-    &.day {
-      grid-column: 6;
-    }
-  }
+<style>
+.hf label {
+  opacity: 1;
+}
+label {
+  color: rgb(50, 50, 50);
+  opacity: 0.6;
+  font-size: 12px;
+  position: relative;
+  top: -8px;
+}
 
-  .error,
-  .valid {
-    margin-top: 1rem;
-    padding: 1rem;
-  }
-  .valid {
-    background: #00cc00;
-  }
+.top {
+  border: 1px #ffffff00 solid;
+  position: relative;
+  top: -1px;
+  left: -1px;
+}
+
+.inlay {
+  background-color: white !important;
+  margin-left: 12px;
+  margin-top: -1px;
+  padding: 0 4px;
+  display: inline;
+  position: relative;
+}
+
+.dp__input_wrap input {
+  padding: 12px 16px 12px 34px;
+  background-color: white;
+  border: 1px #b0b0b0 solid;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 16px;
+  color: #323232;
+}
+
+.hf .dp__input_wrap input {
+  border: 2px rgb(50, 50, 50) solid;
+  padding: 11px 15px 11px 33px;
 }
 </style>

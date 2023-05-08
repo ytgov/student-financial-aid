@@ -8,7 +8,7 @@ import { clone } from "lodash";
 let m = useNotificationStore();
 
 interface StudentState {
-  student: Student;
+  student: any;
   editStudent: Student | undefined;
   isLoading: Boolean;
 }
@@ -20,7 +20,7 @@ export const useStudentStore = defineStore("student", {
       date_of_birth: "",
       home_phone: "",
       home_postal: "",
-      email_address: "",
+      email: "",
       first_name: "",
       last_name: "",
       portal_id: "",

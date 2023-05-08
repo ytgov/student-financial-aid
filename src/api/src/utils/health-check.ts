@@ -5,10 +5,9 @@ export async function doHealthCheck(req: Request, res: Response) {
   let appHealth = [];
 
   //database check
-  let dbConnected = await req.store.isInitialized;
   appHealth.push({
     name: "Database",
-    status: dbConnected,
+    status: "lme",
     loading: false,
     helpNotes: `Check that the databases is running at: ${DB_HOST}`
   });

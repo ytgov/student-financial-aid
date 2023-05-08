@@ -11,14 +11,14 @@ export const useAnnouncementStore = defineStore("announcement", {
         action: "Check My Eligibility",
         action_link: "/eligibility-checker",
       },
-      {
+     /*  {
         title: "Houston, we have a problem",
         description:
           "Your application is seriously late.",
         type: "warning",
         action: "",
         action_link: "/eligibility-checker",
-      },
+      }, */
     ],
   }),
   getters: {},

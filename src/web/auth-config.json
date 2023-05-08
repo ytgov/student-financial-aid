@@ -4,7 +4,7 @@
     "audience": "testing",
     "domain": "https://dev-0tc6bn14.eu.auth0.com"
   },
-  "development": {
+  "developments": {
     "client_id": "ZGlOd5wvf0bL0USl6jD4QBqX6eiDsitQ",
     "audience": "testing",
     "domain": "https://dev-0tc6bn14.eu.auth0.com"

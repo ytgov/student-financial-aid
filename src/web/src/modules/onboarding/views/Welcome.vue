@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-col cols="12" md="8" class="justify-center">
-      <h1 class="mb-3 mt-2 text-h4">Hello Michael</h1>
+      <h1 class="mb-3 mt-2 text-h4">Hello {{ user?.preferred_username }}</h1>
 
       <h3 class="mb-3 text-h6" style="font-weight: 300">
         To sign in and use the Student Financial Assistance Portal, we must first know a little more about you.
@@ -59,17 +59,14 @@
                   <v-text-field
                     v-model="linkStudent.sin"
                     label="SIN"
+                    placeholder="999999999"
                     variant="outlined"
                     density="comfortable"
+                    @update:model-value="sinChanged2"
                     hide-details></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="linkStudent.date_of_birth"
-                    label="Date of birth"
-                    variant="outlined"
-                    density="comfortable"
-                    hide-details></v-text-field>
+                  <DateSelector v-model="linkStudent.date_of_birth" label="Date of birth" max="today" />
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -110,7 +107,7 @@
               <v-card-actions>
                 <v-btn variant="text" @click="step = 1"> Back </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" variant="flat" @click="findMatchClick"> Next </v-btn>
+                <v-btn color="primary" variant="flat" @click="findMatchClick" :disabled="!linkIsValid"> Next </v-btn>
               </v-card-actions>
             </v-card-text>
           </v-window-item>
@@ -143,17 +140,14 @@
                   <v-text-field
                     v-model="createStudent.sin"
                     label="SIN"
+                    placeholder="999999999"
                     variant="outlined"
                     density="comfortable"
+                    @update:model-value="sinChanged"
                     hide-details></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
-                  <v-text-field
-                    v-model="createStudent.date_of_birth"
-                    label="Date of birth"
-                    variant="outlined"
-                    density="comfortable"
-                    hide-details></v-text-field>
+                  <DateSelector v-model="createStudent.date_of_birth" label="Date of birth" max="today" />
                 </v-col>
               </v-row>
               <v-divider class="my-4"></v-divider>
@@ -161,7 +155,9 @@
               <v-card-actions>
                 <v-btn variant="text" @click="step = 1"> Back </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="success" variant="flat" @click="createStudentClick"> Save my Details</v-btn>
+                <v-btn color="success" variant="flat" @click="createStudentClick" :disabled="!createIsValid">
+                  Save my Details</v-btn
+                >
               </v-card-actions>
             </v-card-text>
           </v-window-item>
@@ -220,38 +216,80 @@
 <script lang="ts">
 import { useNotificationStore } from "@/store/NotificationStore";
 import { useOnboardingStore } from "../store";
-import { mapActions, mapWritableState } from "pinia";
+import { mapActions, mapState, mapWritableState } from "pinia";
+import { useUserStore } from "@/store/UserStore";
+import DateSelector from "@/components/forms/DateSelector.vue";
 
 export default {
   name: "Welcome",
+  components: { DateSelector },
   data: () => ({
     step: 1,
     first_time: "1",
   }),
   computed: {
     ...mapWritableState(useOnboardingStore, ["createStudent", "linkStudent"]),
+    ...mapState(useOnboardingStore, ["createIsValid", "linkIsValid"]),
+    ...mapState(useUserStore, ["user", "student"]),
     matchFound() {
       return this.linkStudent.sin.length > 0;
     },
   },
-  async mounted() {},
+  async mounted() {
+    if (this.user) {
+      this.createStudent.first_name = this.user.given_name;
+      this.createStudent.last_name = this.user.family_name;
+      this.linkStudent.first_name = this.user.given_name;
+      this.linkStudent.last_name = this.user.family_name;
+    }
+
+    if (this.student && this.student.id) {
+      console.log("YOU have a match alerady");
+    } else {
+      console.log("YET");
+    }
+  },
+  watch: {
+    student(val) {
+      console.log("STUDNET WATH", val);
+      if (val.id) {
+        console.log("YOU have been onboarded already");
+        this.$router.push("/student");
+      }
+    },
+  },
   methods: {
     ...mapActions(useNotificationStore, ["notify"]),
     ...mapActions(useOnboardingStore, ["tryCreateStudent", "tryLinkStudent"]),
 
-    findMatchClick() {
-      let result = this.tryLinkStudent();
+    async findMatchClick() {
+      if (this.user) {
+        let result = await this.tryLinkStudent(this.user);
 
-      if (this.matchFound) {
-        this.step = 5;
-      } else this.step = 4;
+        console.log("RESULTS OF LINK", result);
+
+        if (result && result.data == true) {
+          this.step = 5;
+        } else this.step = 4;
+      }
     },
 
-    createStudentClick() {
-      let result = this.tryCreateStudent();
+    async createStudentClick() {
+      if (this.user) {
+        let result = await this.tryCreateStudent(this.user).then((resp) => resp);
 
-      this.notify({ variant: "success", text: "Student record created" });
-      this.step = 6;
+        if (result && result.id) {
+          this.notify({ variant: "success", text: "Student record created" });
+          this.step = 6;
+        }
+      }
+    },
+
+    sinChanged(newV: any) {
+      this.createStudent.sin = this.createStudent.sin.replace(/[^0-9.]/g, "").substring(0, 9);
+    },
+    sinChanged2(newV: any) {
+      this.linkStudent.sin = this.linkStudent.sin.replace(/[^0-9.]/g, "").substring(0, 9);
     },
   },
 };

@@ -1,14 +1,12 @@
-import { authGuard } from "@auth0/auth0-vue";
-
 export const onboardingRoutes = [
   {
     path: "",
     component: () => import("@/layouts/Default.vue"),
+    meta: { auth: true },
     children: [
       {
         path: "/welcome",
         component: () => import("../views/Welcome.vue"),
-        //beforeEnter: authGuard,
       },
     ],
   },

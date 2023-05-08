@@ -20,13 +20,13 @@
   <v-row>
     <v-col>
       <h4 class="text-h5 mb-4">Student Information</h4>
-      <v-card class="mb-5" elevation="0">
+      <v-card class="mb-5" elevation="0" v-if="student">
         <v-card-text style="font-size: 15px">
           <v-row>
             <v-col cols="12" md="6">
               <v-text-field
                 label="Full name"
-                model-value="Michael Ryan Johnson"
+                :model-value="`${student.first_name} ${student.initials} ${student.last_name}`"
                 density="comfortable"
                 variant="outlined"
                 hide-details
@@ -35,7 +35,7 @@
             <v-col cols="12" md="6">
               <v-text-field
                 label="Date of birth"
-                model-value="1980/11/02"
+                :model-value="`${formatDate(student.birth_date)}`"
                 density="comfortable"
                 variant="outlined"
                 hide-details
@@ -44,7 +44,7 @@
             <v-col cols="12" md="6">
               <v-text-field
                 label="SIN"
-                model-value="xxxxxx789"
+                :model-value="student.sin"
                 density="comfortable"
                 variant="outlined"
                 hide-details
@@ -53,7 +53,7 @@
             <v-col cols="12" md="6">
               <v-text-field
                 label="Email"
-                model-value="michael@icefoganalytics.com"
+                :model-value="student.email"
                 density="comfortable"
                 variant="outlined"
                 hide-details
@@ -90,43 +90,45 @@ Whitehorse, Yukon Y1A0B3`"></v-textarea>
       </div>
 
       <ApplicationCard v-for="(app, index) of myApplications" :application="app" class="mb-5"></ApplicationCard>
-
-      <v-card class="mb-5">
-        <v-card-text>
-          <h4 class="text-h5">Academic Year 2023/24</h4>
-          <v-btn color="primary" to="/application">Start a new Application</v-btn>
-          <v-btn>Request a change</v-btn>
-          <br />
-          ** 1 active application but multiples possible within an academic year
-          <v-list> </v-list>
-        </v-card-text>
-      </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script lang="ts">
 import { mapActions, mapState } from "pinia";
-import { useStudentStore } from "../store";
-import { useApplicationStore } from "@/modules/application/store";
-import ApplicationCard from "@/modules/application/components/application-card.vue";
+import { useDraftStore } from "@/modules/draft/store";
+import ApplicationCard from "@/modules/draft/components/application-card.vue";
 import AnnouncementList from "@/modules/notifications/components/announcement-list.vue";
 import RecentMessages from "@/modules/messages/components/recent-messages.vue";
+import { useUserStore } from "@/store/UserStore";
+import moment from "moment";
 
 export default {
   computed: {
-    ...mapState(useStudentStore, ["student"]),
-    ...mapState(useApplicationStore, ["myApplications"]),
+    ...mapState(useUserStore, ["student"]),
+    ...mapState(useDraftStore, ["myApplications"]),
   },
   components: { ApplicationCard, AnnouncementList, RecentMessages },
+  async mounted() {
+    if (this.student) await this.loadApplications();
+    else {
+      let interval = window.setInterval(async () => {
+        if (this.student) {
+          window.clearInterval(interval);
+          await this.loadApplications();
+        }
+      }, 250);
+    }
+  },
   methods: {
-    ...mapActions(useApplicationStore, ["create"]),
+    ...mapActions(useDraftStore, ["create", "loadApplications"]),
     createApplicationClick() {
       this.create().then((resp) => {
-        console.log(resp.id);
-
-        if (resp && resp.id) this.$router.push(`/application/${resp.id}`);
+        if (resp && resp.id) this.$router.push(`/draft/${resp.id}`);
       });
+    },
+    formatDate(input: Date): string {
+      return moment.utc(input).format("YYYY/MM/DD");
     },
   },
 };
