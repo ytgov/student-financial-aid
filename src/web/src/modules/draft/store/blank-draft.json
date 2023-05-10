@@ -1,0 +1,25 @@
+{
+  "terms_agree": false,
+  "program_details": {
+    "program_duration": "",
+    "program_name": "",
+    "start_date": "",
+    "institution": {}
+  },
+  "funding_sources": [],
+  "personal_details": {},
+  "addresses": {},
+  "statistical": {},
+  "consent": { "consents": [] },
+  "residency": {},
+  "education": {},
+  "other_funding": {},
+  "student_dependants": {},
+  "csfa_accomodation": {},
+  "csfa_income": {},
+  "csfa_expenses": {},
+  "parents": {},
+  "parent_dependants": {},
+  "spouse": {},
+  "documents": {}
+}
