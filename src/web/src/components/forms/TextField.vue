@@ -2,11 +2,11 @@
   <v-text-field
     type="text"
     v-model="output"
-    :label="$t(label)"
+    :label="label"
     :placeholder="placeholder"
     variant="outlined"
     bg-color="white"
-    density="compact"
+    density="comfortable"
     hide-details
     @blur="blur"
     @focus="focus"

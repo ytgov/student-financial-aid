@@ -1,56 +1,53 @@
 <template>
-  <section>
-    <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
-    <v-form @submit.prevent="submit" v-model="valid">
-      <fieldset class="group">
-        <fieldset>
-          <legend class="text-h5">{{ $t("application.onboarding.csfa_expenses.legends.expenses") }}</legend>
+  <v-card color="#eee5d1" variant="elevated" elevation="0">
+    <v-card-text>
+      <h3 class="text-h3 mb-6">{{ $t("application.onboarding.csfa_expenses.legends.expenses") }}</h3>
+      <p>
+        {{ $t("application.onboarding.csfa_expenses.excerpt") }}
+      </p>
+      <v-divider class="my-3" />
+      <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
+      <v-form @submit.prevent="submit" v-model="valid">
+        <p></p>
+        <table class="standard" cellpadding="0" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Comments</th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, key) in application.draft.csfa_expenses.expenses">
+              <td>
+                <select v-model="item.type">
+                  <option value="">--Select--</option>
+                  <option v-for="type in types">{{ type.value }}</option>
+                </select>
+                <p v-if="note(item.type)">
+                  <small>{{ note(item.type) }}</small>
+                </p>
+                <input type="text" v-model="item.type" v-if="false" />
+              </td>
+              <td>
+                <input type="text" v-model="item.amount" placeholder="0.00" />
+              </td>
+              <td>
+                <input type="text" v-model="item.comments" placeholder="Comments" />
+              </td>
+              <td>
+                <a @click="remove(key)"> Remove </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-          <p>
-            {{ $t("excerpt") }}
-          </p>
-          <table class="standard" cellpadding="0" cellspacing="0" width="100%">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>Comments</th>
-                <th>&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, key) in application.draft.csfa_expenses.expenses">
-                <td>
-                  <select v-model="item.type">
-                    <option value="">--Select--</option>
-                    <option v-for="type in types">{{ type.value }}</option>
-                  </select>
-                  <p v-if="note(item.type)">
-                    <small>{{ note(item.type) }}</small>
-                  </p>
-                  <input type="text" v-model="item.type" v-if="false" />
-                </td>
-                <td>
-                  <input type="text" v-model="item.amount" placeholder="0.00" />
-                </td>
-                <td>
-                  <input type="text" v-model="item.comments" placeholder="Comments" />
-                </td>
-                <td>
-                  <a @click="remove(key)"> Remove </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <v-btn color="info" @click="add()">Add expense</v-btn>
+      </v-form>
+    </v-card-text>
+  </v-card>
 
-          <p class="buttons">
-            <v-btn class="blue small" @click="add()">Add expense</v-btn>
-          </p>
-        </fieldset>
-      </fieldset>
-    </v-form>
-    <!-- </ValidationObserver> -->
-  </section>
   <div class="text-right mt-5">
     <v-btn color="primary" @click="nextClick">Next</v-btn>
   </div>

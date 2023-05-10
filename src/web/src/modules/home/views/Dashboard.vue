@@ -1,12 +1,10 @@
 <template>
   Home
-<br>
-  {{ $auth.user }}
+  <br />
 </template>
 
 <script lang="ts">
-
 export default {
   name: "Dashboard",
-}
+};
 </script>

@@ -63,9 +63,8 @@
             </tr>
           </tbody>
         </table>
-        <p class="buttons">
-          <v-btn class="blue small" @click="add()">Add residence</v-btn>
-        </p>
+
+        <v-btn color="info" @click="add()">Add residence</v-btn>
       </v-form>
     </v-card-text>
   </v-card>

@@ -36,13 +36,13 @@
             <tr>
               <td colspan="3">In school from</td>
               <td>
-                <DateSelector v-model="application.draft.spouse.post_secondary" />
+                <DateSelector :label="$t('In school from')" v-model="application.draft.spouse.post_secondary" />
               </td>
             </tr>
             <tr>
               <td colspan="3">In school until</td>
               <td>
-                <DateSelector v-model="application.draft.spouse.employment_information" />
+                <DateSelector :label="$t('In school until')" v-model="application.draft.spouse.employment_information" />
               </td>
             </tr>
             <tr>

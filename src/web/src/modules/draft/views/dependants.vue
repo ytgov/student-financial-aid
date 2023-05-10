@@ -2,13 +2,13 @@
   <v-card color="#eee5d1" variant="elevated" elevation="0">
     <v-card-text>
       <h3 class="text-h3 mb-6">{{ $t("application.onboarding.dependants.legends.dependants") }}</h3>
+      <p>
+        {{ $t("application.onboarding.dependants.excerpt") }}
+      </p>
       <v-divider class="my-3" />
 
       <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form @submit.prevent="submit" v-model="valid">
-        <p>
-          {{ $t("excerpt") }}
-        </p>
         <table class="form" cellpadding="0" cellspacing="0" width="100%">
           <tbody v-for="(item, key) in this.application.draft.student_dependants.dependants">
             <tr>
@@ -34,16 +34,10 @@
             <tr>
               <td colspan="6" class="checkboxes">
                 <div>
+                  <label><input type="checkbox" value="Resides with" v-model="item.other" /> Resides with</label>
+                  <label><input type="checkbox" value="Shared Custody" v-model="item.other" /> Shared Custody</label>
                   <label
-                    ><input type="checkbox" value="Resides with" v-model="item.other" /> Resides with</label
-                  >
-                  <label
-                    ><input type="checkbox" value="Shared Custody" v-model="item.other" /> Shared
-                    Custody</label
-                  >
-                  <label
-                    ><input type="checkbox" value="In post secondary" v-model="item.other" /> In post
-                    secondary</label
+                    ><input type="checkbox" value="In post secondary" v-model="item.other" /> In post secondary</label
                   >
                   <label v-if="false"
                     ><input type="checkbox" value="STA eligible" v-model="item.other" /> STA eligible</label
@@ -73,9 +67,7 @@
           </tbody>
         </table>
 
-        <p class="buttons">
-          <v-btn class="blue small" @click="add()">Add dependant</v-btn>
-        </p>
+        <v-btn color="info" @click="add()">Add dependant</v-btn>
       </v-form>
       <!--  </ValidationObserver> -->
     </v-card-text>

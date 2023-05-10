@@ -25,13 +25,11 @@ export default {
   },
   watch: {
     output(to, from) {
-      console.log("test")
       this.$emit("input", this.output);
     },
   },
   methods: {
     sinChanged(newV: any) {
-      console.log("TESTIN1", newV)
       this.output = newV.replace(/[^0-9.]/g, "").substring(0, 9);
     },
   },

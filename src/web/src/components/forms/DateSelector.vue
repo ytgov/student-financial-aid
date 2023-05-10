@@ -57,7 +57,7 @@ export default {
 .hf label {
   opacity: 1;
 }
-label {
+.inlay label {
   color: rgb(50, 50, 50);
   opacity: 0.6;
   font-size: 12px;

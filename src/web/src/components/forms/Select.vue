@@ -5,7 +5,7 @@
     :items="options"
     variant="outlined"
     bg-color="white"
-    density="compact"
+    density="comfortable"
     hide-details></v-select>
 </template>
 

@@ -58,9 +58,7 @@
           </tbody>
         </table>
 
-        <p class="buttons">
-          <v-btn class="blue small" @click="add()">Add another school</v-btn>
-        </p>
+        <v-btn color="info" @click="add()">Add another school</v-btn>
       </v-form>
       <!-- </ValidationObserver> -->
     </v-card-text>

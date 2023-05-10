@@ -22,7 +22,7 @@
           class="mb-5"
           name="Marital status"
           v-model="application.draft.statistical.marital_status"
-          label="Marital status"
+          :label="$t('eligibility.marital.title')"
           :options="['Married', 'Single', 'Divorced', 'Widowed']"
           :errors="errors"
           :valid="valid" />
@@ -33,7 +33,7 @@
           class="mb-5"
           name="Citizenship"
           v-model="application.draft.statistical.citizenship"
-          label="Citizenship"
+          :label="$t('eligibility.citizenship.title')"
           :options="['Not recorded', 'Canadian citizen', 'Perminent resident', 'Protected person', 'Non citizen']"
           :errors="errors"
           :valid="valid" />

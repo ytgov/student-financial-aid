@@ -51,7 +51,10 @@ export default {
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
   },
-  mounted() {},
+  mounted() {
+    this.application.draft.addresses.home_address1 = this.application.draft.addresses.home_address1 || {};
+    this.application.draft.addresses.home_address2 = this.application.draft.addresses.home_address2 || {};
+  },
   methods: {
     ...mapActions(useDraftStore, ["resume", "save"]),
 

@@ -27,8 +27,10 @@ export const en = {
     address_selector: {
       labels: {
         zip_postal_code: "Postal code or zip code",
-        address_first: "Street Address",
-        address_second: "Second Line / Unit",
+        address_first: "Street address",
+        address_second: "Second line / unit",
+        address_city: "City",
+        address_province: "Province or state"
       },
       buttons: {
         edit: "Edit",

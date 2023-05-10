@@ -30,6 +30,8 @@ export const fr = {
         zip_postal_code: "Code postal",
         address_first: "Adresse municipale (ligne 1)",
         address_second: "Ligne 2 / Unité ou appartement",
+        address_city: "Municipalité",
+        address_province: "Province ou état"
       },
       buttons: {
         edit: "Éditer",

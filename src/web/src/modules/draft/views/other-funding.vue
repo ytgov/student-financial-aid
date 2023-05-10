@@ -50,9 +50,7 @@
           </tbody>
         </table>
 
-        <p class="buttons">
-          <v-btn class="blue small" @click="add()">Add funding</v-btn>
-        </p>
+        <v-btn color="info" @click="add()">Add funding</v-btn>
 
         <v-banner
           outlined
