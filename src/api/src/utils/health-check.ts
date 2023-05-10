@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { DB_HOST } from "../config";
 
 export async function doHealthCheck(req: Request, res: Response) {
   let appHealth = [];
@@ -9,7 +8,6 @@ export async function doHealthCheck(req: Request, res: Response) {
     name: "Database",
     status: "lme",
     loading: false,
-    helpNotes: `Check that the databases is running at: ${DB_HOST}`
   });
 
   res.json({ appHealth });

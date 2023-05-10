@@ -20,8 +20,12 @@ export const apiBaseUrl = process.env.NODE_ENV == "production" ? "" : "http://lo
 export const API_PORT = process.env.API_PORT || "3000";
 export const FRONTEND_URL = process.env.FRONTEND_URL || "";
 
-export const AUTH0_DOMAIN = `${process.env.VUE_APP_AUTH_DOMAIN}/` || "";
-export const AUTH0_AUDIENCE = process.env.VUE_APP_AUTH_AUDIENCE || "";
+export const AUTH_DOMAIN = `${process.env.AUTH_DOMAIN}/` || "";
+export const AUTH_AUDIENCE = process.env.AUTH_AUDIENCE || "";
+export const AUTH_CLIENT = process.env.AUTH_CLIENT || "";
+export const AUTH_SECRET = process.env.AUTH_SECRET || "";
+export const AUTH_CLIENTSECRET = process.env.AUTH_CLIENTSECRET || "";
+export const AUTH_REDIRECT = process.env.AUTH_REDIRECT || "";
 
 export const APPLICATION_NAME = process.env.APPLICATION_NAME || "";
 
@@ -46,27 +50,5 @@ export const MAIL_CONFIG = {
   port: MAIL_PORT,
   secure: false, // true for 465, false for other ports
 };
-
-export const DB_CLIENT = process.env.DB_CLIENT || "mssql";
-export const DB_NAME = process.env.DB_NAME || "";
-export const DB_USER = process.env.DB_USER || "";
-export const DB_PASS = process.env.DB_PASS || "";
-export const DB_HOST = process.env.DB_HOST || "";
-export const DB_PORT = process.env.DB_PORT || "1433";
-
-export const DB_CONFIG = {
-  client: DB_CLIENT,
-  connection: {
-    host: DB_HOST,
-    user: DB_USER,
-    password: DB_PASS,
-    database: DB_NAME,
-    port: parseInt(DB_PORT),
-  },
-};
-
-export const AD_CLIENT_ID = process.env.AD_CLIENT_ID || "";
-export const AD_CLIENT_SECRET = process.env.AD_CLIENT_SECRET || "";
-export const AD_TENANT_ID = process.env.AD_TENANT_ID || "";
 
 export const PROXY_BASE_URL = process.env.PROXY_BASE_URL || "http://localhost:3100/api/portal";

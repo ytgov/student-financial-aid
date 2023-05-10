@@ -4,7 +4,16 @@ import path from "path";
 import helmet from "helmet";
 import fileUpload from "express-fileupload";
 import { auth } from "express-openid-connect";
-import { API_PORT, FRONTEND_URL, APPLICATION_NAME, AUTH0_DOMAIN } from "./config";
+import {
+  API_PORT,
+  FRONTEND_URL,
+  APPLICATION_NAME,
+  AUTH_DOMAIN,
+  AUTH_CLIENT,
+  AUTH_SECRET,
+  AUTH_CLIENTSECRET,
+  AUTH_REDIRECT,
+} from "./config";
 import { doHealthCheck } from "./utils/health-check";
 import { authRouter, portalRouter, userRouter } from "./routes";
 
@@ -20,7 +29,7 @@ app.use(fileUpload());
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      "default-src": ["'self'", `${AUTH0_DOMAIN}`],
+      "default-src": ["'self'", `${AUTH_DOMAIN}`],
       "base-uri": ["'self'"],
       "block-all-mixed-content": [],
       "font-src": ["'self'", "https:", "data:"],
@@ -45,10 +54,10 @@ app.use(
 
 app.use(
   auth({
-    issuerBaseURL: "https://yukon-uat.vivvocloud.com",
-    baseURL: "http://localhost:3000",
-    clientID: "8de87183-279c-4b1c-89ce-5033b9faadaa",
-    secret: "c6b0__________________________",
+    issuerBaseURL: AUTH_DOMAIN,
+    baseURL: AUTH_REDIRECT,
+    clientID: AUTH_CLIENT,
+    secret: AUTH_SECRET,
     idpLogout: true,
     authRequired: false,
     session: { cookie: { secure: false } },
@@ -58,7 +67,7 @@ app.use(
       response_mode: "form_post",
       scope: "openid profile email",
     },
-    clientSecret: "df9cedb4-c6b0-4daf-bbf5-0a83abee6538",
+    clientSecret: AUTH_CLIENTSECRET,
     clientAuthMethod: "client_secret_post",
 
     routes: {
