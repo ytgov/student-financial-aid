@@ -9,65 +9,73 @@
 
       <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form @submit.prevent="submit" v-model="valid">
-        <table class="form" cellpadding="0" cellspacing="0" width="100%">
-          <tbody v-for="(item, key) in this.application.draft.student_dependants.dependants">
-            <tr>
-              <td>First Name</td>
-              <td>
-                <input type="text" v-model="item.first_name" placeholder="" />
-              </td>
-              <td>Last Name</td>
-              <td>
-                <input type="text" v-model="item.last_name" placeholder="" />
-              </td>
-            </tr>
-            <tr>
-              <td>Date of birth</td>
-              <td>
-                <input type="text" v-model="item.dob" placeholder="" />
-              </td>
-              <td>Relationship</td>
-              <td>
-                <input type="text" v-model="item.age" placeholder="" />
-              </td>
-            </tr>
-            <tr>
-              <td colspan="6" class="checkboxes">
-                <div>
-                  <label><input type="checkbox" value="Resides with" v-model="item.other" /> Resides with</label>
-                  <label><input type="checkbox" value="Shared Custody" v-model="item.other" /> Shared Custody</label>
-                  <label
-                    ><input type="checkbox" value="In post secondary" v-model="item.other" /> In post secondary</label
-                  >
-                  <label v-if="false"
-                    ><input type="checkbox" value="STA eligible" v-model="item.other" /> STA eligible</label
-                  >
-                  <label v-if="false"
-                    ><input type="checkbox" value="CSL eligible" v-model="item.other" /> CSL eligible</label
-                  >
-                  <label v-if="false"
-                    ><input type="checkbox" value="CSG eligible" v-model="item.other" /> CSG eligable</label
-                  >
-                </div>
-              </td>
-            </tr>
-            <tr v-if="item.other.includes('Shared Custody')">
-              <td colspan="4">
-                <textarea v-model="item.custody_details" placeholder="Shared custody details" />
-              </td>
-            </tr>
-            <tr>
-              <td colspan="4">
-                <textarea v-model="item.comments" placeholder="Comments" />
-              </td>
-            </tr>
-            <tr v-if="key > 0">
-              <td colspan="3"><a @click="remove(key)">Remove dependant</a></td>
-            </tr>
-          </tbody>
-        </table>
+        <v-row v-for="(item, key) in this.application.draft.student_dependants.dependants">
+          <v-col cols="12" md="6">
+            <TextField v-model="item.first_name" label="First name" />
+          </v-col>
+          <v-col cols="12" md="6">
+            <TextField v-model="item.last_name" label="Last name" />
+          </v-col>
+          <v-col cols="12" md="6">
+            <DateSelector v-model="item.dob" label="Date of birth" />
+          </v-col>
+          <v-col cols="12" md="6">
+            <TextField TextField v-model="item.relationship" label="Relationship" />
+          </v-col>
+          <v-col cols="12" md="4" class="py-0">
+            <v-checkbox
+              label="Shared custody"
+              v-model="item.other"
+              value="Shared Custody"
+              density="compact"
+              hide-details></v-checkbox>
+          </v-col>
+          <v-col cols="12" md="4" class="py-0">
+            <v-checkbox
+              label="Resides with"
+              v-model="item.other"
+              value="Resides with"
+              density="compact"
+              hide-details></v-checkbox>
+          </v-col>
+          <v-col cols="12" md="4" class="py-0">
+            <v-checkbox
+              label="In post secondary"
+              v-model="item.other"
+              value="In post secondary"
+              density="compact"
+              hide-details></v-checkbox>
+          </v-col>
 
-        <v-btn color="info" @click="add()">Add dependant</v-btn>
+          <v-col cols="12" md="6">
+            <v-textarea
+              v-if="item.other.includes('Shared Custody')"
+              v-model="item.custody_details"
+              label="Shared custody details"
+              density="compact"
+              bg-color="white"
+              variant="outlined"
+              rows="3"
+              hide-details />
+          </v-col>
+
+          <v-col cols="12" md="6">
+            <v-btn icon="mdi-delete" size="small" color="warning" @click="remove(key)" class="float-right"></v-btn>
+            <v-textarea
+              v-model="item.comments"
+              label="Comments"
+              density="compact"
+              bg-color="white"
+              hide-details
+              variant="outlined"
+              style="margin-right: 55px"
+              rows="3" />
+          </v-col>
+
+          <v-divider></v-divider>
+        </v-row>
+
+        <v-btn class="mt-6" color="info" @click="add()">Add dependant</v-btn>
       </v-form>
       <!--  </ValidationObserver> -->
     </v-card-text>
@@ -78,11 +86,13 @@
 </template>
 
 <script>
+import TextField from "@/components/forms/TextField.vue";
+import DateSelector from "@/components/forms/DateSelector.vue";
 import { mapActions, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
 
 export default {
-  components: {},
+  components: { TextField, DateSelector },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
   },

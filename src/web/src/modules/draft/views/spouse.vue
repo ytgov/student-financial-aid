@@ -19,68 +19,50 @@
           <v-col cols="12" md="6">
             <TextField label="SIN" v-model="application.draft.spouse.sin" />
           </v-col>
+          <v-col cols="12" md="6">
+            <Select
+              label="Study period employment status"
+              v-model="application.draft.spouse.employment_status"
+              :items="['Employed', 'Not Employed']" />
+          </v-col>
         </v-row>
 
-        <h3 class="text-h3 mb-6">{{ $t("application.onboarding.spouse.legends.study-period") }}</h3>
+        <v-divider class="my-3" />
+        <label class="v-label mb-6">{{ $t("application.onboarding.spouse.legends.post-secondary") }}</label>
+
+        <v-row>
+          <v-col cols="12" md="4">
+            <DateSelector :label="$t('In school from')" v-model="application.draft.spouse.post_secondary" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <DateSelector :label="$t('In school until')" v-model="application.draft.spouse.employment_information" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-checkbox
+              v-model="application.draft.spouse.employment_information"
+              label="Applying for Canada Student Loan" />
+          </v-col>
+        </v-row>
         <v-divider class="my-3" />
 
-        <Select
-          label="Study employment status"
-          v-model="application.draft.spouse.employment_status"
-          :items="['Employed', 'Not Employed']" />
+        <label class="v-label mb-6">{{
+          $t("application.onboarding.spouse.legends.employment-information")
+        }}</label>
 
-        <h3 class="text-h3 mb-6">{{ $t("application.onboarding.spouse.legends.post-secondary") }}</h3>
-        <v-divider class="my-3" />
-        <table class="form" cellpadding="0" cellspacing="0" width="100%">
-          <tbody>
-            <tr>
-              <td colspan="3">In school from</td>
-              <td>
-                <DateSelector :label="$t('In school from')" v-model="application.draft.spouse.post_secondary" />
-              </td>
-            </tr>
-            <tr>
-              <td colspan="3">In school until</td>
-              <td>
-                <DateSelector :label="$t('In school until')" v-model="application.draft.spouse.employment_information" />
-              </td>
-            </tr>
-            <tr>
-              <td colspan="4">
-                <label>
-                  <input type="checkbox" v-model="application.draft.spouse.employment_information" value="true" />
-                  Applying for Canada Student Loan.
-                </label>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <h3 class="text-h3 mb-6">{{ $t("application.onboarding.spouse.legends.employment-information") }}</h3>
-        <v-divider class="my-3" />
-
-        <table class="form" cellpadding="0" cellspacing="0" width="100%">
-          <tbody>
-            <tr class="checkbox">
-              <td colspan="3">Living with spouse</td>
-              <td>
-                <input type="checkbox" v-model="application.draft.spouse.living_with" value="true" />
-              </td>
-            </tr>
-            <tr class="checkbox">
-              <td colspan="3">Bus Service Available?</td>
-              <td>
-                <input type="checkbox" v-model="application.draft.spouse.bus_service" value="true" />
-              </td>
-            </tr>
-            <tr class="checkbox" v-if="!application.draft.spouse.bus_service">
-              <td colspan="3">Distance form school/work (km)</td>
-              <td>
-                <input type="text" v-model="application.draft.spouse.distance_from_school" placeholder="0" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <v-row>
+          <v-col cols="12" md="4">
+            <v-checkbox v-model="application.draft.spouse.living_with" label="Living with spouse" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-checkbox v-model="application.draft.spouse.bus_service" label="Bus service available?" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <TextField
+              v-if="!application.draft.spouse.bus_service"
+              v-model="application.draft.spouse.distance_from_school"
+              label="Distance form school/work (km)" />
+          </v-col>
+        </v-row>
       </v-form>
       <!-- </ValidationObserver> -->
     </v-card-text>

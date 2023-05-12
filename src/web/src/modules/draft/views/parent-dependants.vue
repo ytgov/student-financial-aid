@@ -2,54 +2,47 @@
   <v-card color="#eee5d1" variant="elevated" elevation="0">
     <v-card-text>
       <h3 class="text-h3 mb-6">{{ $t("application.onboarding.parent_dependants.legends.dependants") }}</h3>
+      <p>
+        Enter your parent dependants inforamtion. A dependent child is defined as a child (including an adopted child,
+        step-child or foster child) who is 17 years or younger and is wholly dependent on you or your spouse for
+        support, and over whom you or your spouse has, in law or in fact, custody and control; or, a child who is in
+        full-time attendance at a post-secondary institution and meets the definition of a Dependent Student found at
+        <a href="https://www.education.gov.yk.ca/continued/student_loans.html" target="_blank"
+          >https://www.education.gov.yk.ca/continued/student_loans.html</a
+        >.
+      </p>
       <v-divider class="my-3" />
 
       <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form @submit.prevent="submit" v-model="valid">
-        <p>
-          Enter your parent dependants inforamtion. A dependent child is defined as a child (including an adopted child,
-          step-child or foster child) who is 17 years or younger and is wholly dependent on you or your spouse for
-          support, and over whom you or your spouse has, in law or in fact, custody and control; or, a child who is in
-          full-time attendance at a post-secondary institution and meets the definition of a Dependent Student found at
-          <a href="https://www.education.gov.yk.ca/continued/student_loans.html" target="_blank"
-            >https://www.education.gov.yk.ca/continued/student_loans.html</a
-          >.
-        </p>
-        <table class="form" cellpadding="0" cellspacing="0" width="100%">
-          <tbody v-for="(item, key) in this.application.draft.parent_dependants.dependants">
-            <tr>
-              <td>First Name</td>
-              <td>
-                <input type="text" v-model="item.first_name" placeholder="" />
-              </td>
-              <td>Last Name</td>
-              <td>
-                <input type="text" v-model="item.last_name" placeholder="" />
-              </td>
-            </tr>
-            <tr>
-              <td>Date of birth</td>
-              <td>
-                <input type="text" v-model="item.dob" placeholder="" />
-              </td>
-              <td>Relationship</td>
-              <td>
-                <input type="text" v-model="item.age" placeholder="" />
-              </td>
-            </tr>
-            <tr>
-              <td colspan="4">
-                <textarea v-model="item.comments" placeholder="Comments" />
-              </td>
-            </tr>
-            <tr v-if="key > 0">
-              <td colspan="3"><a @click="remove(key)">Remove dependant</a></td>
-            </tr>
-          </tbody>
-        </table>
+        <v-row v-for="(item, key) in this.application.draft.parent_dependants.dependants">
+          <v-col cols="12" md="3">
+            <TextField type="text" v-model="item.first_name" label="First name" />
+          </v-col>
+          <v-col cols="12" md="3">
+            <TextField v-model="item.last_name" label="Last name" />
+          </v-col>
+          <v-col cols="12" md="3">
+            <DateSelector v-model="item.dob" label="Date of birth" />
+          </v-col>
+          <v-col cols="12" md="3">
+            <TextField v-model="item.age" label="Relationship" />
+          </v-col>
+          <v-col>
+            <v-btn icon="mdi-delete" size="small" color="warning" @click="remove(key)" class="float-right"></v-btn>
+            <v-textarea
+              v-model="item.comments"
+              label="Comments"
+              rows="2"
+              variant="outlined"
+              bg-color="white"
+              density="comfortable"
+              style="margin-right: 55px" />
+          </v-col>
+          <v-divider />
+        </v-row>
 
-          <v-btn color="info" @click="add()">Add dependant</v-btn>
-     
+        <v-btn class="mt-6" color="info" @click="add()">Add dependant</v-btn>
       </v-form>
       <!-- </ValidationObserver> -->
     </v-card-text>
@@ -62,9 +55,11 @@
 <script>
 import { mapActions, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
+import TextField from "@/components/forms/TextField.vue";
+import DateSelector from "@/components/forms/DateSelector.vue";
 
 export default {
-  components: {},
+  components: { TextField, DateSelector },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
   },

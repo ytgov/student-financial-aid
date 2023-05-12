@@ -9,26 +9,17 @@
 
       <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form @submit.prevent="submit">
-        <v-table density="comfortable">
-          <thead>
-            <tr>
-              <th class="text-left">Consent person</th>
-              <th class="text-left">Academic year start</th>
-              <th class="text-left">Academic year end</th>
-              <th style="width: 80px"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, key) in this.application.draft.consent.consents">
-              <td><TextField v-model="item.person" label="" placeholder="Enter Name" /></td>
-              <td><TextField v-model="item.start_year" label="" placeholder="Enter Name" /></td>
-              <td><TextField v-model="item.end_year" label="" placeholder="Enter Name" /></td>
-              <td><v-btn icon="mdi-delete" color="warning" size="small" @click="remove(key)"></v-btn></td>
-            </tr>
-          </tbody>
-        </v-table>
+        <v-row v-for="(item, key) in this.application.draft.consent.consents">
+          <v-col cols="12" md="4"><TextField v-model="item.person" label="Consent person" /></v-col>
+          <v-col cols="12" md="4"><TextField v-model="item.start_year" label="Academic year start" /></v-col>
+          <v-col cols="12" md="4">
+            <v-btn icon="mdi-delete" color="warning" size="small" @click="remove(key)" class="float-right"></v-btn>
+            <TextField v-model="item.end_year" label="Academic year end" style="margin-right: 55px" />
+          </v-col>
+          <v-divider/>
+        </v-row>
 
-        <v-btn class="mt-4" color="info" @click="addconsent()">Add Consent</v-btn>
+        <v-btn class="mt-6" color="info" @click="addconsent()">Add Consent</v-btn>
 
         <v-banner
           outlined

@@ -2,69 +2,47 @@
   <v-card color="#eee5d1" variant="elevated" elevation="0">
     <v-card-text>
       <h3 class="text-h3 mb-6">{{ $t("application.onboarding.residency_history.legends.consent") }}</h3>
+      <p class="mb-3">
+        Student consent to release information to another person: Please provide a complete breakdown of where you were
+        physically living for the 2 years immediately prior to starting classes.
+      </p>
+      <ul style="margin-left: 20px">
+        <li>
+          Separate the two years into periods of time when you were in high school or post-secondary including summer
+          breaks as full-time, part-time or not in school at all.
+        </li>
+        <li>Include all absence and returns to Yukon.</li>
+        <li>There should not be any gab in this two-year period.</li>
+      </ul>
+
       <v-divider class="my-3" />
 
       <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }" > -->
       <v-form @submit.prevent="submit" v-model="valid">
-        <p>
-          Student consent to release information to another person: Please provide a complete breakdown of where you
-          were physically living for the 2 years immediately prior to starting classes.
-        </p>
-        <ul>
-          <li>
-            Separate the two years into periods of time when you were in high school or post-secondary including summer
-            breaks as full-time, part-time or not in school at all.
-          </li>
-          <li>Include all absence and returns to Yukon.</li>
-          <li>There should not be any gab in this two-year period.</li>
-        </ul>
+        <v-row v-for="(item, key) in application.draft.residency.residency_history">
+          <v-col cols="12" md="4">
+            <DateSelector v-model="item.start" label="From" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <DateSelector v-model="item.end" label="To" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <Select v-model="item.in_school" label="In School?" :items="['Not in school', 'Full-time', 'Part-time']" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <TextField v-model="item.city" label="City" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <TextField v-model="item.province" label="Province" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-btn icon="mdi-delete" size="small" color="warning" @click="remove(key)" class="float-right"></v-btn>
+            <Select v-model="item.country" label="Country" style="margin-right: 55px" />
+          </v-col>
+          <v-divider></v-divider>
+        </v-row>
 
-        <table class="standard" cellpadding="0" cellspacing="0" width="100%">
-          <thead>
-            <tr>
-              <th>From</th>
-              <th>To</th>
-              <th>City</th>
-              <th>Province</th>
-              <th>Country</th>
-              <th>In&nbsp;School?</th>
-              <th>&nbsp;</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, key) in application.draft.residency.residency_history">
-              <td>
-                <input type="text" v-model="item.start" maxlength="4" width="50" />
-              </td>
-              <td class="center">
-                <input type="text" v-model="item.end" maxlength="2" width="25" />
-              </td>
-              <td>
-                <input type="text" v-model="item.city" placeholder="City" />
-              </td>
-              <td>
-                <input type="text" v-model="item.province" placeholder="Province" />
-              </td>
-              <td>
-                <select v-model="item.country" placeholder="Country">
-                  <option>Canada</option>
-                </select>
-              </td>
-              <td>
-                <select v-model="item.in_school">
-                  <option>Not in school</option>
-                  <option>Full-time</option>
-                  <option>Part-time</option>
-                </select>
-              </td>
-              <td>
-                <a @click="remove(key)">Remove</a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <v-btn color="info" @click="add()">Add residence</v-btn>
+        <v-btn class="mt-6" color="info" @click="add()">Add residence</v-btn>
       </v-form>
     </v-card-text>
   </v-card>
@@ -78,9 +56,12 @@
 import moment from "moment";
 import { useDraftStore } from "../store";
 import { mapActions, mapWritableState } from "pinia";
+import DateSelector from "@/components/forms/DateSelector.vue";
+import TextField from "@/components/forms/TextField.vue";
+import Select from "@/components/forms/Select.vue";
 
 export default {
-  components: {},
+  components: { DateSelector, TextField, Select },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
   },

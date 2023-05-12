@@ -296,6 +296,32 @@ export const useDraftStore = defineStore("draft", {
     availableSectionSubmit(): boolean {
       return this.completeSectionTerms;
     },
+
+    requiredDocuments(): any[] {
+      return [
+        {
+          type: "Transcript",
+          description: "Transcript",
+          file_name: "MJ File of files.pdf",
+          status: "Missing",
+        },
+        {
+          type: "Transcript",
+          description: "Transcript",
+          status: "Missing",
+        },
+        {
+          type: "Transcript",
+          description: "Transcript",
+          status: "Missing",
+        },
+        {
+          type: "Transcript",
+          description: "Transcript",
+          status: "Verified",
+        },
+      ];
+    },
   },
   actions: {
     async loadApplications(): Promise<void> {
@@ -360,6 +386,30 @@ export const useDraftStore = defineStore("draft", {
     },
 
     async save(): Promise<any> {
+      if (this.application) {
+        const api = useApiStore();
+        const userStore = useUserStore();
+
+        return api
+          .secureCall("put", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}`, {
+            academic_year_id: this.academic_year.id,
+            student_id: userStore.student.id,
+            application_json: JSON.stringify(this.application.draft),
+            is_active: true,
+            create_date: new Date(),
+            update_date: new Date(),
+          })
+          .then((resp) => {
+            return resp.data;
+          })
+          .catch((err) => {
+            console.log("ERROR HAPPENED", err);
+            return {};
+          });
+      }
+    },
+
+    async upload(): Promise<any> {
       if (this.application) {
         const api = useApiStore();
         const userStore = useUserStore();
