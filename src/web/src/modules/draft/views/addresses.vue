@@ -16,11 +16,19 @@
         <AddressSelector v-model="application.draft.addresses.home_address2" />
       </v-card-text>
     </v-card>
-
-    <div class="text-right mt-5">
-      <v-btn color="primary" @click="nextClick">Next</v-btn>
-    </div>
   </v-form>
+
+  <div>
+    <v-btn color="info" @click="backClick" class="float-left pl-3">
+      <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous
+    </v-btn>
+    <div class="text-right mt-5">
+      <v-btn color="primary" class="mr-3" @click="saveClick">Save</v-btn>
+      <v-btn color="primary" @click="nextClick" class="pr-3">
+        Save and Next <v-icon class="ml-2">mdi-arrow-right</v-icon>
+      </v-btn>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -56,11 +64,19 @@ export default {
     this.application.draft.addresses.home_address2 = this.application.draft.addresses.home_address2 || {};
   },
   methods: {
-    ...mapActions(useDraftStore, ["resume", "save"]),
+    ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
 
+    async backClick() {
+      this.save().then(() => {
+        this.$router.push(this.getPrevious("Addresses"));
+      });
+    },
+    async saveClick() {
+      this.save().then(() => {});
+    },
     async nextClick() {
       this.save().then(() => {
-        this.$router.push(this.resume("Addresses"));
+        this.$router.push(this.getNext("Addresses"));
       });
     },
   },

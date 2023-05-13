@@ -7,63 +7,58 @@
       </p>
       <v-divider class="my-3" />
 
-      <v-row>
-        <v-col>Type or Purpose</v-col>
-        <v-col>File name</v-col>
-        <v-col>File name</v-col>
+      <v-row class="mb-1">
+        <v-col cols="12" md="2"><label class="v-label pl-2">Status</label></v-col>
+        <v-col cols="12" md="10"><label class="v-label">Document type</label></v-col>
       </v-row>
-
-
-      <label class="v-label mb-5">Required documents</label>
+      <v-divider class="mb-3" />
 
       <v-row v-for="(doc, key) in requiredDocuments">
-        <v-col>
-          <strong>{{ doc.description }}</strong> <br />
-          {{doc.file_name}}
-          <!-- <a :href="doc.location" target="_blank">{{ doc.location }}</a> -->
+        <v-col cols="12" md="2">
+          <v-chip :color="statusColor(doc.status)" variant="flat">{{ doc.status }}</v-chip>
+        </v-col>
+        <v-col cols="12" md="8" class="pt-4">
+          {{ doc.description }}
         </v-col>
 
-        <v-col v-if="['Verified', 'Vérifié'].includes(doc.status)">
-          <a>{{ $t("buttons.delete") }}</a>
+        <v-col v-if="doc.status == 'Missing'" cols="12" md="12" class="pt-1">
+          <v-file-input
+            label="Choose file"
+            variant="outlined"
+            bg-color="white"
+            prepend-icon=""
+            prepend-inner-icon="mdi-paperclip"
+            hide-details
+            v-model="to_upload"
+            @update:model-value="docChanged">
+            <template v-slot:append>
+              <v-btn color="info" size="small" @click="doUpload(doc)" :disabled="!doc.to_upload">
+                {{ $t("application.documents.buttons.upload") }}
+              </v-btn>
+            </template>
+          </v-file-input>
         </v-col>
-        <v-col v-else-if="['Uploading', 'Téléchargement'].includes(doc.status)">
-          <a>{{ $t("buttons.cancel") }}</a>
-        </v-col>
-        <v-col v-else>
-          <v-btn color="info" size="small" :to="`/application/documents/upload/${doc.resource}`">
-            {{ $t("application.documents.buttons.upload") }}
+
+        <v-col v-else cols="12" md="2" class="pt-1 text-right">
+          <v-btn color="warning" size="small">
+            {{ $t("application.documents.buttons.delete") }}
           </v-btn>
         </v-col>
-        <v-divider />
+        <v-divider v-if="key < requiredDocuments.length - 1" />
       </v-row>
-
-      <label class="v-label mt-8 mb-5">Recommended or optional documents</label>
-
-      <v-row v-for="(doc, key) in requiredDocuments">
-        <v-col>
-          <strong>{{ doc.description }}</strong> <br />
-          <a :href="doc.location" target="_blank">{{ doc.location }}</a>
-        </v-col>
-
-        <v-col v-if="['Verified', 'Vérifié'].includes(doc.status)">
-          <a>{{ $t("buttons.delete") }}</a>
-        </v-col>
-        <v-col v-else-if="['Uploading', 'Téléchargement'].includes(doc.status)">
-          <a>{{ $t("buttons.cancel") }}</a>
-        </v-col>
-        <v-col v-else>
-          <v-btn color="info" size="small" :to="`/application/documents/upload/${doc.resource}`">
-            {{ $t("application.documents.buttons.upload") }}
-          </v-btn>
-        </v-col>
-        <v-divider />
-      </v-row>
-
-
     </v-card-text>
   </v-card>
-  <div class="text-right mt-5">
-    <v-btn color="primary" @click="nextClick">Next</v-btn>
+
+  <div>
+    <v-btn color="info" @click="backClick" class="float-left pl-3">
+      <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous
+    </v-btn>
+    <div class="text-right mt-5">
+      <v-btn color="primary" class="mr-3" @click="saveClick">Save</v-btn>
+      <v-btn color="primary" @click="nextClick" class="pr-3">
+        Save and Next <v-icon class="ml-2">mdi-arrow-right</v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -75,16 +70,43 @@ import { useDraftStore } from "../store";
 
 export default {
   components: {},
+  data: () => ({
+    to_upload: undefined
+  }),
   computed: {
-    ...mapWritableState(useDraftStore, ["application"]),
-    ...mapState(useDraftStore, ["requiredDocuments"]),
+    ...mapWritableState(useDraftStore, ["application", "requiredDocuments"]),
   },
   methods: {
-    ...mapActions(useDraftStore, ["resume", "save", "upload"]),
+    ...mapActions(useDraftStore, ["getPrevious", "getNext", "save", "upload"]),
 
+    async doUpload(doc) {
+      console.log("UP", doc.to_upload);
+
+      await this.upload(doc).then(() => {});
+    },
+
+    docChanged(doc) {
+      if (doc) {
+        console.log(doc);
+      }
+    },
+
+    statusColor(status) {
+      if (status == "Missing") return "warning";
+      else if (status == "Verified") return "success";
+    },
+
+    async backClick() {
+      this.save().then(() => {
+        this.$router.push(this.getPrevious("Documents"));
+      });
+    },
+    async saveClick() {
+      this.save().then(() => {});
+    },
     async nextClick() {
       this.save().then(() => {
-        this.$router.push(this.resume("Addresses"));
+        this.$router.push(this.getNext("Documents"));
       });
     },
   },

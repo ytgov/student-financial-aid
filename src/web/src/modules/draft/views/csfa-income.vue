@@ -27,8 +27,16 @@
     </v-card-text>
   </v-card>
 
-  <div class="text-right mt-5">
-    <v-btn color="primary" @click="nextClick">Next</v-btn>
+  <div>
+    <v-btn color="info" @click="backClick" class="float-left pl-3">
+      <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous
+    </v-btn>
+    <div class="text-right mt-5">
+      <v-btn color="primary" class="mr-3" @click="saveClick">Save</v-btn>
+      <v-btn color="primary" @click="nextClick" class="pr-3">
+        Save and Next <v-icon class="ml-2">mdi-arrow-right</v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -48,7 +56,7 @@ export default {
     this.application.draft.csfa_income.incomes = this.application.draft.csfa_income.incomes || [];
   },
   methods: {
-    ...mapActions(useDraftStore, ["resume", "save"]),
+    ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
     add() {
       this.application.draft.csfa_income.incomes.push({
         type: "",
@@ -61,9 +69,18 @@ export default {
         this.application.draft.csfa_income.incomes.splice(key, 1); // 2nd parameter means remove one item only
       }
     },
+
+    async backClick() {
+      this.save().then(() => {
+        this.$router.push(this.getPrevious("CSFA Income"));
+      });
+    },
+    async saveClick() {
+      this.save().then(() => {});
+    },
     async nextClick() {
       this.save().then(() => {
-        this.$router.push(this.resume("CSFA Income"));
+        this.$router.push(this.getNext("CSFA Income"));
       });
     },
   },

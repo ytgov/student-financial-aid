@@ -400,6 +400,7 @@ export const useDraftStore = defineStore("draft", {
             update_date: new Date(),
           })
           .then((resp) => {
+            m.notify({ text: "Application Saved", variant: "success" });
             return resp.data;
           })
           .catch((err) => {
@@ -409,20 +410,13 @@ export const useDraftStore = defineStore("draft", {
       }
     },
 
-    async upload(): Promise<any> {
+    async upload(file: any): Promise<any> {
       if (this.application) {
         const api = useApiStore();
         const userStore = useUserStore();
 
         return api
-          .secureCall("put", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}`, {
-            academic_year_id: this.academic_year.id,
-            student_id: userStore.student.id,
-            application_json: JSON.stringify(this.application.draft),
-            is_active: true,
-            create_date: new Date(),
-            update_date: new Date(),
-          })
+          .secureCall("post", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}/upload`, { file })
           .then((resp) => {
             return resp.data;
           })
@@ -453,6 +447,16 @@ export const useDraftStore = defineStore("draft", {
       for (let i = 0; i < this.relevantSections.length; i++) {
         let sect = this.relevantSections[i];
         if (current == sect.name) return this.relevantSections[i + 1].uri;
+      }
+      return "";
+    },
+
+    getPrevious(current: string): string {
+      if (!this.application) return "";
+
+      for (let i = 0; i < this.relevantSections.length; i++) {
+        let sect = this.relevantSections[i];
+        if (current == sect.name) return this.relevantSections[i - 1].uri;
       }
       return "";
     },

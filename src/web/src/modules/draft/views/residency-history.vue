@@ -47,8 +47,16 @@
     </v-card-text>
   </v-card>
 
-  <div class="text-right mt-5">
-    <v-btn color="primary" @click="nextClick">Next</v-btn>
+  <div>
+    <v-btn color="info" @click="backClick" class="float-left pl-3">
+      <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous
+    </v-btn>
+    <div class="text-right mt-5">
+      <v-btn color="primary" class="mr-3" @click="saveClick">Save</v-btn>
+      <v-btn color="primary" @click="nextClick" class="pr-3">
+        Save and Next <v-icon class="ml-2">mdi-arrow-right</v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -72,7 +80,7 @@ export default {
     this.application.draft.residency.residency_history = this.application.draft.residency.residency_history || [];
   },
   methods: {
-    ...mapActions(useDraftStore, ["resume", "save"]),
+    ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
     add() {
       this.application.draft.residency.residency_history.push({
         start: this.formatDate(new Date()),
@@ -92,9 +100,18 @@ export default {
       if (input) return moment(input).format("YYYY-MM-DD");
       return "";
     },
+    
+    async backClick() {
+      this.save().then(() => {
+        this.$router.push(this.getPrevious("Residency"));
+      });
+    },
+    async saveClick() {
+      this.save().then(() => {});
+    },
     async nextClick() {
       this.save().then(() => {
-        this.$router.push(this.resume("Residency"));
+        this.$router.push(this.getNext("Residency"));
       });
     },
   },
