@@ -98,8 +98,7 @@
             :to="`/application/personal-information/address/perminent?revise=true`"
             color="primary"
             class="mr-5"
-            x-large
-          >
+            x-large>
             {{ $t("buttons.edit") }}
           </v-btn>
         </p>
@@ -132,7 +131,14 @@
       </section>
     </v-card>
 
-    <Buttons :valid="valid" :next="next" back="true" />
+    <div>
+      <v-btn color="info" @click="backClick" class="float-left pl-3">
+        <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous
+      </v-btn>
+      <div class="text-right mt-5">
+        <v-btn color="primary" class="mr-3" @click="saveClick">Submit</v-btn>
+      </div>
+    </div>
   </v-container>
 </template>
 
@@ -165,11 +171,13 @@ table {
 //import { mapState } from "pinia";
 import AddressSelector from "@/components/forms/AddressSelector.vue";
 import Buttons from "@/components/forms/Buttons.vue";
+import { mapActions } from "pinia";
+import { useDraftStore } from "../store";
 
 export default {
   components: {
     AddressSelector,
-    Buttons
+    Buttons,
   },
   computed: {
     /* ...mapState({
@@ -178,48 +186,50 @@ export default {
       documents: "documents/list"
       //ap: 'applications/programs'
     }), */
-    eligibility() { return {details: {}, program: {},  designated_institution: {details: {}}}},
-    programs() {return []},
-    documents() {return []},
-
+    eligibility() {
+      return { details: {}, program: {}, designated_institution: { details: {} } };
+    },
+    programs() {
+      return [];
+    },
+    documents() {
+      return [];
+    },
 
     locale() {
       return this.$i18n.locale;
     },
     profile: {
       get() {
-        return {}
+        return {};
         //return this.$store.getters["student/GET"];
       },
       set(values) {
         this.$store.commit("student/SET")(values);
-      }
+      },
     },
     perminent_addresses_updated() {
       return this.profile.HOME_ADDRESS1;
     },
     at_school_address_updated() {
       return this.profile.HOME_ADDRESS2;
-    }
-  },
-  mounted() {
-    /*
-  	this.$nexttick(()=>{
-  		if (!this.eligibility) {
-	  		this.$router.push(`/eligibility`)
-	  	}
-  	})
-  	*/
-  },
-  methods: {
-    valid() {
-      var is_valid = true;
-      return is_valid;
     },
-    next() {
-      //return this.localePath("/application/thanks");
-      return "/application/thanks";
-    }
+  },
+  mounted() {},
+  methods: {
+    ...mapActions(useDraftStore, ["getPrevious", "save"]),
+
+    async backClick() {
+      this.save().then(() => {
+
+        console.log("BACk TO",this.getPrevious("Review and Submit"))
+
+        this.$router.push(this.getPrevious("Review and Submit"));
+      });
+    },
+    async saveClick() {
+      this.save().then(() => {});
+    },
   },
   watch: {
     perminent_addresses_updated(to, from) {
@@ -227,8 +237,8 @@ export default {
     },
     at_school_address_updated(to, from) {
       this.$store.commit("student/SET", this.profile);
-    }
-  }
+    },
+  },
 };
 </script>
 

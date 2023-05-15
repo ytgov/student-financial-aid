@@ -9,26 +9,17 @@
 
       <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form @submit.prevent="submit">
-        <v-table density="comfortable">
-          <thead>
-            <tr>
-              <th class="text-left">Consent person</th>
-              <th class="text-left">Academic year start</th>
-              <th class="text-left">Academic year end</th>
-              <th style="width: 80px"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, key) in this.application.draft.consent.consents">
-              <td><TextField v-model="item.person" label="" placeholder="Enter Name" /></td>
-              <td><TextField v-model="item.start_year" label="" placeholder="Enter Name" /></td>
-              <td><TextField v-model="item.end_year" label="" placeholder="Enter Name" /></td>
-              <td><v-btn icon="mdi-delete" color="warning" size="small" @click="remove(key)"></v-btn></td>
-            </tr>
-          </tbody>
-        </v-table>
+        <v-row v-for="(item, key) in this.application.draft.consent.consents">
+          <v-col cols="12" md="4"><TextField v-model="item.person" label="Consent person" /></v-col>
+          <v-col cols="12" md="4"><TextField v-model="item.start_year" label="Academic year start" /></v-col>
+          <v-col cols="12" md="4">
+            <v-btn icon="mdi-delete" color="warning" size="small" @click="remove(key)" class="float-right"></v-btn>
+            <TextField v-model="item.end_year" label="Academic year end" style="margin-right: 55px" />
+          </v-col>
+          <v-divider/>
+        </v-row>
 
-        <v-btn class="mt-4" color="info" @click="addconsent()">Add Consent</v-btn>
+        <v-btn class="mt-6" color="info" @click="addconsent()">Add Consent</v-btn>
 
         <v-banner
           outlined
@@ -47,8 +38,16 @@
     </v-card-text>
   </v-card>
 
-  <div class="text-right mt-5">
-    <v-btn color="primary" @click="nextClick">Next</v-btn>
+  <div>
+    <v-btn color="info" @click="backClick" class="float-left pl-3">
+      <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous
+    </v-btn>
+    <div class="text-right mt-5">
+      <v-btn color="primary" class="mr-3" @click="saveClick">Save</v-btn>
+      <v-btn color="primary" @click="nextClick" class="pr-3">
+        Save and Next <v-icon class="ml-2">mdi-arrow-right</v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -71,7 +70,7 @@ export default {
     this.application.draft.consent.consents = this.application.draft.consent.consents || [];
   },
   methods: {
-    ...mapActions(useDraftStore, ["resume", "save"]),
+    ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
     addconsent() {
       this.application.draft.consent.consents.push({
         person: "",
@@ -84,9 +83,18 @@ export default {
         this.application.draft.consent.consents.splice(key, 1); // 2nd parameter means remove one item only
       }
     },
+
+    async backClick() {
+      this.save().then(() => {
+        this.$router.push(this.getPrevious("Consent Release"));
+      });
+    },
+    async saveClick() {
+      this.save().then(() => {});
+    },
     async nextClick() {
       this.save().then(() => {
-        this.$router.push(this.resume("Consent Release"));
+        this.$router.push(this.getNext("Consent Release"));
       });
     },
   },

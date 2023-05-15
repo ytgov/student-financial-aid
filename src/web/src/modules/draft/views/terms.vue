@@ -9,7 +9,7 @@
 
   <div class="text-right mt-5">
     <v-btn v-if="this.application.draft.terms_agree" color="primary" @click="disagreeClick"> Disagree </v-btn>
-    <v-btn v-else color="primary" @click="continueClick"> Agree & Continue </v-btn>
+    <v-btn v-else color="primary" @click="continueClick"> Agree &  Next <v-icon class="ml-2">mdi-arrow-right</v-icon></v-btn>
   </div>
 </template>
 
@@ -29,13 +29,13 @@ export default {
   },
   async mounted() {},
   methods: {
-    ...mapActions(useDraftStore, ["resume", "save"]),
+    ...mapActions(useDraftStore, ["getNext", "save"]),
 
     async continueClick() {
       this.application.draft.terms_agree = true;
 
       this.save().then(() => {
-        this.$router.push(this.resume());
+        this.$router.push(this.getNext("Terms"));
       });
     },
     async disagreeClick() {

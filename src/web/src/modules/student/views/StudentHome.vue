@@ -74,9 +74,9 @@ Whitehorse, Yukon Y1A0B3`"></v-textarea>
           <v-btn to="/student/edit" color="primary" class="mt-5">Edit</v-btn>
         </v-card-text>
       </v-card>
-
+<!-- 
       <v-divider class="mt-7 mb-7"></v-divider>
-      <RecentMessages></RecentMessages>
+      <RecentMessages></RecentMessages> -->
     </v-col>
     <v-col>
       <AnnouncementList />

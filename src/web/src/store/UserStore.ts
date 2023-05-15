@@ -67,7 +67,7 @@ export const useUserStore = defineStore("user", {
         that.$subscribe((mutation, state) => {
           let event = isArray(mutation.events) ? mutation.events[0] : mutation.events;
 
-          if (mutation.storeId == "user" && event.key == "user" && event.newValue && event.newValue.sub) {
+          if (event && mutation.storeId == "user" && event.key == "user" && event.newValue && event.newValue.sub) {
             resolve(true);
           } else resolve(false);
         });

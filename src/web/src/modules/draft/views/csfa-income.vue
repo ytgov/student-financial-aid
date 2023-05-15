@@ -8,46 +8,42 @@
       <v-divider class="my-3" />
       <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form @submit.prevent="submit" v-model="valid">
-        <table class="standard" cellpadding="0" cellspacing="0" width="100%">
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>Amount</th>
-              <th>Comments</th>
-              <th>&nbsp;</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, key) in application.draft.csfa_income.incomes">
-              <td>
-                <input type="text" v-model="item.type" placeholder="Type" />
-              </td>
-              <td>
-                <input type="text" v-model="item.amount" placeholder="0.00" />
-              </td>
-              <td>
-                <input type="text" v-model="item.comments" placeholder="Comments" />
-              </td>
-              <td>
-                <a @click="remove(key)"> Remove </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <v-row v-for="(item, key) in application.draft.csfa_income.incomes">
+          <v-col cols="12" md="4">
+            <TextField v-model="item.type" label="Type" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <TextField v-model="item.amount" label="Amount" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-btn icon="mdi-delete" size="small" color="warning" @click="remove(key)" class="float-right"></v-btn>
+            <TextField v-model="item.comments" label="Comments" style="margin-right: 55px" />
+          </v-col>
+          <v-divider />
+        </v-row>
 
-        <v-btn color="info" @click="add()">Add income</v-btn>
+        <v-btn class="mt-6" color="info" @click="add()">Add income</v-btn>
       </v-form>
     </v-card-text>
   </v-card>
 
-  <div class="text-right mt-5">
-    <v-btn color="primary" @click="nextClick">Next</v-btn>
+  <div>
+    <v-btn color="info" @click="backClick" class="float-left pl-3">
+      <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous
+    </v-btn>
+    <div class="text-right mt-5">
+      <v-btn color="primary" class="mr-3" @click="saveClick">Save</v-btn>
+      <v-btn color="primary" @click="nextClick" class="pr-3">
+        Save and Next <v-icon class="ml-2">mdi-arrow-right</v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
+import TextField from "@/components/forms/TextField.vue";
 
 export default {
   computed: {
@@ -60,7 +56,7 @@ export default {
     this.application.draft.csfa_income.incomes = this.application.draft.csfa_income.incomes || [];
   },
   methods: {
-    ...mapActions(useDraftStore, ["resume", "save"]),
+    ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
     add() {
       this.application.draft.csfa_income.incomes.push({
         type: "",
@@ -73,11 +69,21 @@ export default {
         this.application.draft.csfa_income.incomes.splice(key, 1); // 2nd parameter means remove one item only
       }
     },
+
+    async backClick() {
+      this.save().then(() => {
+        this.$router.push(this.getPrevious("CSFA Income"));
+      });
+    },
+    async saveClick() {
+      this.save().then(() => {});
+    },
     async nextClick() {
       this.save().then(() => {
-        this.$router.push(this.resume("CSFA Income"));
+        this.$router.push(this.getNext("CSFA Income"));
       });
     },
   },
+  components: { TextField },
 };
 </script>

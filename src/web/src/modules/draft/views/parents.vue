@@ -8,45 +8,42 @@
       <v-form @submit.prevent="submit">
         <AddressSelector v-model="application.draft.parents.mailing_address" />
 
+        <v-divider class="my-4" />
         <h3 class="text-h3 mb-6">{{ $t("application.onboarding.parents.legends.information") }}</h3>
-        <v-divider class="my-3" />
 
-        <table class="form" cellpadding="0" cellspacing="0" width="100%">
-          <tbody v-for="(item, key) in application.draft.parents.parents">
-            <tr>
-              <td colspan="4">
-                <h3>{{ item.heading }}</h3>
-              </td>
-            </tr>
-            <tr>
-              <td>First Name</td>
-              <td>
-                <input type="text" v-model="item.first_name" placeholder="" />
-              </td>
-              <td>Last Name</td>
-              <td>
-                <input type="text" v-model="item.last_name" placeholder="" />
-              </td>
-            </tr>
-            <tr>
-              <td>Relationship</td>
-              <td>
-                <input type="text" v-model="item.relationship" placeholder="" />
-              </td>
-              <td>SIN</td>
-              <td>
-                <input type="text" v-model="item.sin" placeholder="" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <v-row v-for="(item, key) in application.draft.parents.parents">
+          <v-col cols="12">
+            <label class="v-label d-block">{{ item.heading }}</label>
+          </v-col>
+          <v-col cols="12" md="6">
+            <TextField v-model="item.first_name" label="First name" />
+          </v-col>
+          <v-col cols="12" md="6">
+            <TextField v-model="item.last_name" label="Last name" />
+          </v-col>
+          <v-col cols="12" md="6">
+            <TextField v-model="item.relationship" label="Relationship" />
+          </v-col>
+          <v-col cols="12" md="6">
+            <TextField v-model="item.sin" label="SIN" />
+          </v-col>
+          <v-divider v-if="key == 0" />
+        </v-row>
       </v-form>
       <!--  </ValidationObserver> -->
     </v-card-text>
   </v-card>
 
-  <div class="text-right mt-5">
-    <v-btn color="primary" @click="nextClick">Next</v-btn>
+  <div>
+    <v-btn color="info" @click="backClick" class="float-left pl-3">
+      <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous
+    </v-btn>
+    <div class="text-right mt-5">
+      <v-btn color="primary" class="mr-3" @click="saveClick">Save</v-btn>
+      <v-btn color="primary" @click="nextClick" class="pr-3">
+        Save and Next <v-icon class="ml-2">mdi-arrow-right</v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -54,9 +51,10 @@
 import { mapActions, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
 import AddressSelector from "@/components/forms/AddressSelector.vue";
+import TextField from "@/components/forms/TextField.vue";
 
 export default {
-  components: {AddressSelector },
+  components: { AddressSelector, TextField },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
   },
@@ -72,11 +70,19 @@ export default {
     ];
   },
   methods: {
-    ...mapActions(useDraftStore, ["resume", "save"]),
+    ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
 
+    async backClick() {
+      this.save().then(() => {
+        this.$router.push(this.getPrevious("Parents"));
+      });
+    },
+    async saveClick() {
+      this.save().then(() => {});
+    },
     async nextClick() {
       this.save().then(() => {
-        this.$router.push(this.resume("Parents"));
+        this.$router.push(this.getNext("Parents"));
       });
     },
   },

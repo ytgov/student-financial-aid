@@ -26,6 +26,7 @@ RUN npm run build
 
 WORKDIR /home/node/web
 ENV NODE_ENV=production
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 RUN npm run build
 

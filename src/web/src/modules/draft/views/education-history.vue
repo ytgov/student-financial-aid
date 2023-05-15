@@ -6,94 +6,69 @@
 
       <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form @submit.prevent="submit" v-model="valid">
-        <p>Add your highest education level:</p>
         <!-- <ValidationProvider name="Highest Education Level" rules="required" tag="span" v-slot="{ errors, valid }"> -->
-        <TextField v-model="this.application.draft.education.highest_education_level" label="Highest Education Level" />
+        <Select v-model="this.application.draft.education.highest_education_level" label="Highest education level" />
         <!-- </ValidationProvider> -->
 
-        <p>Add your attended high schools:</p>
+        <label class="v-label my-4 d-block">What high schools did you attended:</label>
 
-        <table class="form" cellpadding="0" cellspacing="0" width="100%">
-          <tbody v-for="(item, key) in this.application.draft.education.education_history">
-            <tr>
-              <td>High School Attended</td>
-              <td>
-                <input type="text" v-model="item.school" maxlength="4" width="50" />
-              </td>
-            </tr>
-            <tr>
-              <td>City</td>
-              <td>
-                <input type="text" v-model="item.city" placeholder="City" />
-              </td>
-            </tr>
-            <tr>
-              <td>Province</td>
-              <td>
-                <input type="text" v-model="item.province" placeholder="Province" />
-              </td>
-            </tr>
-            <tr>
-              <td>Country</td>
-              <td>
-                <select v-model="item.country" placeholder="Country">
-                  <option>Canada</option>
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td>Left High School</td>
-              <td><input type="text" v-model="item.left_high_school" /></td>
-            </tr>
-            <tr>
-              <td>Last Grade Completed</td>
-              <td>
-                <input type="text" v-model="item.last_grade_completed" />
-              </td>
-            </tr>
-            <tr>
-              <td>&nbsp;</td>
-              <td><a @click="remove(key)">Remove School</a></td>
-            </tr>
-          </tbody>
-        </table>
+        <div v-if="application.draft.education.education_history.length == 0">
+          <v-alert type="warning">You have no high schools defined - you probably should have at least one.</v-alert>
+        </div>
 
-        <v-btn color="info" @click="add()">Add another school</v-btn>
+        <v-row v-for="(item, key) in application.draft.education.education_history">
+          <v-col cols="12" md="8">
+            <TextField v-model="item.school" label="School" maxlength="4" width="50" />
+          </v-col>
+
+          <v-col cols="12" md="4">
+            <TextField v-model="item.left_high_school" label="Date left" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <TextField v-model="item.city" label="City" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <Select v-model="item.country" label="Country" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-btn icon="mdi-delete" size="small" color="warning" @click="remove(key)" class="float-right"></v-btn>
+            <TextField v-model="item.last_grade_completed" label="Last grade completed" style="margin-right: 55px" />
+          </v-col>
+          <v-divider></v-divider>
+        </v-row>
+
+        <v-btn class="mt-6" color="info" @click="add()">Add another school</v-btn>
       </v-form>
       <!-- </ValidationObserver> -->
     </v-card-text>
   </v-card>
 
-  <div class="text-right mt-5">
-    <v-btn color="primary" @click="nextClick">Next</v-btn>
+  <div>
+    <v-btn color="info" @click="backClick" class="float-left pl-3">
+      <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous
+    </v-btn>
+    <div class="text-right mt-5">
+      <v-btn color="primary" class="mr-3" @click="saveClick">Save</v-btn>
+      <v-btn color="primary" @click="nextClick" class="pr-3">
+        Save and Next <v-icon class="ml-2">mdi-arrow-right</v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
 <script>
-import AddressSelector from "@/components/forms/AddressSelector.vue";
-import SinNumber from "@/components/forms/SinNumber.vue";
 import TextField from "@/components/forms/TextField.vue";
-import RadioField from "@/components/forms/RadioField.vue";
 import DateSelector from "@/components/forms/DateSelector.vue";
-import SelectField from "@/components/forms/SelectField.vue";
-import BlackoutNotice from "@/components/utils/BlackoutNotice.vue";
+import Select from "@/components/forms/Select.vue";
 
-import Buttons from "@/components/forms/Buttons.vue";
-import Question from "@/components/forms/Question.vue";
 import { mapActions, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
 
 export default {
   components: {
-    BlackoutNotice,
     TextField,
-    RadioField,
-    SelectField,
+    Select,
     DateSelector,
-    AddressSelector,
-    SinNumber,
-    Buttons,
-    Question,
   },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
@@ -120,7 +95,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useDraftStore, ["resume", "save"]),
+    ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
     add() {
       this.application.draft.education.education_history.push({
         school: "",
@@ -130,13 +105,20 @@ export default {
       });
     },
     remove(key) {
-      if (key > -1) {
-        this.application.draft.education.education_history.splice(key, 1); // 2nd parameter means remove one item only
-      }
+      this.application.draft.education.education_history.splice(key, 1);
+    },
+    
+    async backClick() {
+      this.save().then(() => {
+        this.$router.push(this.getPrevious("Education History"));
+      });
+    },
+    async saveClick() {
+      this.save().then(() => {});
     },
     async nextClick() {
       this.save().then(() => {
-        this.$router.push(this.resume("Education History"));
+        this.$router.push(this.getNext("Education History"));
       });
     },
   },

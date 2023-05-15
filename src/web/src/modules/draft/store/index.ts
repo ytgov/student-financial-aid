@@ -296,6 +296,32 @@ export const useDraftStore = defineStore("draft", {
     availableSectionSubmit(): boolean {
       return this.completeSectionTerms;
     },
+
+    requiredDocuments(): any[] {
+      return [
+        {
+          type: "Transcript",
+          description: "Transcript",
+          file_name: "MJ File of files.pdf",
+          status: "Missing",
+        },
+        {
+          type: "Transcript",
+          description: "Transcript",
+          status: "Missing",
+        },
+        {
+          type: "Transcript",
+          description: "Transcript",
+          status: "Missing",
+        },
+        {
+          type: "Transcript",
+          description: "Transcript",
+          status: "Verified",
+        },
+      ];
+    },
   },
   actions: {
     async loadApplications(): Promise<void> {
@@ -374,6 +400,24 @@ export const useDraftStore = defineStore("draft", {
             update_date: new Date(),
           })
           .then((resp) => {
+            m.notify({ text: "Application Saved", variant: "success" });
+            return resp.data;
+          })
+          .catch((err) => {
+            console.log("ERROR HAPPENED", err);
+            return {};
+          });
+      }
+    },
+
+    async upload(file: any): Promise<any> {
+      if (this.application) {
+        const api = useApiStore();
+        const userStore = useUserStore();
+
+        return api
+          .secureCall("post", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}/upload`, { file })
+          .then((resp) => {
             return resp.data;
           })
           .catch((err) => {
@@ -403,6 +447,16 @@ export const useDraftStore = defineStore("draft", {
       for (let i = 0; i < this.relevantSections.length; i++) {
         let sect = this.relevantSections[i];
         if (current == sect.name) return this.relevantSections[i + 1].uri;
+      }
+      return "";
+    },
+
+    getPrevious(current: string): string {
+      if (!this.application) return "";
+
+      for (let i = 0; i < this.relevantSections.length; i++) {
+        let sect = this.relevantSections[i];
+        if (current == sect.name) return this.relevantSections[i - 1].uri;
       }
       return "";
     },

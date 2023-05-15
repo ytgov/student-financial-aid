@@ -4,7 +4,7 @@
     :placeholder="placeholder"
     variant="outlined"
     bg-color="white"
-    density="compact"
+    density="comfortable"
     hide-details
     v-model="innerValue"
     @focus="focus"
