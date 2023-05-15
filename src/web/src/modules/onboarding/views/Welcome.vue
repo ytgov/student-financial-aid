@@ -268,7 +268,7 @@ export default {
 
         console.log("RESULTS OF LINK", result);
 
-        if (result && result.data == true) {
+        if (result && result == true) {
           this.step = 5;
         } else this.step = 4;
       }

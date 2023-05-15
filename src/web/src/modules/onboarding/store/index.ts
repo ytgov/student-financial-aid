@@ -67,17 +67,15 @@ export const useOnboardingStore = defineStore("onboarding", {
         });
     },
 
-    async tryLinkStudent(user: any) {
-      console.log("TRYING TO LINK STUDENT", this.linkStudent, user);
-
+    async tryLinkStudent(user: any): Promise<boolean> {
       return api
         .secureCall("post", `${STUDENT_URL}/${user.sub}/link`, this.linkStudent)
         .then((resp) => {
-          console.log("LINKED", resp.data);
-          return resp.data.data;
+          return resp.data;
         })
         .catch((err) => {
           console.log("ERROR IN ", err.response.data);
+          return false;
         });
     },
   },
