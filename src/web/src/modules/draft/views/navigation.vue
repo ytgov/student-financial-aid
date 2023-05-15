@@ -25,7 +25,9 @@
               <v-list-item-subtitle class="d-flex">
                 <div class="py-1">Application</div>
                 <v-spacer />
-                <v-chip color="warning" size="small" variant="elevated" class="pull-right mb-1">In-Progress</v-chip>
+                <div class="float-right mb-1 text-right">
+                  <v-chip color="warning" size="small" variant="elevated">In-Progress</v-chip>
+                </div>
               </v-list-item-subtitle>
             </v-list-item>
             <v-divider class="mb-4" />
@@ -56,7 +58,6 @@
     </v-row>
   </div>
 
-  
   {{ application }}
 </template>
 
