@@ -8,31 +8,25 @@
       <v-divider class="my-3" />
 
       <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
-      <v-form @submit.prevent="submit">
-        <v-row v-for="(item, key) in this.application.draft.consent.consents">
-          <v-col cols="12" md="4"><TextField v-model="item.person" label="Consent person" /></v-col>
-          <v-col cols="12" md="4"><TextField v-model="item.start_year" label="Academic year start" /></v-col>
-          <v-col cols="12" md="4">
-            <v-btn icon="mdi-delete" color="warning" size="small" @click="remove(key)" class="float-right"></v-btn>
-            <TextField v-model="item.end_year" label="Academic year end" style="margin-right: 55px" />
-          </v-col>
-          <v-divider/>
-        </v-row>
+      <v-form>
+        <v-radio-group v-model="application.draft.consent.allow_others">
+          <v-radio label="I do not wish to allow anyone else to communicate on my behalf" :value="false"></v-radio>
+          <v-radio label="I authorize the following people:" :value="true"></v-radio>
+        </v-radio-group>
 
-        <v-btn class="mt-6" color="info" @click="addconsent()">Add Consent</v-btn>
+        <div v-if="application.draft.consent.allow_others">
+          <v-row v-for="(item, key) in application.draft.consent.consents">
+            <v-col cols="12" md="4"><TextField v-model="item.person" label="Consent person" /></v-col>
+            <v-col cols="12" md="4"><TextField v-model="item.start_year" label="Academic year start" /></v-col>
+            <v-col cols="12" md="4">
+              <v-btn icon="mdi-delete" color="warning" size="small" @click="remove(key)" class="float-right"></v-btn>
+              <TextField v-model="item.end_year" label="Academic year end" style="margin-right: 55px" />
+            </v-col>
+            <v-divider />
+          </v-row>
 
-        <v-banner
-          outlined
-          icon="mdi-alert-circle"
-          class="problem mt-4 error"
-          v-if="invalid && errors.length"
-          style="padding-right: 1rem">
-          <h3>{{ $t("problem.title") }}</h3>
-          <br />
-          <ul>
-            <li v-for="error in errors" v-if="error[0]">{{ error[0] }}</li>
-          </ul>
-        </v-banner>
+          <v-btn class="mt-6" color="info" @click="addconsent()">Add Consent</v-btn>
+        </div>
       </v-form>
       <!-- </ValidationObserver> -->
     </v-card-text>

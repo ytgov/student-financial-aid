@@ -61,7 +61,7 @@ export default {
     },
     formatDate(input: any) {
       if (input) {
-        return moment.utc(input).format("YYYY/MM/DD @ h:mm A");
+        return moment(input).format("YYYY/MM/DD @ h:mm A");
       }
       return "";
     },

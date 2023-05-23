@@ -14,40 +14,47 @@
       <v-divider class="my-3" />
 
       <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
-      <v-form @submit.prevent="submit" v-model="valid">
-        <v-row v-for="(item, key) in this.application.draft.parent_dependants.dependants">
-          <v-col cols="12" md="3">
-            <TextField type="text" v-model="item.first_name" label="First name" />
-          </v-col>
-          <v-col cols="12" md="3">
-            <TextField v-model="item.last_name" label="Last name" />
-          </v-col>
-          <v-col cols="12" md="3">
-            <DateSelector v-model="item.dob" label="Date of birth" />
-          </v-col>
-          <v-col cols="12" md="3">
-            <TextField v-model="item.age" label="Relationship" />
-          </v-col>
-          <v-col>
-            <v-btn icon="mdi-delete" size="small" color="warning" @click="remove(key)" class="float-right"></v-btn>
-            <v-textarea
-              v-model="item.comments"
-              label="Comments"
-              rows="2"
-              variant="outlined"
-              bg-color="white"
-              density="comfortable"
-              style="margin-right: 55px" />
-          </v-col>
-          <v-divider />
-        </v-row>
+      <v-form>
+        <v-radio-group v-model="application.draft.parent_dependants.has_dependants">
+          <v-radio label="My parents have no dependants" :value="false"></v-radio>
+          <v-radio label="My parents have the following dependants:" :value="true"></v-radio>
+        </v-radio-group>
 
-        <v-btn class="mt-6" color="info" @click="add()">Add dependant</v-btn>
+        <div v-if="application.draft.parent_dependants.has_dependants">
+          <v-row v-for="(item, key) in this.application.draft.parent_dependants.dependants">
+            <v-col cols="12" md="3">
+              <TextField type="text" v-model="item.first_name" label="First name" />
+            </v-col>
+            <v-col cols="12" md="3">
+              <TextField v-model="item.last_name" label="Last name" />
+            </v-col>
+            <v-col cols="12" md="3">
+              <DateSelector v-model="item.dob" label="Date of birth" />
+            </v-col>
+            <v-col cols="12" md="3">
+              <TextField v-model="item.relationship" label="Relationship" />
+            </v-col>
+            <v-col>
+              <v-btn icon="mdi-delete" size="small" color="warning" @click="remove(key)" class="float-right"></v-btn>
+              <v-textarea
+                v-model="item.comments"
+                label="Comments"
+                rows="2"
+                variant="outlined"
+                bg-color="white"
+                density="comfortable"
+                style="margin-right: 55px" />
+            </v-col>
+            <v-divider />
+          </v-row>
+
+          <v-btn class="mt-6" color="info" @click="add()">Add dependant</v-btn>
+        </div>
       </v-form>
       <!-- </ValidationObserver> -->
     </v-card-text>
   </v-card>
-  
+
   <div>
     <v-btn color="info" @click="backClick" class="float-left pl-3">
       <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous

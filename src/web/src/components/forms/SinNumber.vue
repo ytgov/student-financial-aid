@@ -12,20 +12,21 @@
 
 <script lang="ts">
 export default {
-  props: ["value", "label", "errors", "valid"],
+  props: ["modelValue", "label", "errors", "valid"],
   data() {
     return {
       output: "",
     };
   },
   mounted() {
-    if (this.value) {
-      this.output = this.value;
+    if (this.modelValue) {
+      this.output = this.modelValue;
     }
   },
   watch: {
     output(to, from) {
       this.$emit("input", this.output);
+      this.$emit("update:modelValue", this.output);
     },
   },
   methods: {

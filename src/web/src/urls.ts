@@ -10,3 +10,4 @@ export const LOGIN_URL = `${config.apiBaseUrl}/auth/login`;
 export const PORTAL_URL = `${config.apiBaseUrl}/api/portal`;
 export const APPLICATION_URL = `${PORTAL_URL}/application`;
 export const STUDENT_URL = `${PORTAL_URL}/student`;
+export const REFERENCE_URL = `${PORTAL_URL}/reference`;

@@ -9,59 +9,55 @@
       <v-divider class="my-3" />
 
       <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
-      <v-form @submit.prevent="submit" v-model="valid">
-        <v-row v-for="(item, key) in application.draft.other_funding.other_fundings">
-          <v-col cols="12" md="8"><TextField type="text" v-model="item.agency" label="Agency Name" /></v-col>
-          <v-col cols="12" md="4">
-            <TextField type="text" v-model="item.amount" placeholder="0.00" label="Amount" />
-          </v-col>
-          <v-col cols="12" md="8">
-            <v-autocomplete
-              multiple
-              chips
-              closable-chips
-              v-model="item.purposes"
-              :items="['Tuition', 'Books', 'Living Expenses', 'Transportation', 'Other']"
-              label="Funding Purpose"
-              bg-color="white"
-              density="compact"
-              variant="outlined"></v-autocomplete>
-            <TextField
-              type="text"
-              v-model="item.other"
-              placeholder="Describe other purposes"
-              v-if="item.purposes.includes('Other')" />
-          </v-col>
-          <v-col>
-            <v-btn icon="mdi-delete" size="small" color="warning" @click="remove(key)" class="float-right"></v-btn>
-            <v-textarea
-              v-model="item.comments"
-              label="Comments"
-              hide-details
-              bg-color="white"
-              density="compact"
-              rows="4"
-              style="margin-right: 55px"
-              variant="outlined" />
-          </v-col>
+      <v-form>
+        <v-radio-group v-model="application.draft.other_funding.has_funding">
+          <v-radio label="I am not receiving additional funding from any other agencies" :value="false"></v-radio>
+          <v-radio label="I am receiving additional funding from:" :value="true"></v-radio>
+        </v-radio-group>
 
-          <v-divider></v-divider>
-        </v-row>
+        <div v-if="application.draft.other_funding.has_funding">
+          <v-row v-for="(item, key) in application.draft.other_funding.other_fundings">
+            <v-col cols="12" md="8">
+              <TextField type="text" v-model="item.agency" label="Agency Name" />
+            </v-col>
+            <v-col cols="12" md="4">
+              <TextField type="text" v-model="item.amount" placeholder="0.00" label="Amount" />
+            </v-col>
+            <v-col cols="12" md="8">
+              <v-autocomplete
+                multiple
+                chips
+                closable-chips
+                v-model="item.purposes"
+                :items="['Tuition', 'Books', 'Living Expenses', 'Transportation', 'Other']"
+                label="Funding Purpose"
+                bg-color="white"
+                density="comfortable"
+                variant="outlined"></v-autocomplete>
+              <TextField
+                type="text"
+                v-model="item.other"
+                placeholder="Describe other purposes"
+                v-if="item.purposes.includes('Other')" />
+            </v-col>
+            <v-col>
+              <v-btn icon="mdi-delete" size="small" color="warning" @click="remove(key)" class="float-right"></v-btn>
+              <v-textarea
+                v-model="item.comments"
+                label="Comments"
+                hide-details
+                bg-color="white"
+                density="comfortable"
+                rows="4"
+                style="margin-right: 55px"
+                variant="outlined" />
+            </v-col>
 
-        <v-btn class="mt-6" color="info" @click="add()">Add funding</v-btn>
+            <v-divider></v-divider>
+          </v-row>
 
-        <v-banner
-          outlined
-          icon="mdi-alert-circle"
-          class="problem mt-4 error"
-          v-if="invalid && errors.length"
-          style="padding-right: 1rem">
-          <h3>{{ $t("problem.title") }}</h3>
-          <br />
-          <ul>
-            <li v-for="error in errors" v-if="error[0]">{{ error[0] }}</li>
-          </ul>
-        </v-banner>
+          <v-btn class="mt-6" color="info" @click="add()">Add funding</v-btn>
+        </div>
       </v-form>
       <!-- </ValidationObserver> -->
     </v-card-text>
@@ -92,7 +88,7 @@ export default {
   data() {
     return {};
   },
-  mounted() {
+  beforeMount() {
     this.application.draft.other_funding.other_fundings = this.application.draft.other_funding.other_fundings || [];
   },
   methods: {

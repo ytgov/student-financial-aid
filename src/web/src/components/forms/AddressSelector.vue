@@ -31,7 +31,7 @@
 import TextField from "@/components/forms/TextField.vue";
 
 export default {
-  props: ["value"],
+  props: ["modelValue"],
   components: {
     TextField,
   },
@@ -41,8 +41,8 @@ export default {
     };
   },
   mounted() {
-    if (this.value) {
-      this.output = this.value;
+    if (this.modelValue) {
+      this.output = this.modelValue;
     }
   },
   watch: {

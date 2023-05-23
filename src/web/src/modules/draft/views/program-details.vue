@@ -5,12 +5,19 @@
       <v-divider class="my-3" />
 
       <v-row>
-        <v-col cols="12" md="6">
-          <TextField
-            v-model="application.draft.program_details.institution.id"
+        <v-col cols="12">
+          <v-autocomplete
+            v-model="application.draft.program_details.institution_id"
+            :items="institutions"
+            item-title="name"
+            item-value="id"
+            bg-color="white"
+            density="comfortable"
+            variant="outlined"
+            hide-details
             :label="$t('application.program_details.details.campus')" />
         </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12">
           <TextField
             v-model="application.draft.program_details.program_name"
             :label="$t('application.program_details.details.program_name')" />
@@ -59,6 +66,7 @@ import TextField from "@/components/forms/TextField.vue";
 import DateSelector from "@/components/forms/DateSelector.vue";
 import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
+import { useReferenceStore } from "@/store/ReferenceStore";
 
 export default {
   components: {
@@ -69,6 +77,7 @@ export default {
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
     ...mapState(useDraftStore, ["availableSectionProgram"]),
+    ...mapState(useReferenceStore, ["institutions"]),
     years() {
       return [
         new Date().getFullYear(),

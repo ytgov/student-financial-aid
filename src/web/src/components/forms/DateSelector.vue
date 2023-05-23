@@ -13,10 +13,10 @@
       :text-input="true"
       :enable-time-picker="false"
       :max-date="maxDate"
-      :prevent-min-max-navigation="true"
       @open="has_focus = true"
       @closed="has_focus = false"
       @update:model-value=""
+      :readonly="isReadonly"
       placeholder="YYYY/MM/DD" />
   </div>
 </template>
@@ -26,7 +26,7 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
 export default {
-  props: ["value", "label", "max"],
+  props: ["modelValue", "label", "max", "readonly"],
   components: { VueDatePicker },
   computed: {},
   data() {
@@ -34,15 +34,17 @@ export default {
       output: null,
       maxDate: null,
       has_focus: false,
+      isReadonly: false,
     };
   },
   mounted() {
-    if (this.value) {
-      this.output = this.value;
+    if (this.modelValue) {
+      this.output = this.modelValue;
     }
     if (this.max) {
       this.maxDate = new Date();
     }
+    if (this.readonly && this.readonly == true) this.isReadonly = true;
   },
   watch: {
     output(to, from) {

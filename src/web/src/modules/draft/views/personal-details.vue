@@ -31,9 +31,7 @@
 
             <v-col cols="12" md="6">
               <!--  <ValidationProvider name="Home Phone" rules="required|phone" tag="span" v-slot="{ errors, valid }"> -->
-              <TextField
-                v-model="application.draft.personal_details.home_phone"
-                label="Phone Number" />
+              <TextField v-model="application.draft.personal_details.home_phone" label="Phone Number" />
               <!-- </ValidationProvider> -->
             </v-col>
 
@@ -44,9 +42,7 @@
             </v-col>
             <v-col cols="12" md="6">
               <!-- <ValidationProvider name="Date of Birth" rules="date" tag="span" v-slot="{ errors, valid }"> -->
-              <DateSelector
-                label="Date of birth"
-                v-model="application.draft.personal_details.birth_date" />
+              <DateSelector label="Date of birth" v-model="application.draft.personal_details.birth_date" />
               <!-- </ValidationProvider> -->
             </v-col>
           </v-row>
@@ -55,7 +51,7 @@
       </section>
     </v-card-text>
   </v-card>
-  
+
   <div>
     <v-btn color="info" @click="backClick" class="float-left pl-3">
       <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous

@@ -7,16 +7,19 @@
 
           <v-row v-if="editStudent">
             <v-col cols="12" md="6">
-              <TextField label="student.first_name" v-model="editStudent.first_name"></TextField>
+              <TextField :label="$t('student.first_name')" v-model="editStudent.first_name"></TextField>
             </v-col>
             <v-col cols="12" md="6">
-              <TextField label="student.last_name" v-model="editStudent.last_name"></TextField>
+              <TextField :label="$t('student.last_name')" v-model="editStudent.last_name"></TextField>
             </v-col>
             <v-col cols="12" md="6">
-              <TextField label="student.email_address" v-model="editStudent.email_address"></TextField>
+              <TextField :label="$t('student.email_address')" v-model="editStudent.email"></TextField>
             </v-col>
             <v-col cols="12" md="6">
-              <TextField label="student.date_of_birth" v-model="editStudent.date_of_birth"></TextField>
+              <DateSelector
+                :label="$t('student.date_of_birth')"
+                v-model="editStudent.birth_date"
+                :readonly="true"></DateSelector>
             </v-col>
             <v-col cols="12" class="d-flex">
               <v-btn @click="saveClick" color="primary">{{ $t("components.buttons.save") }}</v-btn>
@@ -34,18 +37,17 @@
       </v-card>
     </v-col>
   </v-row>
-
-  {{ editStudent }}
 </template>
 
 <script lang="ts">
 import TextField from "@/components/forms/TextField.vue";
 import { mapActions, mapWritableState } from "pinia";
 import { useStudentStore } from "../store";
+import DateSelector from "@/components/forms/DateSelector.vue";
 
 export default {
   name: "Default",
-  components: { TextField },
+  components: { TextField, DateSelector },
   data: () => ({}),
   computed: {
     ...mapWritableState(useStudentStore, ["editStudent"]),
