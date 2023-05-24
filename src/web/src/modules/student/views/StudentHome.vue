@@ -71,7 +71,7 @@ Whitehorse, Yukon Y1A0B3`"></v-textarea>
             </v-col>
           </v-row>
 
-          <v-btn to="/student/edit" color="primary" class="mt-5">Edit</v-btn>
+          <v-btn color="primary" class="mt-5" @click="editStudentClick">Edit</v-btn>
         </v-card-text>
       </v-card>
 <!-- 
@@ -102,6 +102,7 @@ import AnnouncementList from "@/modules/notifications/components/announcement-li
 import RecentMessages from "@/modules/messages/components/recent-messages.vue";
 import { useUserStore } from "@/store/UserStore";
 import moment from "moment";
+import { useStudentStore } from "../store";
 
 export default {
   computed: {
@@ -122,6 +123,7 @@ export default {
   },
   methods: {
     ...mapActions(useDraftStore, ["create", "loadApplications"]),
+    ...mapActions(useStudentStore, ["edit"]),
     createApplicationClick() {
       this.create().then((resp) => {
         if (resp && resp.id) this.$router.push(`/draft/${resp.id}`);
@@ -130,6 +132,9 @@ export default {
     formatDate(input: Date): string {
       return moment.utc(input).format("YYYY/MM/DD");
     },
+    editStudentClick() {
+      this.$router.push("/student/edit")
+    }
   },
 };
 </script>

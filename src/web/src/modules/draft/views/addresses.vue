@@ -33,28 +33,12 @@
 
 <script>
 import AddressSelector from "@/components/forms/AddressSelector.vue";
-import SinNumber from "@/components/forms/SinNumber.vue";
-import TextField from "@/components/forms/TextField.vue";
-import DateSelector from "@/components/forms/DateSelector.vue";
-
-import BlackoutNotice from "@/components/utils/BlackoutNotice.vue";
-
-import Buttons from "@/components/forms/Buttons.vue";
-import Question from "@/components/forms/Question.vue";
-import RadioList from "@/components/forms/RadioList.vue";
 import { useDraftStore } from "../store";
 import { mapActions, mapWritableState } from "pinia";
 
 export default {
   components: {
-    BlackoutNotice,
-    TextField,
-    DateSelector,
     AddressSelector,
-    SinNumber,
-    Buttons,
-    Question,
-    RadioList,
   },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),

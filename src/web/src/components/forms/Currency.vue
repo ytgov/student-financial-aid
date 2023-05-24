@@ -1,6 +1,7 @@
 <template>
   <v-text-field
     :label="label"
+    type="number"
     :placeholder="placeholder"
     variant="outlined"
     bg-color="white"
@@ -34,11 +35,11 @@ export default {
   computed: {
     innerValue: {
       get: function () {
-        console.log("HERE")
+        //console.log("HERE")
         return "TESTINGING"
       },
       set: function (v) {
-        console.log("SETTYING", v)
+        //console.log("SETTYING", v)
 
         if (v === "") {
           this.output = "";

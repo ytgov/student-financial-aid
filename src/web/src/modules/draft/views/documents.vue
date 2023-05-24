@@ -22,21 +22,7 @@
         </v-col>
 
         <v-col v-if="doc.status == 'Missing'" cols="12" md="12" class="pt-1">
-          <v-file-input
-            label="Choose file"
-            variant="outlined"
-            bg-color="white"
-            prepend-icon=""
-            prepend-inner-icon="mdi-paperclip"
-            hide-details
-            v-model="to_upload"
-            @update:model-value="docChanged">
-            <template v-slot:append>
-              <v-btn color="info" size="small" @click="doUpload(doc)" :disabled="!doc.to_upload">
-                {{ $t("application.documents.buttons.upload") }}
-              </v-btn>
-            </template>
-          </v-file-input>
+          <v-btn @click="doUpload(doc)">Upload</v-btn>
         </v-col>
 
         <v-col v-else cols="12" md="2" class="pt-1 text-right">
@@ -60,29 +46,29 @@
       </v-btn>
     </div>
   </div>
+
+  <UploadDialog></UploadDialog>
 </template>
 
 <script>
-import { mapActions, mapState, mapWritableState } from "pinia";
+import UploadDialog from "../components/upload-dialog.vue";
+import { mapActions, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
 
-//import { mapState } from "pinia";
-
 export default {
-  components: {},
+  components: { UploadDialog },
   data: () => ({
-    to_upload: undefined
+    to_upload: undefined,
   }),
   computed: {
-    ...mapWritableState(useDraftStore, ["application", "requiredDocuments"]),
+    ...mapWritableState(useDraftStore, ["application", "requiredDocuments", "fileUpload"]),
   },
   methods: {
     ...mapActions(useDraftStore, ["getPrevious", "getNext", "save", "upload"]),
 
     async doUpload(doc) {
-      console.log("UP", doc.to_upload);
-
-      await this.upload(doc).then(() => {});
+      this.fileUpload = { document_type: "TESING" };
+      //await this.upload(doc).then(() => {});
     },
 
     docChanged(doc) {

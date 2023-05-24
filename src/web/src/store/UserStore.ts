@@ -75,6 +75,10 @@ export const useUserStore = defineStore("user", {
         await this.initialize();
       });
     },
+
+    editStudent() {
+      this.editStudent = this.student;
+    },
   },
 });
 

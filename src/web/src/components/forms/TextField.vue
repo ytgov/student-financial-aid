@@ -32,6 +32,7 @@ export default {
   watch: {
     output(to, from) {
       this.$emit("input", this.output);
+      this.$emit("update:modelValue", this.output);
     },
   },
   methods: {

@@ -30,7 +30,7 @@ export const useApiStore = defineStore("api", () => {
   }
 
   async function secureCall(method: string, url: string, data?: any) {
-    return await SecureAPICall(method, "")
+    return SecureAPICall(method, "")
       .request({ url, data })
       .then((resp) => {
         return resp.data;

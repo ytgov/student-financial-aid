@@ -1,5 +1,5 @@
 <template>
-  <v-card color="#eee5d1" variant="elevated" elevation="0">
+  <v-card color="#eee5d1" elevation="0">
     <v-card-text>
       <h3 class="text-h3 mb-6">{{ $t("application.onboarding.residency_history.legends.consent") }}</h3>
       <p class="mb-3">
@@ -18,7 +18,7 @@
       <v-divider class="my-3" />
 
       <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }" > -->
-      <v-form @submit.prevent="submit" v-model="valid">
+      <v-form>
         <v-row v-for="(item, key) in application.draft.residency.residency_history">
           <v-col cols="12" md="4">
             <DateSelector v-model="item.start" label="From" />
@@ -36,8 +36,14 @@
             <TextField v-model="item.province" label="Province" />
           </v-col>
           <v-col cols="12" md="4">
-            <v-btn icon="mdi-delete" size="small" color="warning" @click="remove(key)" class="float-right"></v-btn>
-            <Select v-model="item.country" label="Country" style="margin-right: 55px" />
+            <v-btn
+              v-if="key > 0"
+              icon="mdi-delete"
+              size="small"
+              color="warning"
+              @click="remove(key)"
+              class="float-right"></v-btn>
+            <Select v-model="item.country" label="Country" :style="key > 0 ? 'margin-right: 55px' : ''" />
           </v-col>
           <v-divider></v-divider>
         </v-row>
@@ -100,7 +106,7 @@ export default {
       if (input) return moment(input).format("YYYY-MM-DD");
       return "";
     },
-    
+
     async backClick() {
       this.save().then(() => {
         this.$router.push(this.getPrevious("Residency"));

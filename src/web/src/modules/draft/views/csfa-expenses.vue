@@ -7,33 +7,40 @@
       </p>
       <v-divider class="my-3" />
       <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
-      <v-form @submit.prevent="submit" v-model="valid">
-        <v-row v-for="(item, key) in application.draft.csfa_expenses.expenses">
-          <v-col cols="12" md="6">
-            <v-select
-              v-model="item.type"
-              :items="types"
-              item-title="value"
-              item-value="value"
-              label="Type"
-              :hint="note(item.type)"
-              persistent-hint
-              variant="outlined"
-              bg-color="white"
-              density="comfortable">
-            </v-select>
-          </v-col>
-          <v-col cols="12" md="2">
-            <Currency v-model="item.amount" label="Amount" />
-          </v-col>
-          <v-col cols="12" md="4">
-            <v-btn icon="mdi-delete" size="small" color="warning" @click="remove(key)" class="float-right"></v-btn>
-            <TextField v-model="item.comments" label="Comments" style="margin-right: 55px" />
-          </v-col>
-          <v-divider />
-        </v-row>
+      <v-form>
+        <v-radio-group v-model="application.draft.csfa_expenses.has_expenses">
+          <v-radio label="I do not anticipate any expenses" :value="false"></v-radio>
+          <v-radio label="I will have the following expenses:" :value="true"></v-radio>
+        </v-radio-group>
 
-        <v-btn class="mt-6" color="info" @click="add()">Add expense</v-btn>
+        <div v-if="application.draft.csfa_expenses.has_expenses">
+          <v-row v-for="(item, key) in application.draft.csfa_expenses.expenses">
+            <v-col cols="12" md="6">
+              <v-select
+                v-model="item.type"
+                :items="types"
+                item-title="value"
+                item-value="value"
+                label="Type"
+                :hint="note(item.type)"
+                persistent-hint
+                variant="outlined"
+                bg-color="white"
+                density="comfortable">
+              </v-select>
+            </v-col>
+            <v-col cols="12" md="2">
+              <Currency v-model="item.amount" label="Amount" />
+            </v-col>
+            <v-col cols="12" md="4">
+              <v-btn icon="mdi-delete" size="small" color="warning" @click="remove(key)" class="float-right"></v-btn>
+              <TextField v-model="item.comments" label="Comments" style="margin-right: 55px" />
+            </v-col>
+            <v-divider />
+          </v-row>
+
+          <v-btn class="mt-6" color="info" @click="add()">Add expense</v-btn>
+        </div>
       </v-form>
     </v-card-text>
   </v-card>
@@ -61,7 +68,7 @@ import Select from "@/components/forms/Select.vue";
 import Currency from "@/components/forms/Currency.vue";
 
 export default {
-  components: { TextField, Select,Currency },
+  components: { TextField, Select, Currency },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
 
@@ -125,7 +132,7 @@ export default {
       ],
     };
   },
-  mounted() {
+  beforeMount() {
     this.application.draft.csfa_expenses.expenses = this.application.draft.csfa_expenses.expenses || [];
   },
   methods: {

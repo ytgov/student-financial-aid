@@ -5,9 +5,13 @@
       <v-divider class="my-3" />
 
       <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
-      <v-form @submit.prevent="submit" v-model="valid">
+      <v-form>
         <!-- <ValidationProvider name="Highest Education Level" rules="required" tag="span" v-slot="{ errors, valid }"> -->
-        <Select v-model="this.application.draft.education.highest_education_level" label="Highest education level" />
+        <Select
+          v-model="this.application.draft.education.highest_education_level"
+          label="Highest education level"
+          item-title="description" item-value="id"
+          :items="educationLevels" />
         <!-- </ValidationProvider> -->
 
         <label class="v-label my-4 d-block">What high schools did you attended:</label>
@@ -22,7 +26,7 @@
           </v-col>
 
           <v-col cols="12" md="4">
-            <TextField v-model="item.left_high_school" label="Date left" />
+            <DateSelector v-model="item.left_high_school" label="Date left" />
           </v-col>
           <v-col cols="12" md="4">
             <TextField v-model="item.city" label="City" />
@@ -61,8 +65,9 @@ import TextField from "@/components/forms/TextField.vue";
 import DateSelector from "@/components/forms/DateSelector.vue";
 import Select from "@/components/forms/Select.vue";
 
-import { mapActions, mapWritableState } from "pinia";
+import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
+import { useReferenceStore } from "@/store/ReferenceStore";
 
 export default {
   components: {
@@ -72,11 +77,12 @@ export default {
   },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
+    ...mapState(useReferenceStore, ["educationLevels"]),
   },
   data() {
     return {};
   },
-  mounted() {
+  beforeMount() {
     this.application.draft.education.education_history = this.application.draft.education.education_history || [
       {
         school: "",
@@ -85,15 +91,8 @@ export default {
         country: "Canada",
       },
     ];
-
-    this.$emit("input", this.valid);
   },
-  watch: {
-    valid(to, from) {
-      this.$store.commit("eligibility/SET", this.eligibility);
-      this.$emit("input", this.valid);
-    },
-  },
+  watch: {},
   methods: {
     ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
     add() {
@@ -107,7 +106,7 @@ export default {
     remove(key) {
       this.application.draft.education.education_history.splice(key, 1);
     },
-    
+
     async backClick() {
       this.save().then(() => {
         this.$router.push(this.getPrevious("Education History"));

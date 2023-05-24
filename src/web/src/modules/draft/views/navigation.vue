@@ -52,7 +52,7 @@
           <v-list-item :subtitle="`Last saved ${formatLastSaved(application.update_date)}`"> </v-list-item>
         </v-card>
       </v-col>
-      <v-col class="pt-3">
+      <v-col class="pt-3" cols="9">
         <router-view></router-view>
       </v-col>
     </v-row>
@@ -64,6 +64,7 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import { useDraftStore } from "../store";
+import { useReferenceStore } from "@/store/ReferenceStore";
 import moment from "moment";
 
 export default {
@@ -77,18 +78,20 @@ export default {
     await this.loadApplications().then(() => {
       this.selectDraftById(id);
     });
+    await this.initialize();
   },
   beforeUnmount() {
     console.log("BEFORE UNMONT, SHOULD SAVE");
   },
   methods: {
     ...mapActions(useDraftStore, ["selectDraftById", "loadApplications", "save"]),
+    ...mapActions(useReferenceStore, ["initialize"]),
     localePath(val) {
       return val;
     },
     formatLastSaved(input) {
       if (input) {
-        return moment.utc(input).format("YYYY/MM/DD @ h:mm AA");
+        return moment.utc(input).format("YYYY/MM/DD @ h:mm A");
       }
       return "";
     },

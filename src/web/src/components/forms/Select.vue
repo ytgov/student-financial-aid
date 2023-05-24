@@ -23,6 +23,7 @@ export default {
   watch: {
     selected() {
       this.$emit("input", this.selected);
+      this.$emit("update:modelValue", this.selected);
     },
   },
 };
