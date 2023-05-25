@@ -5,7 +5,7 @@
       <v-divider class="my-3" />
 
       <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
-      <v-form @submit.prevent="submit">
+      <v-form>
         <AddressSelector v-model="application.draft.parents.mailing_address" />
 
         <v-divider class="my-4" />

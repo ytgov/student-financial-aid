@@ -38,10 +38,10 @@
 
           <v-row>
             <v-col cols="12" md="4">
-              <DateSelector :label="$t('In school from')" v-model="application.draft.spouse.post_secondary" />
+              <DateSelector :label="$t('In school from')" v-model="application.draft.spouse.post_secondary_from" />
             </v-col>
             <v-col cols="12" md="4">
-              <DateSelector :label="$t('In school until')" v-model="application.draft.spouse.employment_information" />
+              <DateSelector :label="$t('In school until')" v-model="application.draft.spouse.post_secondary_to" />
             </v-col>
             <v-col cols="12" md="4">
               <v-checkbox
@@ -100,8 +100,8 @@ export default {
     TextField,
     DateSelector,
     Select,
-    SinNumber
-},
+    SinNumber,
+  },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
   },

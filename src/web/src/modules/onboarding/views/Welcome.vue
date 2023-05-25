@@ -244,14 +244,15 @@ export default {
     }
 
     if (this.student && this.student.id) {
-      console.log("YOU have a match alerady");
+      console.log("YOU have a student match already");
+      this.$router.push("/student");
     } else {
-      console.log("YET");
+      console.log("Allowing in to welcome");
     }
   },
   watch: {
     student(val) {
-      console.log("STUDNET WATH", val);
+      console.log("STUDNET WATCH", val);
       if (val.id) {
         console.log("YOU have been onboarded already");
         this.$router.push("/student");

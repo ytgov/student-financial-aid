@@ -34,18 +34,6 @@ export const useDraftStore = defineStore("draft", {
           is_complete: this.completeSectionTerms,
         },
         {
-          name: "Program Details",
-          uri: `/draft/${app.id}/program-details`,
-          is_complete: this.completeSectionProgram,
-          disabled: !this.availableSectionProgram,
-        },
-        {
-          name: "Funding Sources",
-          uri: `/draft/${app.id}/funding-sources`,
-          is_complete: this.completeSectionFunding,
-          disabled: !this.availableSectionFunding,
-        },
-        {
           name: "Personal Details",
           uri: `/draft/${app.id}/personal-details`,
           is_complete: this.completeSectionPersonal,
@@ -68,6 +56,18 @@ export const useDraftStore = defineStore("draft", {
           uri: `/draft/${app.id}/consent-release`,
           is_complete: this.completeSectionConsent,
           disabled: !this.availableSectionConsent,
+        },
+        {
+          name: "Program Details",
+          uri: `/draft/${app.id}/program-details`,
+          is_complete: this.completeSectionProgram,
+          disabled: !this.availableSectionProgram,
+        },
+        {
+          name: "Funding Sources",
+          uri: `/draft/${app.id}/funding-sources`,
+          is_complete: this.completeSectionFunding,
+          disabled: !this.availableSectionFunding,
         },
         {
           name: "Residency",
@@ -134,19 +134,19 @@ export const useDraftStore = defineStore("draft", {
           is_complete: this.completeSectionParents,
           disabled: !this.availableSectionParents,
         },
-        {
+        /* {
           name: "Parent Dependants",
           uri: `/draft/${app.id}/parent-dependants`,
           is_complete: this.completeSectionParentDependants,
           disabled: !this.availableSectionParentDependants,
-        },
-        {
+        }, */
+        /* {
           name: "Spouse",
           uri: `/draft/${app.id}/spouse`,
           relevantTo: ["Canada"],
           is_complete: this.completeSectionSpouse,
           disabled: !this.availableSectionSpouse,
-        },
+        }, */
         {
           name: "Documents",
           uri: `/draft/${app.id}/documents`,
@@ -161,10 +161,71 @@ export const useDraftStore = defineStore("draft", {
         },
       ];
 
-      if (this.application?.draft.funding_sources.indexOf("Canada") == -1)
+      let t = this.fundingSources.filter((s) => s.is_csfa).map((t) => t.name);
+
+      if (this.application) {
+        this.application.draft.funding_sources = this.application.draft.funding_sources || { sources: [] };
+        this.application.draft.funding_sources.sources = this.application?.draft.funding_sources.sources || [];
+      }
+
+      if (this.application?.draft.funding_sources.sources.filter((s: any) => t.includes(s)).length == 0)
         list = list.filter((i) => !i.name.startsWith("CSFA"));
 
+      //check if has spouse
+      if (![2, 3].includes(this.application?.draft.personal_details.category))
+        list = list.filter((i) => !i.name.startsWith("Spouse"));
+
+      // check if has depenants
+      if (![2, 3, 8].includes(this.application?.draft.personal_details.category))
+        list = list.filter((i) => !i.name.startsWith("Student Dependants"));
+
+      // check if is depenant
+      if ([2, 3, 4, 5, 6, 7, 8].includes(this.application?.draft.personal_details.category))
+        list = list.filter((i) => !i.name.startsWith("Parents"));
+
       return list;
+    },
+
+    fundingSources(): any[] {
+      let fullList = [
+        { name: "Yukon Grant" },
+        { name: "Student Training Allowance" },
+        { name: "Yukon Excellence Awards", is_part_time: true },
+        { name: "Canada Student Financial Assistance (Full-Time)", is_csfa: true },
+        {
+          name: "Canada Student Financial Assistance (Part-Time)",
+          is_part_time: true,
+          is_full_time: false,
+        },
+        { name: "Canadian Army Scholarship" },
+        { name: "Yukon Huskys CB Radio Club Scholarship" },
+        { name: "Nicholas John Harach Scholarship" },
+      ];
+
+      if (this.application?.draft.program_details.attendance == "Part Time")
+        fullList
+          .filter((s) => s.is_part_time !== true)
+          .map((p) => {
+            (p as any).message = "(Only available for Full Time students)";
+          });
+      else if (this.application?.draft.program_details.attendance == "Full Time")
+        fullList
+          .filter((s) => s.is_full_time == false)
+          .map((p) => {
+            (p as any).message = "Only available for Part Time students";
+          });
+
+      // Alkan and YukonU
+      let STAAllowList = [30, 811];
+
+      if (!STAAllowList.includes(this.application?.draft.program_details.institution_id))
+        fullList
+          .filter((s) => s.name == "Student Training Allowance")
+          .map(
+            (p) => ((p as any).message = "(Only applicable if attending Yukon University or Alkan Air Flight Training)")
+          );
+
+      return fullList;
     },
 
     completeSectionTerms(): boolean {
@@ -182,6 +243,7 @@ export const useDraftStore = defineStore("draft", {
           s.year_entering &&
           s.start_date_of_classes &&
           s.end_date_of_classes &&
+          s.attendance &&
           s.duration_of_program
         );
       }
@@ -191,7 +253,19 @@ export const useDraftStore = defineStore("draft", {
       return this.completeSectionTerms;
     },
     completeSectionFunding(): boolean {
-      return this.application?.draft.funding_sources && this.application?.draft.funding_sources.length > 0;
+      if (
+        !this.application?.draft.funding_sources.sources ||
+        this.application?.draft.funding_sources.sources.length == 0
+      )
+        return false;
+
+      if (this.application?.draft.funding_sources.sources.includes("Canada Student Financial Assistance (Full-Time)")) {
+        if (this.application.draft.funding_sources.csfa_amounts == "Grants and loans up to") {
+          if (!this.application.draft.funding_sources.csfa_loan_amount) return false;
+        } else return true;
+      }
+
+      return true;
     },
     availableSectionFunding(): boolean {
       return this.completeSectionTerms;
@@ -200,7 +274,13 @@ export const useDraftStore = defineStore("draft", {
       if (this.application && this.application.draft) {
         let s = this.application.draft.personal_details;
         return (
-          s.first_name.length > 0 && s.last_name.length > 0 && s.home_email && s.home_phone && s.sin && s.birth_date
+          s.first_name.length > 0 &&
+          s.last_name.length > 0 &&
+          s.home_email &&
+          s.home_phone &&
+          s.sin &&
+          s.birth_date &&
+          s.category
         );
       }
       return false;
@@ -233,6 +313,10 @@ export const useDraftStore = defineStore("draft", {
     completeSectionStatistical(): boolean {
       if (this.application && this.application.draft) {
         let s = this.application.draft.statistical;
+
+        if (s.aboriginal_status && s.aboriginal_status.startsWith("Yukon first nation") && !s.first_nation)
+          return false;
+
         return s.language && s.gender && s.marital_status && s.citizenship && s.aboriginal_status;
       }
       return false;
@@ -251,7 +335,7 @@ export const useDraftStore = defineStore("draft", {
           if (s.consents.length == 0) return false;
 
           for (let c of s.consents) {
-            if (!(c.person && c.start_year && c.end_year)) return false;
+            if (!c.person) return false;
           }
           return true;
         }
@@ -275,24 +359,38 @@ export const useDraftStore = defineStore("draft", {
       return false;
     },
     availableSectionResidency(): boolean {
-      return this.completeSectionTerms;
+      return (
+        this.completeSectionTerms &&
+        this.completeSectionPersonal &&
+        this.completeSectionAddress &&
+        this.completeSectionStatistical &&
+        this.completeSectionConsent &&
+        this.completeSectionProgram &&
+        this.completeSectionFunding
+      );
     },
 
     completeSectionEducation(): boolean {
       if (this.application && this.application.draft) {
         let s = this.application.draft.education;
 
-        if (!s.highest_education_level) return false;
-
         for (let c of s.education_history) {
-          if (!(c.city && c.country && c.last_grade_completed && c.left_high_school && c.school)) return false;
+          if (!(c.left_high_school && c.school)) return false;
         }
         return true;
       }
       return false;
     },
     availableSectionEducation(): boolean {
-      return this.completeSectionTerms;
+      return (
+        this.completeSectionTerms &&
+        this.completeSectionPersonal &&
+        this.completeSectionAddress &&
+        this.completeSectionStatistical &&
+        this.completeSectionConsent &&
+        this.completeSectionProgram &&
+        this.completeSectionFunding
+      );
     },
 
     completeSectionOtherFunding(): boolean {
@@ -302,6 +400,7 @@ export const useDraftStore = defineStore("draft", {
         if (s.has_funding == false) {
           return true;
         } else {
+          if (!s.other_fundings) return false;
           if (s.other_fundings.length == 0) return false;
 
           for (let c of s.other_fundings) {
@@ -314,7 +413,15 @@ export const useDraftStore = defineStore("draft", {
       return false;
     },
     availableSectionOtherFunding(): boolean {
-      return this.completeSectionTerms;
+      return (
+        this.completeSectionTerms &&
+        this.completeSectionPersonal &&
+        this.completeSectionAddress &&
+        this.completeSectionStatistical &&
+        this.completeSectionConsent &&
+        this.completeSectionProgram &&
+        this.completeSectionFunding
+      );
     },
 
     completeSectionStudentDependants(): boolean {
@@ -348,12 +455,22 @@ export const useDraftStore = defineStore("draft", {
       return false;
     },
     availableSectionStudentDependants(): boolean {
-      return this.completeSectionTerms;
+      return (
+        this.completeSectionTerms &&
+        this.completeSectionPersonal &&
+        this.completeSectionAddress &&
+        this.completeSectionStatistical &&
+        this.completeSectionConsent &&
+        this.completeSectionProgram &&
+        this.completeSectionFunding
+      );
     },
 
     completeSectionParents(): boolean {
       if (this.application && this.application.draft) {
         let s = this.application.draft.parents;
+
+        if (!s.mailing_address) return false;
 
         if (
           !(s.mailing_address.first && s.mailing_address.city && s.mailing_address.region && s.mailing_address.postal)
@@ -368,7 +485,15 @@ export const useDraftStore = defineStore("draft", {
       return false;
     },
     availableSectionParents(): boolean {
-      return this.completeSectionTerms;
+      return (
+        this.completeSectionTerms &&
+        this.completeSectionPersonal &&
+        this.completeSectionAddress &&
+        this.completeSectionStatistical &&
+        this.completeSectionConsent &&
+        this.completeSectionProgram &&
+        this.completeSectionFunding
+      );
     },
 
     completeSectionParentDependants(): boolean {
@@ -390,7 +515,15 @@ export const useDraftStore = defineStore("draft", {
       return false;
     },
     availableSectionParentDependants(): boolean {
-      return this.completeSectionTerms;
+      return (
+        this.completeSectionTerms &&
+        this.completeSectionPersonal &&
+        this.completeSectionAddress &&
+        this.completeSectionStatistical &&
+        this.completeSectionConsent &&
+        this.completeSectionProgram &&
+        this.completeSectionFunding
+      );
     },
 
     completeSectionSpouse(): boolean {
@@ -408,19 +541,39 @@ export const useDraftStore = defineStore("draft", {
       return false;
     },
     availableSectionSpouse(): boolean {
-      return this.completeSectionTerms;
+      return (
+        this.completeSectionTerms &&
+        this.completeSectionPersonal &&
+        this.completeSectionAddress &&
+        this.completeSectionStatistical &&
+        this.completeSectionConsent &&
+        this.completeSectionProgram &&
+        this.completeSectionFunding
+      );
     },
 
     completeSectionDocuments(): boolean {
       return true;
     },
     availableSectionDocuments(): boolean {
-      return this.completeSectionTerms;
+      return (
+        this.completeSectionTerms &&
+        this.completeSectionPersonal &&
+        this.completeSectionAddress &&
+        this.completeSectionStatistical &&
+        this.completeSectionConsent &&
+        this.completeSectionProgram &&
+        this.completeSectionFunding
+      );
     },
 
     completeSectionCSFAAccomodation(): boolean {
       if (this.application && this.application.draft) {
         let s = this.application.draft.csfa_accomodation;
+
+        if (!s.accomodations) return false;
+        if (s.accomodations.length < 2) return false;
+
         if (
           !(s.accomodations[0] && s.accomodations[0].living && s.accomodations[0].city && s.accomodations[0].province)
         )
@@ -446,7 +599,15 @@ export const useDraftStore = defineStore("draft", {
       return false;
     },
     availableSectionCSFAAccomodation(): boolean {
-      return this.completeSectionTerms;
+      return (
+        this.completeSectionTerms &&
+        this.completeSectionPersonal &&
+        this.completeSectionAddress &&
+        this.completeSectionStatistical &&
+        this.completeSectionConsent &&
+        this.completeSectionProgram &&
+        this.completeSectionFunding
+      );
     },
 
     completeSectionCSFAIncome(): boolean {
@@ -468,7 +629,15 @@ export const useDraftStore = defineStore("draft", {
       return false;
     },
     availableSectionCSFAIncome(): boolean {
-      return this.completeSectionTerms;
+      return (
+        this.completeSectionTerms &&
+        this.completeSectionPersonal &&
+        this.completeSectionAddress &&
+        this.completeSectionStatistical &&
+        this.completeSectionConsent &&
+        this.completeSectionProgram &&
+        this.completeSectionFunding
+      );
     },
 
     completeSectionCSFAExpenses(): boolean {
@@ -490,14 +659,30 @@ export const useDraftStore = defineStore("draft", {
       return false;
     },
     availableSectionCSFAExpenses(): boolean {
-      return this.completeSectionTerms;
+      return (
+        this.completeSectionTerms &&
+        this.completeSectionPersonal &&
+        this.completeSectionAddress &&
+        this.completeSectionStatistical &&
+        this.completeSectionConsent &&
+        this.completeSectionProgram &&
+        this.completeSectionFunding
+      );
     },
 
     completeSectionSubmit(): boolean {
       return false;
     },
     availableSectionSubmit(): boolean {
-      return this.completeSectionTerms;
+      return (
+        this.completeSectionTerms &&
+        this.completeSectionPersonal &&
+        this.completeSectionAddress &&
+        this.completeSectionStatistical &&
+        this.completeSectionConsent &&
+        this.completeSectionProgram &&
+        this.completeSectionFunding
+      );
     },
 
     requiredDocuments(): any[] {
@@ -584,7 +769,7 @@ export const useDraftStore = defineStore("draft", {
         };
 
         newDraft.personal_details = pd;
-        (newDraft.program_details as any).year_entering = "2023";
+        (newDraft.program_details as any).year_entering = "1";
 
         return api
           .secureCall("post", `${APPLICATION_URL}/${userStore.user?.sub}`, {
@@ -666,7 +851,14 @@ export const useDraftStore = defineStore("draft", {
 
       for (let i = 0; i < this.relevantSections.length; i++) {
         let sect = this.relevantSections[i];
-        if (current == sect.name) return this.relevantSections[i + 1].uri;
+        if (current == sect.name) {
+          console.log("CURRE", current);
+          let next = this.relevantSections[i + 1];
+          console.log("NEXT", next);
+          if (next.disabled) return sect.uri;
+
+          return this.relevantSections[i + 1].uri;
+        }
       }
       return "";
     },

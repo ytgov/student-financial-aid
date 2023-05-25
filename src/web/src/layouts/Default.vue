@@ -5,7 +5,7 @@
     <v-app-bar-title class="pt-0 font-weight-bold" style="margin-left: -20px">{{ $t("system.name") }}</v-app-bar-title>
 
     <template v-slot:append>
-      <v-btn color="primary" class="mr-1" to="/student" icon="mdi-home"></v-btn>
+      <v-btn color="primary" class="mr-1" @click="goHome" icon="mdi-home"></v-btn>
 
       <!-- <v-divider vertical inset></v-divider> -->
 
@@ -90,7 +90,7 @@ export default {
   },
   computed: {
     ...mapWritableState(useNotificationStore, ["showNotification"]),
-    ...mapState(useUserStore, ["user"]),
+    ...mapState(useUserStore, ["user", "student"]),
 
     title() {
       return "Student Financial Assistance Portal";
@@ -103,6 +103,11 @@ export default {
   },
   methods: {
     ...mapActions(useUserStore, ["initialize"]),
+
+    goHome() {
+      if (this.student && this.student.id) this.$router.push("/student");
+      else this.$router.push("/welcome");
+    },
 
     logoutClick() {
       window.location.replace(LOGOUT_URL);

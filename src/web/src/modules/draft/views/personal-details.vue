@@ -5,7 +5,7 @@
       <v-divider class="my-3" />
       <section>
         <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
-        <v-form @submit.prevent="submit" v-model="valid">
+        <v-form>
           <v-row>
             <v-col cols="12" md="4">
               <!--  <ValidationProvider name="First Name" rules="required|max:10" tag="span" v-slot="{ errors, valid }"> -->
@@ -45,6 +45,14 @@
               <DateSelector label="Date of birth" v-model="application.draft.personal_details.birth_date" />
               <!-- </ValidationProvider> -->
             </v-col>
+            <v-col cols="12" md="12">
+              <!-- <ValidationProvider name="Date of Birth" rules="date" tag="span" v-slot="{ errors, valid }"> -->
+              <Select
+                label="Student category"
+                v-model="application.draft.personal_details.category"
+                :items="studentCategories" item-title="description" item-value="id" />
+              <!-- </ValidationProvider> -->
+            </v-col>
           </v-row>
         </v-form>
         <!--  </ValidationObserver> -->
@@ -69,19 +77,23 @@
 import SinNumber from "@/components/forms/SinNumber.vue";
 import TextField from "@/components/forms/TextField.vue";
 import DateSelector from "@/components/forms/DateSelector.vue";
+import Select from "@/components/forms/Select.vue";
 
-import { mapActions, mapWritableState } from "pinia";
+import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
+import { useReferenceStore } from "@/store/ReferenceStore";
 
 export default {
   components: {
     TextField,
     DateSelector,
     SinNumber,
+    Select,
   },
   data: () => ({}),
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
+    ...mapState(useReferenceStore, ["studentCategories"]),
   },
   mounted() {},
   methods: {

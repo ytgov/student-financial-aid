@@ -11,6 +11,9 @@ export const useReferenceStore = defineStore("reference", {
     institutions: new Array<any>(),
     educationLevels: new Array<any>(),
     relationships: new Array<any>(),
+    firstNations: new Array<any>(),
+    studentCategories: new Array<any>(),
+    yukonHighSchools: new Array<any>(),
   }),
   getters: {},
   actions: {
@@ -22,8 +25,11 @@ export const useReferenceStore = defineStore("reference", {
       console.log("Initializing reference store...");
 
       await this.loadInstitutions();
-      await this.loadEducationLevels();
+      //await this.loadEducationLevels();
       await this.loadRelationships();
+      await this.loadFirstNations();
+      await this.loadStudentCategories();
+      await this.loadYukonHighSchools();
 
       console.log("Initialized reference store");
     },
@@ -55,6 +61,37 @@ export const useReferenceStore = defineStore("reference", {
         .secureCall("get", `${REFERENCE_URL}/relationship`)
         .then((resp) => {
           this.relationships = resp.data;
+        })
+        .catch();
+    },
+    async loadFirstNations() {
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${REFERENCE_URL}/first-nation`)
+        .then((resp) => {
+          this.firstNations = resp.data;
+        })
+        .catch();
+    },
+    async loadStudentCategories() {
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${REFERENCE_URL}/student-category`)
+        .then((resp) => {
+          this.studentCategories = resp.data;
+        })
+        .catch();
+    },
+    async loadYukonHighSchools() {
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${REFERENCE_URL}/high-school/3`)
+        .then((resp) => {
+          this.yukonHighSchools = resp.data;
+          this.yukonHighSchools.push({ id: -1, name: "I did not attend a Yukon high school" });
         })
         .catch();
     },

@@ -16,12 +16,11 @@
 
         <div v-if="application.draft.consent.allow_others">
           <v-row v-for="(item, key) in application.draft.consent.consents">
-            <v-col cols="12" md="4"><TextField v-model="item.person" label="Consent person" /></v-col>
-            <v-col cols="12" md="4"><TextField v-model="item.start_year" label="Academic year start" /></v-col>
-            <v-col cols="12" md="4">
+            <v-col cols="12">
               <v-btn icon="mdi-delete" color="warning" size="small" @click="remove(key)" class="float-right"></v-btn>
-              <TextField v-model="item.end_year" label="Academic year end" style="margin-right: 55px" />
+              <TextField v-model="item.person" label="Consent person" style="margin-right: 55px" />
             </v-col>
+
             <v-divider />
           </v-row>
 
@@ -68,8 +67,6 @@ export default {
     addconsent() {
       this.application.draft.consent.consents.push({
         person: "",
-        start_year: new Date().getFullYear(),
-        end_year: new Date().getFullYear(),
       });
     },
     remove(key) {

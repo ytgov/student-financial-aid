@@ -4,46 +4,45 @@
       <h3 class="text-h3 mb-6">{{ $t("application.onboarding.education_history.legends.consent") }}</h3>
       <v-divider class="my-3" />
 
-      <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form>
-        <!-- <ValidationProvider name="Highest Education Level" rules="required" tag="span" v-slot="{ errors, valid }"> -->
-        <Select
-          v-model="this.application.draft.education.highest_education_level"
-          label="Highest education level"
-          item-title="description" item-value="id"
-          :items="educationLevels" />
-        <!-- </ValidationProvider> -->
-
-        <label class="v-label my-4 d-block">What high schools did you attended:</label>
-
-        <div v-if="application.draft.education.education_history.length == 0">
-          <v-alert type="warning">You have no high schools defined - you probably should have at least one.</v-alert>
-        </div>
+        <label class="v-label my-4 d-block">Which Yukon high school(s) did you attended:</label>
 
         <v-row v-for="(item, key) in application.draft.education.education_history">
-          <v-col cols="12" md="8">
-            <TextField v-model="item.school" label="School" maxlength="4" width="50" />
+          <v-col cols="12" md="6">
+            <v-autocomplete
+              variant="outlined"
+              hide-details
+              bg-color="white"
+              density="comfortable"
+              v-model="item.school"
+              label="School"
+              maxlength="4"
+              width="50"
+              :items="yukonHighSchools"
+              item-title="name"
+              item-value="id" />
           </v-col>
 
-          <v-col cols="12" md="4">
-            <DateSelector v-model="item.left_high_school" label="Date left" />
-          </v-col>
-          <v-col cols="12" md="4">
-            <TextField v-model="item.city" label="City" />
-          </v-col>
-          <v-col cols="12" md="4">
-            <Select v-model="item.country" label="Country" />
-          </v-col>
-          <v-col cols="12" md="4">
-            <v-btn icon="mdi-delete" size="small" color="warning" @click="remove(key)" class="float-right"></v-btn>
-            <TextField v-model="item.last_grade_completed" label="Last grade completed" style="margin-right: 55px" />
+          <v-col cols="12" md="6">
+            <v-btn
+              v-if="key > 0"
+              icon="mdi-delete"
+              size="small"
+              color="warning"
+              @click="remove(key)"
+              class="float-right"></v-btn>
+            <YearMonthSelector
+              v-model="item.left_high_school"
+              label="left"
+              :minYear="1980"
+              :marginRight="'55px'"></YearMonthSelector>
+            <div class="clear:both"></div>
           </v-col>
           <v-divider></v-divider>
         </v-row>
 
         <v-btn class="mt-6" color="info" @click="add()">Add another school</v-btn>
       </v-form>
-      <!-- </ValidationObserver> -->
     </v-card-text>
   </v-card>
 
@@ -68,16 +67,18 @@ import Select from "@/components/forms/Select.vue";
 import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
 import { useReferenceStore } from "@/store/ReferenceStore";
+import YearMonthSelector from "@/components/forms/YearMonthSelector.vue";
 
 export default {
   components: {
     TextField,
     Select,
     DateSelector,
+    YearMonthSelector,
   },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
-    ...mapState(useReferenceStore, ["educationLevels"]),
+    ...mapState(useReferenceStore, ["yukonHighSchools"]),
   },
   data() {
     return {};
@@ -86,9 +87,7 @@ export default {
     this.application.draft.education.education_history = this.application.draft.education.education_history || [
       {
         school: "",
-        city: "",
-        province: "Yukon",
-        country: "Canada",
+        left_high_school: `${new Date().getFullYear()}/06`,
       },
     ];
   },
@@ -98,9 +97,7 @@ export default {
     add() {
       this.application.draft.education.education_history.push({
         school: "",
-        city: "",
-        province: "Yukon",
-        country: "Canada",
+        left_high_school: `${new Date().getFullYear()}/06`,
       });
     },
     remove(key) {

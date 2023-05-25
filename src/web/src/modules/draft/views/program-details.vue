@@ -15,7 +15,7 @@
             density="comfortable"
             variant="outlined"
             hide-details
-            :label="$t('application.program_details.details.campus')" />
+            :label="$t('Institution')" />
         </v-col>
         <v-col cols="12">
           <TextField
@@ -24,14 +24,21 @@
         </v-col>
         <v-col cols="12" md="6">
           <TextField
+            type="number"
             v-model="application.draft.program_details.duration_of_program"
             :label="$t('application.program_details.details.duration_of_program')" />
         </v-col>
         <v-col cols="12" md="6">
-          <Select
+          <TextField
+            type="number"
             v-model="application.draft.program_details.year_entering"
-            :label="$t('application.program_details.details.year_entering')"
-            :options="years" />
+            :label="$t('application.program_details.details.year_entering')" />
+        </v-col>
+        <v-col cols="12" md="12">
+          <Select
+            v-model="application.draft.program_details.attendance"
+            :label="$t('application.program_details.details.attendance')"
+            :options="['Full Time', 'Part Time']" />
         </v-col>
         <v-col cols="12" md="6">
           <DateSelector
@@ -78,14 +85,6 @@ export default {
     ...mapWritableState(useDraftStore, ["application"]),
     ...mapState(useDraftStore, ["availableSectionProgram"]),
     ...mapState(useReferenceStore, ["institutions"]),
-    years() {
-      return [
-        new Date().getFullYear(),
-        new Date().getFullYear() + 1,
-        new Date().getFullYear() + 2,
-        new Date().getFullYear() + 2,
-      ];
-    },
   },
   mounted() {
     if (!this.availableSectionProgram) this.$router.push(`/draft/${this.application.id}`);
