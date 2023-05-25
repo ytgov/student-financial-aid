@@ -480,9 +480,10 @@ export const en = {
       title: "Program details",
       details: {
         campus: "Name of Campus (if applicable)",
-        program_name: "Name of Program",
-        duration_of_program: "Program Duration",
-        year_entering: "Academic Year",
+        attendance: "Attendance", 
+        program_name: "Name of program",
+        duration_of_program: "How many years is your program",
+        year_entering: "What year are you entering",
         start_date_of_classes: "Start date of your classes",
         end_date_of_classes: "End date of your classes (including exams)",
       },

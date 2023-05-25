@@ -1,119 +1,126 @@
 <template>
   <v-container fluid v-if="eligibility">
-    <h2 class="text-h3 mb-7">{{ $t("title") }}</h2>
+    <h2 class="text-h3 mb-7">{{ $t("application.submit.title") }}</h2>
     <p>
-      {{ $t("excerpt") }}
+      {{ $t("application.submit.excerpt") }}
     </p>
 
-    <v-card>
-      <section class="header">
-        <h3>Funding Sources</h3>
-      </section>
-      <section class="content">
-        <br />
-        <ul>
-          <li v-for="program in programs">
-            {{ program.name[locale] }}
-          </li>
-        </ul>
+    <v-card color="#eee5d1" variant="elevated" elevation="0" class="mb-5">
+      <v-card-text>
+        <section class="header">
+          <h3>Funding Sources</h3>
+        </section>
+        <section class="content">
+          <br />
+          <ul>
+            <li v-for="program in programs">
+              {{ program.name[locale] }}
+            </li>
+          </ul>
 
-        <p class="buttons">
-          <v-btn to="/eligibility/review?revise=true" color="primary" class="mr-5" x-large>
-            {{ $t("buttons.edit") }}
-          </v-btn>
-        </p>
-      </section>
+          <p class="buttons">
+            <v-btn to="/eligibility/review?revise=true" color="primary" class="mr-5" x-large>
+              {{ $t("application.submit.buttons.edit") }}
+            </v-btn>
+          </p>
+        </section>
+      </v-card-text>
     </v-card>
-    <v-card>
-      <section class="header">
-        <small>Section 1</small>
-        <h3>Program Information</h3>
-      </section>
-      <section class="content">
-        <table>
-          <tbody>
-            <tr>
-              <td>Institution</td>
-              <td>{{ eligibility.designated_institution.post_secondary_enrolled_in || "None" }}</td>
-            </tr>
-            <tr>
-              <td>Campus</td>
-              <td>{{ eligibility.designated_institution.details.campus || "None" }}</td>
-            </tr>
-            <tr>
-              <td>Name of Program</td>
-              <td>{{ eligibility.designated_institution.details.program_name || "None" }}</td>
-            </tr>
-            <tr>
-              <td>Program Type</td>
-              <td>{{ eligibility.program.what_type_of_program || "None" }}</td>
-            </tr>
-            <tr>
-              <td>Program Duration</td>
-              <td>{{ eligibility.designated_institution.details.duration_of_program || "None" }}</td>
-            </tr>
-            <tr>
-              <td>Year of program you are entering</td>
-              <td>{{ eligibility.designated_institution.details.year_entering }}</td>
-            </tr>
-            <tr>
-              <td>Is this a correspondence or distance learning program?</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Start date of your classes</td>
-              <td>{{ eligibility.designated_institution.details.start_date_of_classes | formatNiceDate }}</td>
-            </tr>
-            <tr>
-              <td>End date of your classes (including exams)</td>
-              <td>{{ eligibility.designated_institution.details.end_date_of_classes | formatNiceDate }}</td>
-            </tr>
-          </tbody>
-        </table>
+    <v-card color="#eee5d1" elevation="0" class="mb-5">
+      <v-card-text>
+        <section class="header">
+          <small>Section 1</small>
+          <h3>Program Information</h3>
+        </section>
+        <section class="content">
+          <table>
+            <tbody>
+              <tr>
+                <td>Institution</td>
+                <td>{{ eligibility.designated_institution.post_secondary_enrolled_in || "None" }}</td>
+              </tr>
+              <tr>
+                <td>Campus</td>
+                <td>{{ eligibility.designated_institution.details.campus || "None" }}</td>
+              </tr>
+              <tr>
+                <td>Name of Program</td>
+                <td>{{ eligibility.designated_institution.details.program_name || "None" }}</td>
+              </tr>
+              <tr>
+                <td>Program Type</td>
+                <td>{{ eligibility.program.what_type_of_program || "None" }}</td>
+              </tr>
+              <tr>
+                <td>Program Duration</td>
+                <td>{{ eligibility.designated_institution.details.duration_of_program || "None" }}</td>
+              </tr>
+              <tr>
+                <td>Year of program you are entering</td>
+                <td>{{ eligibility.designated_institution.details.year_entering }}</td>
+              </tr>
+              <tr>
+                <td>Is this a correspondence or distance learning program?</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Start date of your classes</td>
+                <td>{{ eligibility.designated_institution.details.start_date_of_classes | formatNiceDate }}</td>
+              </tr>
+              <tr>
+                <td>End date of your classes (including exams)</td>
+                <td>{{ eligibility.designated_institution.details.end_date_of_classes | formatNiceDate }}</td>
+              </tr>
+            </tbody>
+          </table>
 
-        <p class="buttons">
-          <v-btn to="/application/program-details?revise=true" color="primary" class="mr-5" x-large>
-            {{ $t("buttons.edit") }}
-          </v-btn>
-        </p>
-      </section>
-    </v-card>
-
-    <v-card>
-      <section class="header">
-        <small>Section 2</small>
-        <h3>Residency Information</h3>
-      </section>
-      <section class="content">
-        <br />
-
-        <h4>Perminent Address:</h4>
-        <AddressSelector v-model="profile.HOME_ADDRESS1" :value="profile.HOME_ADDRESS1" style="width: 70%" />
-
-        <h4>Address While at School:</h4>
-        <AddressSelector v-model="profile.HOME_ADDRESS2" :value="profile.HOME_ADDRESS2" style="width: 70%" />
-
-        <p class="buttons" v-if="false">
-          <v-btn
-            :to="`/application/personal-information/address/perminent?revise=true`"
-            color="primary"
-            class="mr-5"
-            x-large>
-            {{ $t("buttons.edit") }}
-          </v-btn>
-        </p>
-      </section>
+          <p class="buttons">
+            <v-btn to="/application/program-details?revise=true" color="primary" class="mr-5" x-large>
+              {{ $t("application.submit.buttons.edit") }}
+            </v-btn>
+          </p>
+        </section>
+      </v-card-text>
     </v-card>
 
-    <v-card>
-      <section class="header">
-        <small>Section 3</small>
-        <h3>Documents</h3>
-      </section>
-      <section class="content">
-        <br />
+    <v-card color="#eee5d1" elevation="0" class="mb-5">
+      <v-card-text>
+        <section class="header">
+          <small>Section 2</small>
+          <h3>Residency Information</h3>
+        </section>
+        <section class="content">
+          <br />
 
-        <!-- <section class="documents">
+          <h4>Perminent Address:</h4>
+          <AddressSelector v-model="profile.HOME_ADDRESS1" :value="profile.HOME_ADDRESS1" style="width: 70%" />
+
+          <h4>Address While at School:</h4>
+          <AddressSelector v-model="profile.HOME_ADDRESS2" :value="profile.HOME_ADDRESS2" style="width: 70%" />
+
+          <p class="buttons" v-if="false">
+            <v-btn
+              :to="`/application/personal-information/address/perminent?revise=true`"
+              color="primary"
+              class="mr-5"
+              x-large>
+              {{ $t("application.submit.buttons.edit") }}
+            </v-btn>
+          </p>
+        </section>
+      </v-card-text>
+    </v-card>
+
+    <v-card color="#eee5d1" elevation="0" class="mb-5">
+      <v-card-text>
+        <section class="header">
+          <small>Section 3</small>
+          <h3>Documents</h3>
+        </section>
+        <section class="content">
+          <br />
+
+          <!-- <section class="documents">
           <div v-for="doc of documents" v-if="doc.DESCRIPTION != null">
             <div style="width: 5%">
               <i class="far fa-2x fa-check-square" v-if="doc.status == 'VERIFIED'"></i>
@@ -128,7 +135,8 @@
             <div></div>
           </div>
         </section> -->
-      </section>
+        </section>
+      </v-card-text>
     </v-card>
 
     <div>
@@ -221,8 +229,7 @@ export default {
 
     async backClick() {
       this.save().then(() => {
-
-        console.log("BACk TO",this.getPrevious("Review and Submit"))
+        console.log("BACk TO", this.getPrevious("Review and Submit"));
 
         this.$router.push(this.getPrevious("Review and Submit"));
       });

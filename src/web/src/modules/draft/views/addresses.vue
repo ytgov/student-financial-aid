@@ -1,5 +1,5 @@
 <template>
-  <v-form @submit.prevent="submit" v-model="valid">
+  <v-form >
     <v-card color="#eee5d1" variant="elevated" elevation="0" class="mb-5">
       <v-card-text>
         <h3 class="text-h3 mb-6">{{ $t("application.onboarding.addresses.legends.address") }}</h3>

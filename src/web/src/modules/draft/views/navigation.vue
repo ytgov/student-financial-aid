@@ -58,7 +58,6 @@
     </v-row>
   </div>
 
-  {{ application }}
 </template>
 
 <script>

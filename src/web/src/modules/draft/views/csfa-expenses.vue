@@ -8,42 +8,42 @@
       <v-divider class="my-3" />
       <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form>
-        <v-radio-group v-model="application.draft.csfa_expenses.has_expenses">
-          <v-radio label="I do not anticipate any expenses" :value="false"></v-radio>
-          <v-radio label="I will have the following expenses:" :value="true"></v-radio>
-        </v-radio-group>
+        <v-row v-for="(item, key) in application.draft.csfa_expenses.expenses">
+          <v-col cols="12" md="6">
+            <v-select
+              v-model="item.type"
+              :items="types"
+              item-title="value"
+              item-value="value"
+              label="Type"
+              :hint="item.note || note(item.type)"
+              persistent-hint
+              variant="outlined"
+              bg-color="white"
+              density="comfortable">
+            </v-select>
+          </v-col>
+          <v-col cols="12" md="2">
+            <Currency v-model="item.amount" label="Amount" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-btn
+              v-if="!item.required == true"
+              icon="mdi-delete"
+              size="small"
+              color="warning"
+              @click="remove(key)"
+              class="float-right"></v-btn>
+            <TextField v-model="item.comments" label="Comments" style="margin-right: 55px" />
+          </v-col>
+          <v-divider />
+        </v-row>
 
-        <div v-if="application.draft.csfa_expenses.has_expenses">
-          <v-row v-for="(item, key) in application.draft.csfa_expenses.expenses">
-            <v-col cols="12" md="6">
-              <v-select
-                v-model="item.type"
-                :items="types"
-                item-title="value"
-                item-value="value"
-                label="Type"
-                :hint="note(item.type)"
-                persistent-hint
-                variant="outlined"
-                bg-color="white"
-                density="comfortable">
-              </v-select>
-            </v-col>
-            <v-col cols="12" md="2">
-              <Currency v-model="item.amount" label="Amount" />
-            </v-col>
-            <v-col cols="12" md="4">
-              <v-btn icon="mdi-delete" size="small" color="warning" @click="remove(key)" class="float-right"></v-btn>
-              <TextField v-model="item.comments" label="Comments" style="margin-right: 55px" />
-            </v-col>
-            <v-divider />
-          </v-row>
-
-          <v-btn class="mt-6" color="info" @click="add()">Add expense</v-btn>
-        </div>
+        <v-btn class="mt-6" color="info" @click="add()">Add expense</v-btn>
       </v-form>
     </v-card-text>
   </v-card>
+  {{ application.draft.csfa_expenses.expenses }}
 
   <div>
     <v-btn color="info" @click="backClick" class="float-left pl-3">
@@ -85,14 +85,16 @@ export default {
   data() {
     return {
       types: [
-        {
+        /*  {
           value: "Tuition and compulsory fees",
           note: "(include even if someone else is paying on your behalf). Do not include residence fees",
+          required: true,
         },
         {
           value: "Books and supplies",
           note: "(e.g. books, pencils, pens, photocopy services, etc.) ",
-        },
+          required: true,
+        }, */
         {
           value: "Computer costs",
           note: "(hardware, softwear, and supplies) ",
@@ -134,14 +136,28 @@ export default {
   },
   beforeMount() {
     this.application.draft.csfa_expenses.expenses = this.application.draft.csfa_expenses.expenses || [];
+
+    if (this.application.draft.csfa_expenses.expenses.length == 0) {
+      this.application.draft.csfa_expenses.expenses.push({
+        type: "Tuition and compulsory fees",
+        note: "(include even if someone else is paying on your behalf). Do not include residence fees",
+        required: true,
+      });
+      this.application.draft.csfa_expenses.expenses.push({
+        type: "Books and supplies",
+        note: "(e.g. books, pencils, pens, photocopy services, etc.) ",
+        required: true,
+      });
+    }
   },
   methods: {
     ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
     add() {
       this.application.draft.csfa_expenses.expenses.push({
-        type: "Tuition and compulsory fees",
+        type: "Computer costs",
         amount: "",
         comments: "",
+        required: false,
       });
     },
     remove(key) {

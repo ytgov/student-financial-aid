@@ -6,8 +6,8 @@
       <p>Student statistical information for the current year:</p>
       <v-divider class="my-3" />
 
-      <v-form @submit.prevent="submit" v-model="valid">
-        <v-radio-group v-model="application.draft.statistical.language" inline :label="$t('Langauge')">
+      <v-form>
+        <v-radio-group v-model="application.draft.statistical.language" inline :label="$t('Language')">
           <v-radio label="English" value="English"></v-radio>
           <v-radio label="French" value="French"></v-radio>
         </v-radio-group>
@@ -15,7 +15,8 @@
         <v-radio-group v-model="application.draft.statistical.gender" inline :label="$t('Gender')">
           <v-radio label="Male" value="Male"></v-radio>
           <v-radio label="Female" value="Female"></v-radio>
-          <v-radio label="Other" value="Other"></v-radio>
+          <v-radio label="Other Gender" value="Other"></v-radio>
+          <v-radio label="Unspecified" value="Unspecified"></v-radio>
         </v-radio-group>
 
         <Select
@@ -23,9 +24,7 @@
           name="Marital status"
           v-model="application.draft.statistical.marital_status"
           :label="$t('eligibility.marital.title')"
-          :options="['Married', 'Single', 'Divorced', 'Widowed']"
-          :errors="errors"
-          :valid="valid" />
+          :options="['Married', 'Single', 'Divorced', 'Widowed']" />
         <!-- </ValidationProvider>
  -->
         <!--  <ValidationProvider name="Citizenship" rules="required" tag="span" v-slot="{ errors, valid }"> -->
@@ -34,12 +33,11 @@
           name="Citizenship"
           v-model="application.draft.statistical.citizenship"
           :label="$t('eligibility.citizenship.title')"
-          :options="['Not recorded', 'Canadian citizen', 'Perminent resident', 'Protected person', 'Non citizen']"
-          :errors="errors"
-          :valid="valid" />
+          :options="['Not recorded', 'Canadian citizen', 'Perminent resident', 'Protected person', 'Non citizen']" />
 
         <!--   <ValidationProvider name="Aboriginal Status" rules="required" tag="span" v-slot="{ errors, valid }"> -->
         <Select
+          class="mb-5"
           v-model="application.draft.statistical.aboriginal_status"
           label="Aboriginal Status"
           :options="[
@@ -51,10 +49,17 @@
             'Inuit',
             'Other first nation status',
             'Other first nation non-status',
-          ]"
-          :errors="errors"
-          :valid="valid" />
-        <!-- </ValidationProvider> -->
+          ]" />
+        <Select
+          v-if="
+            application.draft.statistical.aboriginal_status &&
+            application.draft.statistical.aboriginal_status.indexOf('Yukon first nation') >= 0
+          "
+          v-model="application.draft.statistical.first_nation"
+          label="Yukon First Nation"
+          item-title="description"
+          item-valud="id"
+          :options="firstNations" />
       </v-form>
     </v-card-text>
   </v-card>
@@ -77,6 +82,7 @@ import Select from "@/components/forms/Select.vue";
 import Buttons from "@/components/forms/Buttons.vue";
 import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "@/modules/draft/store";
+import { useReferenceStore } from "@/store/ReferenceStore";
 
 export default {
   components: {
@@ -85,6 +91,7 @@ export default {
   },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
+    ...mapState(useReferenceStore, ["firstNations"]),
   },
   mounted() {},
   methods: {
