@@ -74,7 +74,7 @@ Whitehorse, Yukon Y1A0B3`"></v-textarea>
           <v-btn color="primary" class="mt-5" @click="editStudentClick">Edit</v-btn>
         </v-card-text>
       </v-card>
-<!-- 
+      <!-- 
       <v-divider class="mt-7 mb-7"></v-divider>
       <RecentMessages></RecentMessages> -->
     </v-col>
@@ -92,6 +92,19 @@ Whitehorse, Yukon Y1A0B3`"></v-textarea>
       <ApplicationCard v-for="(app, index) of myApplications" :application="app" class="mb-5"></ApplicationCard>
     </v-col>
   </v-row>
+
+  <v-dialog width="600" v-model="showCreateDialog" persistent>
+    <v-card>
+      <v-toolbar color="warning" variant="dark" title="Create New Application">
+        <v-spacer></v-spacer>
+        <v-btn icon @click="showCreateDialog = false" color="white"><v-icon>mdi-close</v-icon></v-btn>
+      </v-toolbar>
+      <v-card-text class="py-7">
+        You already have an application in progress for the current academic year. You cannot create a new one until the
+        all other In Progress applications have been cancelled.
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script lang="ts">
@@ -105,6 +118,9 @@ import moment from "moment";
 import { useStudentStore } from "../store";
 
 export default {
+  data: () => ({
+    showCreateDialog: false,
+  }),
   computed: {
     ...mapState(useUserStore, ["student"]),
     ...mapState(useDraftStore, ["myApplications"]),
@@ -125,16 +141,22 @@ export default {
     ...mapActions(useDraftStore, ["create", "loadApplications"]),
     ...mapActions(useStudentStore, ["edit"]),
     createApplicationClick() {
-      this.create().then((resp) => {
-        if (resp && resp.id) this.$router.push(`/draft/${resp.id}`);
-      });
+      let inProgressCount = this.myApplications.filter((a) => a.status == "In Progress").length;
+
+      if (inProgressCount > 0) {
+        this.showCreateDialog = true;
+      } else {
+        this.create().then((resp) => {
+          if (resp && resp.id) this.$router.push(`/draft/${resp.id}`);
+        });
+      }
     },
     formatDate(input: Date): string {
       return moment.utc(input).format("YYYY/MM/DD");
     },
     editStudentClick() {
-      this.$router.push("/student/edit")
-    }
+      this.$router.push("/student/edit");
+    },
   },
 };
 </script>
