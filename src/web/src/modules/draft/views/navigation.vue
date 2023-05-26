@@ -36,7 +36,7 @@
               v-for="(item, index) in relevantSections"
               :to="item.uri"
               exact
-              active-color="primary"
+              color="primary"
               :disabled="item.disabled">
               <template v-slot:prepend>
                 <v-icon

@@ -1,88 +1,47 @@
 <template>
-  <v-row class="mx-0" :style="`margin-right: ${marginRight} !important`">
-    <v-col class="pl-0">
-      <v-autocomplete
-        v-model="outputYear"
-        :label="`Year ${label}`"
-        variant="outlined"
-        density="comfortable"
-        bg-color="white"
-        :items="yearOptions"
-        @update:model-value="changed"
-        hide-details />
-    </v-col>
-
-    <v-col class="pr-0">
-      <v-select
-        v-model="outputMonth"
-        :label="`Month ${label}`"
-        variant="outlined"
-        density="comfortable"
-        bg-color="white"
-        :items="monthOptions"
-        @update:model-value="changed"
-        hide-details />
-    </v-col>
-  </v-row>
+  <div class="top" :class="has_focus ? 'hf' : ''">
+    <div style="position: absolute; z-index: 22; height: 5px !important; width: 100%; top: -1px">
+      <div class="inlay">
+        <label>{{ label }}</label>
+      </div>
+    </div>
+    <VueDatePicker
+      v-model="month"
+      month-picker
+      :clearable="false"
+      format="yyyy/MM"
+      :teleport="true"
+      :auto-apply="true"
+      :text-input="true"
+      @open="has_focus = true"
+      @closed="has_focus = false" />
+  </div>
 </template>
 
 <script lang="ts">
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
+
 export default {
   props: ["modelValue", "minYear", "maxYear", "label", "marginRight"],
+  components: { VueDatePicker },
   data() {
     return {
-      outputYear: 1900,
-      outputMonth: 1,
-      yearOptions: [1900],
-      monthOptions: [
-        { title: "January", value: "01" },
-        { title: "February", value: "02" },
-        { title: "March", value: "03" },
-        { title: "April", value: "04" },
-        { title: "May", value: "05" },
-        { title: "June", value: "06" },
-        { title: "July", value: "07" },
-        { title: "August", value: "08" },
-        { title: "September", value: "09" },
-        { title: "October", value: "10" },
-        { title: "November", value: "11" },
-        { title: "December", value: "12" },
-      ],
+      month: { month: 1, year: 2023 },
+      has_focus: false,
     };
   },
   mounted() {
     if (this.modelValue) {
       let parts = this.modelValue.split("/");
-
-      this.outputYear = parseInt(parts[0]);
-      this.outputMonth = parts[1];
-    }
-
-    let min = new Date().getFullYear() - 50;
-    if (this.minYear) min = this.minYear;
-
-    let max = new Date().getFullYear();
-    if (this.maxYear) max = this.maxYear;
-
-    console.log(this.minYear, min);
-    console.log(this.maxYear, max);
-
-    this.yearOptions = new Array<number>();
-
-    for (; min <= max; min++) {
-      this.yearOptions.push(min);
+      this.month.year = parts[0];
+      this.month.month = parseInt(parts[1]) - 1;
     }
   },
   watch: {
-    outputYear(to, from) {
-      this.$emit("update:modelValue", `${this.outputYear}/${this.outputMonth}`);
+    month(to, from) {
+      this.$emit("update:modelValue", `${this.month.year}/${(this.month.month + 1).toString().padStart(2, "0")}`);
     },
-    outputMonth(to, from) {
-      this.$emit("update:modelValue", `${this.outputYear}/${this.outputMonth}`);
-    },
-  },
-  methods: {
-    changed(newV: any) {},
   },
 };
 </script>

@@ -33,7 +33,7 @@
               class="float-right"></v-btn>
             <YearMonthSelector
               v-model="item.left_high_school"
-              label="left"
+              label="Date you left high school"
               :minYear="1980"
               :marginRight="'55px'"></YearMonthSelector>
             <div class="clear:both"></div>

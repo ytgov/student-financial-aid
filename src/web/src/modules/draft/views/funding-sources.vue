@@ -80,7 +80,7 @@
 <script>
 import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
-import { isUndefined } from "lodash";
+import { isUndefined, xor, intersection } from "lodash";
 import TextField from "@/components/forms/TextField.vue";
 
 export default {
@@ -103,6 +103,27 @@ export default {
     }
     this.application.draft.funding_sources.sources = newList;
   },
+  watch: {
+    "application.draft.funding_sources.sources": function (n, o) {
+      let newOne = xor(n, o);
+
+      if (
+        newOne &&
+        newOne.length == 1 &&
+        this.application.draft.funding_sources.sources.includes("Yukon Grant") &&
+        this.application.draft.funding_sources.sources.includes("Student Training Allowance")
+      ) {
+        if (newOne[0] == "Yukon Grant")
+          this.application.draft.funding_sources.sources = this.application.draft.funding_sources.sources.filter(
+            (a) => a != "Student Training Allowance"
+          );
+        else if (newOne[0] == "Student Training Allowance")
+          this.application.draft.funding_sources.sources = this.application.draft.funding_sources.sources.filter(
+            (a) => a != "Yukon Grant"
+          );
+      }
+    },
+  },
   methods: {
     ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
 
@@ -123,7 +144,6 @@ export default {
     isError(val) {
       return isUndefined(val);
     },
-
   },
 };
 </script>

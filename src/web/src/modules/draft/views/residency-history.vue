@@ -12,22 +12,29 @@
           breaks as full-time, part-time or not in school at all.
         </li>
         <li>Include all absence and returns to Yukon.</li>
-        <li>There should not be any gab in this two-year period.</li>
+        <li>There should not be any gap in this two-year period.</li>
+        <li>
+          You must account for the timeframe between <strong>{{ accountAfter }}</strong> and
+          <strong>{{ dateCloseToClasses }}</strong>
+        </li>
       </ul>
 
       <v-divider class="my-3" />
 
-      <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }" > -->
       <v-form>
         <v-row v-for="(item, key) in application.draft.residency.residency_history">
           <v-col cols="12" md="4">
-            <DateSelector v-model="item.start" label="From" />
+            <YearMonthSelector v-model="item.start" label="From"></YearMonthSelector>
           </v-col>
           <v-col cols="12" md="4">
-            <DateSelector v-model="item.end" label="To" />
+            <YearMonthSelector v-model="item.end" label="To"></YearMonthSelector>
           </v-col>
           <v-col cols="12" md="4">
             <Select v-model="item.in_school" label="In School?" :items="['Not in school', 'Full-time', 'Part-time']" />
+          </v-col>
+          <v-col cols="12" class="text-error pt-0"
+            ><!--  v-if="!isAfter(item.start, item.end)" -->
+            The From date must be before To date {{ calcDate(item.start, item.end) }}
           </v-col>
           <v-col cols="12" md="4">
             <TextField v-model="item.city" label="City" />
@@ -47,12 +54,13 @@
           </v-col>
           <v-divider></v-divider>
         </v-row>
-
+        {{ application.draft.residency.residency_history }}
         <v-btn class="mt-6" color="info" @click="add()">Add residence</v-btn>
       </v-form>
     </v-card-text>
   </v-card>
-
+  Valid
+  {{ isValid }}- {{ hasOverlap }}
   <div>
     <v-btn color="info" @click="backClick" class="float-left pl-3">
       <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous
@@ -73,24 +81,50 @@ import { mapActions, mapWritableState } from "pinia";
 import DateSelector from "@/components/forms/DateSelector.vue";
 import TextField from "@/components/forms/TextField.vue";
 import Select from "@/components/forms/Select.vue";
+import YearMonthSelector from "@/components/forms/YearMonthSelector.vue";
 
 export default {
-  components: { DateSelector, TextField, Select },
+  components: { DateSelector, TextField, Select, YearMonthSelector },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
+    dateCloseToClasses() {
+      return moment(this.application.draft.program_details.start_date_of_classes)
+        .startOf("month")
+        .subtract(1, "month")
+        .format("YYYY/MM");
+    },
+    accountAfter() {
+      return moment(this.application.draft.program_details.start_date_of_classes)
+        .startOf("month")
+        .subtract(25, "month")
+        .format("YYYY/MM");
+    },
+    hasOverlap() {
+      for (let item of this.application.draft.residency.residency_history) {
+        console.log()
+      }
+      return false
+    }
   },
   data() {
-    return {};
+    return {
+      isValid: false,
+    };
   },
   mounted() {
     this.application.draft.residency.residency_history = this.application.draft.residency.residency_history || [];
+  },
+  watch: {
+    "application.draft.residency.residency_history": function (n, o) {
+      console.log("WATCH", n, o);
+    },
   },
   methods: {
     ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
     add() {
       this.application.draft.residency.residency_history.push({
-        start: this.formatDate(new Date()),
-        end: this.formatDate(new Date()),
+        start: "2023/01",
+        end: "2023/06",
         city: "",
         province: "Yukon",
         country: "Canada",
@@ -105,6 +139,14 @@ export default {
     formatDate(input) {
       if (input) return moment(input).format("YYYY-MM-DD");
       return "";
+    },
+    isAfter(start, end) {
+      return start < end;
+    },
+    calcDate(start, end) {
+      console.log(this.application.draft.program_details.start_date_of_classes);
+
+      return moment(end).diff(moment(start), "months") + " months";
     },
 
     async backClick() {

@@ -183,6 +183,10 @@ export const useDraftStore = defineStore("draft", {
       if ([2, 3, 4, 5, 6, 7, 8].includes(this.application?.draft.personal_details.category))
         list = list.filter((i) => !i.name.startsWith("Parents"));
 
+      //check for STA
+      if (!this.application?.draft.funding_sources.sources.includes("Student Training Allowance"))
+        list = list.filter((i) => !i.name.startsWith("Other Funding"));
+
       return list;
     },
 
@@ -292,17 +296,66 @@ export const useDraftStore = defineStore("draft", {
     completeSectionAddress(): boolean {
       if (this.application && this.application.draft) {
         let s = this.application.draft.addresses;
-        return (
-          s.home_address1 &&
-          s.home_address1.first &&
-          s.home_address1.first.length > 0 &&
-          s.home_address1.city &&
-          s.home_address1.city.length > 0 &&
-          s.home_address1.region &&
-          s.home_address1.region.length > 0 &&
-          s.home_address1.postal &&
-          s.home_address1.postal.length > 5
-        );
+
+        if (
+          !(
+            s.home_address1 &&
+            s.home_address1.first &&
+            s.home_address1.first.length > 0 &&
+            s.home_address1.city &&
+            s.home_address1.city.length > 0 &&
+            s.home_address1.region &&
+            s.home_address1.region.length > 0 &&
+            s.home_address1.postal &&
+            s.home_address1.postal.length > 5
+          )
+        ) {
+          return false;
+        }
+
+        if (s.primary == "School") {
+          if (
+            !(
+              s.home_address2 &&
+              s.home_address2.first &&
+              s.home_address2.first.length > 0 &&
+              s.home_address2.city &&
+              s.home_address2.city.length > 0 &&
+              s.home_address2.region &&
+              s.home_address2.region.length > 0 &&
+              s.home_address2.postal &&
+              s.home_address2.postal.length > 5
+            )
+          ) {
+            return false;
+          }
+        }
+
+        if (
+          (s.home_address2 && s.home_address2.first) ||
+          s.home_address2.second ||
+          s.home_address2.city ||
+          s.home_address2.region ||
+          s.home_address2.postal
+        ) {
+          if (
+            !(
+              s.home_address2 &&
+              s.home_address2.first &&
+              s.home_address2.first.length > 0 &&
+              s.home_address2.city &&
+              s.home_address2.city.length > 0 &&
+              s.home_address2.region &&
+              s.home_address2.region.length > 0 &&
+              s.home_address2.postal &&
+              s.home_address2.postal.length > 5
+            )
+          ) {
+            return false;
+          }
+        }
+
+        return true;
       }
       return false;
     },
@@ -871,6 +924,22 @@ export const useDraftStore = defineStore("draft", {
         if (current == sect.name) return this.relevantSections[i - 1].uri;
       }
       return "";
+    },
+
+    delete(id: number): Promise<any> {
+      const api = useApiStore();
+      const userStore = useUserStore();
+
+      return api
+        .secureCall("delete", `${APPLICATION_URL}/${userStore.user?.sub}/${id}`)
+        .then(async (resp) => {
+          await this.loadApplications();
+          return resp.data;
+        })
+        .catch((err) => {
+          console.log("ERROR HAPPENED", err);
+          return {};
+        });
     },
   },
 });
