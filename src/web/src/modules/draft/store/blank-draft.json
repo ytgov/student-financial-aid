@@ -11,7 +11,9 @@
   "addresses": {},
   "statistical": {},
   "consent": { "consents": [], "allow_others": null },
-  "residency": { "residency_history": [{ "province": "Yukon", "country": "Canada", "in_school": "Not in school" }] },
+  "residency": {
+    "residency_history": []
+  },
   "education": { "education_history": [{}] },
   "other_funding": {},
   "student_dependants": {},

@@ -7,6 +7,7 @@ import { useUserStore } from "@/store/UserStore";
 
 import blankDraft from "./blank-draft.json";
 import { clone, isUndefined } from "lodash";
+import moment from "moment";
 
 let m = useNotificationStore();
 
@@ -399,15 +400,45 @@ export const useDraftStore = defineStore("draft", {
       return this.completeSectionTerms;
     },
 
-    completeSectionResidency(): boolean {
+    residencyMaxDate(store) {
+      if (
+        store.application &&
+        store.application.draft &&
+        store.application.draft.program_details &&
+        store.application.draft.program_details.start_date_of_classes
+      ) {
+        return moment(store.application.draft.program_details.start_date_of_classes)
+          .startOf("month")
+          .subtract(1, "month")
+          .format("YYYY/MM");
+      }
+
+      return "";
+    },
+    residencyTotalMonths() {
+      let total = 0;
+
       if (this.application && this.application.draft) {
-        let s = this.application.draft.residency;
-
-        for (let c of s.residency_history) {
-          if (!(c.start && c.end && c.city && c.province && c.country && c.in_school)) return false;
+        for (let item of this.application.draft.residency.residency_history) {
+          if (item.start && item.end) total += moment(`${item.end}/15`).diff(moment(`${item.start}/01`), "months");
         }
+      }
+      return total;
+    },
 
-        return true;
+    completeSectionResidency(store): boolean {
+      if (store.application && store.application.draft) {
+        let s = store.application.draft.residency;
+
+        if (s && s.residency_history && s.residency_history.length > 0) {
+          if (this.residencyTotalMonths < 24) return false;
+
+          for (let c of s.residency_history) {
+            if (!(c.start && c.end && c.city && c.province && c.country && c.in_school)) return false;
+          }
+
+          return true;
+        }
       }
       return false;
     },
@@ -430,6 +461,7 @@ export const useDraftStore = defineStore("draft", {
         for (let c of s.education_history) {
           if (!(c.left_high_school && c.school)) return false;
         }
+
         return true;
       }
       return false;
@@ -905,9 +937,7 @@ export const useDraftStore = defineStore("draft", {
       for (let i = 0; i < this.relevantSections.length; i++) {
         let sect = this.relevantSections[i];
         if (current == sect.name) {
-          console.log("CURRE", current);
           let next = this.relevantSections[i + 1];
-          console.log("NEXT", next);
           if (next.disabled) return sect.uri;
 
           return this.relevantSections[i + 1].uri;

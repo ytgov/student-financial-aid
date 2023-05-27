@@ -8,12 +8,12 @@
     <VueDatePicker
       v-model="month"
       month-picker
+      range
       format="yyyy/MM"
       :clearable="true"
-      :max-date="maxDate"
       :teleport="true"
       :auto-apply="true"
-      :text-input="true"
+      :text-input="false"
       :readonly="readonly"
       @open="has_focus = true"
       @closed="has_focus = false" />
@@ -25,30 +25,30 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
 export default {
-  props: ["modelValue", "minYear", "maxYear", "maxDate", "label", "marginRight", "readonly"],
+  props: ["modelValue", "minYear", "maxYear", "label", "marginRight", "readonly"],
   components: { VueDatePicker },
   data() {
     return {
-      month: { month: 1, year: 2023 },
+      month: [{}, {}],
       has_focus: false,
     };
   },
   mounted() {
     if (this.modelValue) {
-      let parts = this.modelValue.split("/");
+      this.month = this.modelValue;
+      /*     let parts = this.modelValue.split("/");
 
       if (parts.length == 2) {
         this.month.year = parts[0];
         this.month.month = parseInt(parts[1]) - 1;
-      }
+      } */
     } else {
       this.month = null;
     }
   },
   watch: {
     month(to, from) {
-      if (this.month && this.month)
-        this.$emit("update:modelValue", `${this.month.year}/${(this.month.month + 1).toString().padStart(2, "0")}`);
+      if (this.month) this.$emit("update:modelValue", this.month);
       else this.$emit("update:modelValue", null);
     },
   },
