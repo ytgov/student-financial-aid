@@ -775,23 +775,28 @@ export const useDraftStore = defineStore("draft", {
         {
           type: "Transcript",
           description: "Transcript",
-          file_name: "MJ File of files.pdf",
-          status: "Missing",
+          file_name: "",
+          status: "Unreviewed",
+          menu: false,
         },
         {
-          type: "Transcript",
-          description: "Transcript",
+          type: "Student Declaration",
+          description: "Student Declaration",
           status: "Missing",
+          menu: false,
         },
         {
-          type: "Transcript",
-          description: "Transcript",
-          status: "Missing",
+          type: "Parent Declaration",
+          description: "Parent Declaration",
+          status: "Rejected",
+          menu: false,
         },
         {
-          type: "Transcript",
-          description: "Transcript",
-          status: "Verified",
+          type: "Reference Letter",
+          description: "Reference Letter",
+          file_name: "Michael Letter.pdf",
+          status: "Accepted",
+          menu: false,
         },
       ];
     },
@@ -900,10 +905,30 @@ export const useDraftStore = defineStore("draft", {
       }
     },
 
+    async submit(): Promise<any> {
+      if (this.application) {
+        const api = useApiStore();
+        const userStore = useUserStore();
+
+        return api
+          .secureCall("put", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}/submit`, {})
+          .then((resp) => {
+            m.notify({ text: "Application Submitted", variant: "success" });
+            return resp.data;
+          })
+          .catch((err) => {
+            console.log("ERROR HAPPENED", err);
+            return {};
+          });
+      }
+    },
+
     async upload(file: any): Promise<any> {
       if (this.application) {
         const api = useApiStore();
         const userStore = useUserStore();
+
+        console.log(this.fileUpload, file);
 
         return api
           .secureCall("post", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}/upload`, { file })
