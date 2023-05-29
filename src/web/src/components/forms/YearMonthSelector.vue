@@ -42,7 +42,7 @@ export default {
         this.month.month = parseInt(parts[1]) - 1;
       }
     } else {
-      this.month = null;
+      this.month = { month: 1, year: 2023 };
     }
   },
   watch: {

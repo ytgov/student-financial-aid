@@ -25,7 +25,7 @@
 
         <v-textarea label="Notes" rows="3" variant="outlined" bg-color="white" density="comfortable"></v-textarea>
 
-        <v-btn color="primary" class="my-3" @click="uploadClick" :disabled="!this.file">Upload</v-btn>
+        <v-btn color="primary" class="my-3" @click="uploadClick" :disabled="!file">Upload</v-btn>
       </v-card-text>
     </v-card>
   </v-dialog>
