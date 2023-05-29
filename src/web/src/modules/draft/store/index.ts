@@ -221,7 +221,7 @@ export const useDraftStore = defineStore("draft", {
           });
 
       // Alkan and YukonU
-      let STAAllowList = [30, 811];
+      let STAAllowList = [4664, 5326, 3488];
 
       if (!STAAllowList.includes(this.application?.draft.program_details.institution_id))
         fullList
@@ -308,7 +308,7 @@ export const useDraftStore = defineStore("draft", {
             s.home_address1.region &&
             s.home_address1.region.length > 0 &&
             s.home_address1.postal &&
-            s.home_address1.postal.length > 5
+            s.home_address1.postal.length >= 4
           )
         ) {
           return false;
@@ -325,7 +325,7 @@ export const useDraftStore = defineStore("draft", {
               s.home_address2.region &&
               s.home_address2.region.length > 0 &&
               s.home_address2.postal &&
-              s.home_address2.postal.length > 5
+              s.home_address2.postal.length >= 4
             )
           ) {
             return false;
@@ -349,7 +349,7 @@ export const useDraftStore = defineStore("draft", {
               s.home_address2.region &&
               s.home_address2.region.length > 0 &&
               s.home_address2.postal &&
-              s.home_address2.postal.length > 5
+              s.home_address2.postal.length >= 4
             )
           ) {
             return false;
@@ -368,8 +368,7 @@ export const useDraftStore = defineStore("draft", {
       if (this.application && this.application.draft) {
         let s = this.application.draft.statistical;
 
-        if (s.aboriginal_status && s.aboriginal_status.startsWith("Yukon first nation") && !s.first_nation)
-          return false;
+        if (s.aboriginal_status && s.aboriginal_status == 5 && !s.first_nation) return false;
 
         return s.language && s.gender && s.marital_status && s.citizenship && s.aboriginal_status;
       }

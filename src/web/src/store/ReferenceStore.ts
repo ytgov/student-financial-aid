@@ -14,6 +14,8 @@ export const useReferenceStore = defineStore("reference", {
     firstNations: new Array<any>(),
     studentCategories: new Array<any>(),
     yukonHighSchools: new Array<any>(),
+    maritalStatus: new Array<any>(),
+    aboriginalStatus: new Array<any>(),
   }),
   getters: {},
   actions: {
@@ -30,6 +32,8 @@ export const useReferenceStore = defineStore("reference", {
       await this.loadFirstNations();
       await this.loadStudentCategories();
       await this.loadYukonHighSchools();
+      await this.loadMaritalStatus();
+      await this.loadAboriginalStatus();
 
       console.log("Initialized reference store");
     },
@@ -92,6 +96,26 @@ export const useReferenceStore = defineStore("reference", {
         .then((resp) => {
           this.yukonHighSchools = resp.data;
           this.yukonHighSchools.push({ id: -1, name: "I did not attend a Yukon high school" });
+        })
+        .catch();
+    },
+    async loadMaritalStatus() {
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${REFERENCE_URL}/marital_status`)
+        .then((resp) => {
+          this.maritalStatus = resp.data;
+        })
+        .catch();
+    },
+    async loadAboriginalStatus() {
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${REFERENCE_URL}/aboriginal_status`)
+        .then((resp) => {
+          this.aboriginalStatus = resp.data;
         })
         .catch();
     },
