@@ -88,10 +88,9 @@ import TextField from "@/components/forms/TextField.vue";
 import Select from "@/components/forms/Select.vue";
 import YearMonthSelector from "@/components/forms/YearMonthSelector.vue";
 import { useNotificationStore } from "@/store/NotificationStore";
-import YearMonthRangeSelector from "@/components/forms/YearMonthRangeSelector.vue";
 
 export default {
-  components: { DateSelector, TextField, Select, YearMonthSelector, YearMonthRangeSelector },
+  components: { DateSelector, TextField, Select, YearMonthSelector,  },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
     ...mapState(useDraftStore, ["residencyTotalMonths", "residencyMaxDate"]),
