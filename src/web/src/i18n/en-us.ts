@@ -491,7 +491,7 @@ export const en = {
     submit: {
       title: "Review Application",
       excerpt:
-        "Please review your application to ensure it is correct. If changes are required, click the “edit” button. Once corrected, continue to next section.",
+        "Please review your application via the links on the left to ensure it is correct.",
       buttons: {
         edit: "Edit",
         continue: "Continue",

@@ -7,6 +7,7 @@ import { useUserStore } from "@/store/UserStore";
 
 import blankDraft from "./blank-draft.json";
 import { clone, isUndefined } from "lodash";
+import moment from "moment";
 
 let m = useNotificationStore();
 
@@ -220,7 +221,7 @@ export const useDraftStore = defineStore("draft", {
           });
 
       // Alkan and YukonU
-      let STAAllowList = [30, 811];
+      let STAAllowList = [4664, 5326, 3488];
 
       if (!STAAllowList.includes(this.application?.draft.program_details.institution_id))
         fullList
@@ -307,7 +308,7 @@ export const useDraftStore = defineStore("draft", {
             s.home_address1.region &&
             s.home_address1.region.length > 0 &&
             s.home_address1.postal &&
-            s.home_address1.postal.length > 5
+            s.home_address1.postal.length >= 4
           )
         ) {
           return false;
@@ -324,7 +325,7 @@ export const useDraftStore = defineStore("draft", {
               s.home_address2.region &&
               s.home_address2.region.length > 0 &&
               s.home_address2.postal &&
-              s.home_address2.postal.length > 5
+              s.home_address2.postal.length >= 4
             )
           ) {
             return false;
@@ -348,7 +349,7 @@ export const useDraftStore = defineStore("draft", {
               s.home_address2.region &&
               s.home_address2.region.length > 0 &&
               s.home_address2.postal &&
-              s.home_address2.postal.length > 5
+              s.home_address2.postal.length >= 4
             )
           ) {
             return false;
@@ -367,8 +368,7 @@ export const useDraftStore = defineStore("draft", {
       if (this.application && this.application.draft) {
         let s = this.application.draft.statistical;
 
-        if (s.aboriginal_status && s.aboriginal_status.startsWith("Yukon first nation") && !s.first_nation)
-          return false;
+        if (s.aboriginal_status && s.aboriginal_status == 5 && !s.first_nation) return false;
 
         return s.language && s.gender && s.marital_status && s.citizenship && s.aboriginal_status;
       }
@@ -399,15 +399,45 @@ export const useDraftStore = defineStore("draft", {
       return this.completeSectionTerms;
     },
 
-    completeSectionResidency(): boolean {
+    residencyMaxDate(store) {
+      if (
+        store.application &&
+        store.application.draft &&
+        store.application.draft.program_details &&
+        store.application.draft.program_details.start_date_of_classes
+      ) {
+        return moment(store.application.draft.program_details.start_date_of_classes)
+          .startOf("month")
+          .subtract(1, "month")
+          .format("YYYY/MM");
+      }
+
+      return "";
+    },
+    residencyTotalMonths() {
+      let total = 0;
+
       if (this.application && this.application.draft) {
-        let s = this.application.draft.residency;
-
-        for (let c of s.residency_history) {
-          if (!(c.start && c.end && c.city && c.province && c.country && c.in_school)) return false;
+        for (let item of this.application.draft.residency.residency_history) {
+          if (item.start && item.end) total += moment(`${item.end}/15`).diff(moment(`${item.start}/01`), "months");
         }
+      }
+      return total;
+    },
 
-        return true;
+    completeSectionResidency(store): boolean {
+      if (store.application && store.application.draft) {
+        let s = store.application.draft.residency;
+
+        if (s && s.residency_history && s.residency_history.length > 0) {
+          if (this.residencyTotalMonths < 24) return false;
+
+          for (let c of s.residency_history) {
+            if (!(c.start && c.end && c.city && c.province && c.country && c.in_school)) return false;
+          }
+
+          return true;
+        }
       }
       return false;
     },
@@ -430,6 +460,7 @@ export const useDraftStore = defineStore("draft", {
         for (let c of s.education_history) {
           if (!(c.left_high_school && c.school)) return false;
         }
+
         return true;
       }
       return false;
@@ -743,23 +774,28 @@ export const useDraftStore = defineStore("draft", {
         {
           type: "Transcript",
           description: "Transcript",
-          file_name: "MJ File of files.pdf",
-          status: "Missing",
+          file_name: "",
+          status: "Unreviewed",
+          menu: false,
         },
         {
-          type: "Transcript",
-          description: "Transcript",
+          type: "Student Declaration",
+          description: "Student Declaration",
           status: "Missing",
+          menu: false,
         },
         {
-          type: "Transcript",
-          description: "Transcript",
-          status: "Missing",
+          type: "Parent Declaration",
+          description: "Parent Declaration",
+          status: "Rejected",
+          menu: false,
         },
         {
-          type: "Transcript",
-          description: "Transcript",
-          status: "Verified",
+          type: "Reference Letter",
+          description: "Reference Letter",
+          file_name: "Michael Letter.pdf",
+          status: "Accepted",
+          menu: false,
         },
       ];
     },
@@ -868,10 +904,30 @@ export const useDraftStore = defineStore("draft", {
       }
     },
 
+    async submit(): Promise<any> {
+      if (this.application) {
+        const api = useApiStore();
+        const userStore = useUserStore();
+
+        return api
+          .secureCall("put", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}/submit`, {})
+          .then((resp) => {
+            m.notify({ text: "Application Submitted", variant: "success" });
+            return resp.data;
+          })
+          .catch((err) => {
+            console.log("ERROR HAPPENED", err);
+            return {};
+          });
+      }
+    },
+
     async upload(file: any): Promise<any> {
       if (this.application) {
         const api = useApiStore();
         const userStore = useUserStore();
+
+        console.log(this.fileUpload, file);
 
         return api
           .secureCall("post", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}/upload`, { file })
@@ -905,9 +961,7 @@ export const useDraftStore = defineStore("draft", {
       for (let i = 0; i < this.relevantSections.length; i++) {
         let sect = this.relevantSections[i];
         if (current == sect.name) {
-          console.log("CURRE", current);
           let next = this.relevantSections[i + 1];
-          console.log("NEXT", next);
           if (next.disabled) return sect.uri;
 
           return this.relevantSections[i + 1].uri;

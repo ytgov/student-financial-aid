@@ -7,31 +7,75 @@
       </p>
       <v-divider class="my-3" />
 
-      <v-row class="mb-1">
-        <v-col cols="12" md="2"><label class="v-label pl-2">Status</label></v-col>
-        <v-col cols="12" md="10"><label class="v-label">Document type</label></v-col>
-      </v-row>
-      <v-divider class="mb-3" />
+      <v-list lines="two" style="border: 1px #ccc solid; border-radius: 4px">
+        <!--      <v-list-item>
+          <div class="d-flex ml-15">
+            File
+            <v-spacer></v-spacer>
+            <v-btn size="small" color="info">Template</v-btn>
+            <v-btn size="small" color="info">Upload</v-btn>
+          </div>
+        </v-list-item> -->
 
-      <v-row v-for="(doc, key) in requiredDocuments">
-        <v-col cols="12" md="2">
-          <v-chip :color="statusColor(doc.status)" variant="flat">{{ doc.status }}</v-chip>
-        </v-col>
-        <v-col cols="12" md="8" class="pt-4">
-          {{ doc.description }}
-        </v-col>
+        <div v-for="(doc, key) in requiredDocuments">
+          <v-list-item>
+            <template v-slot:prepend>
+              <v-avatar color="success" v-if="doc.status == 'Accepted'">
+                <v-icon color="white">mdi-file</v-icon>
+              </v-avatar>
+              <v-avatar color="error" v-else-if="doc.status == 'Rejected'">
+                <v-icon color="white">mdi-alert-outline</v-icon>
+              </v-avatar>
+              <v-avatar color="warning" v-else-if="doc.status == 'Missing'">
+                <v-icon color="white">mdi-upload</v-icon>
+              </v-avatar>
+              <v-avatar color="grey" v-else>
+                <v-icon color="white">mdi-file</v-icon>
+              </v-avatar>
+            </template>
+            <div class="d-flex">
+              <div>
+                <span style="font-size: 14px; font-weight: 700">{{ doc.description }}</span>
+                <span v-if="doc.file_name" class="pl-1">: {{ doc.file_name }}</span>
+                <br />
+                {{ doc.status }}
+              </div>
+              <v-spacer></v-spacer>
 
-        <v-col v-if="doc.status == 'Missing'" cols="12" md="12" class="pt-1">
-          <v-btn @click="doUpload(doc)">Upload</v-btn>
-        </v-col>
+              <v-menu v-model="menu[key]" transition="slide-y-transition">
+                <template v-slot:activator="{ props }">
+                  <v-btn color="" variant="flat" size="small" v-bind="props">
+                    Actions <v-icon class="ml-1">mdi-chevron-down</v-icon>
+                  </v-btn>
+                </template>
 
-        <v-col v-else cols="12" md="2" class="pt-1 text-right">
-          <v-btn color="warning" size="small">
-            {{ $t("application.documents.buttons.delete") }}
-          </v-btn>
-        </v-col>
-        <v-divider v-if="key < requiredDocuments.length - 1" />
-      </v-row>
+                <v-card>
+                  <v-divider></v-divider>
+
+                  <v-list>
+                    <v-list-item>
+                      <v-icon class="mr-2" color="primary">mdi-file-pdf-box</v-icon> Download Template
+                    </v-list-item>
+
+                    <v-list-item @click="doUpload(doc)" v-if="doc.status == 'Missing'">
+                      <v-icon class="mr-2" color="primary">mdi-upload</v-icon> Upload
+                    </v-list-item>
+
+                    <v-list-item v-if="['Unreviewed', 'Rejected', 'Unreviewed'].includes(doc.status)">
+                      <v-icon class="mr-2" color="primary">mdi-eye</v-icon> View Uploaded File
+                    </v-list-item>
+
+                    <v-list-item v-if="['Unreviewed', 'Rejected', 'Unreviewed'].includes(doc.status)">
+                      <v-icon class="mr-2" color="primary">mdi-delete</v-icon> Remove
+                    </v-list-item>
+                  </v-list>
+                </v-card>
+              </v-menu>
+            </div>
+          </v-list-item>
+          <v-divider v-if="key < requiredDocuments.length - 1" />
+        </div>
+      </v-list>
     </v-card-text>
   </v-card>
 
@@ -59,6 +103,26 @@ export default {
   components: { UploadDialog },
   data: () => ({
     to_upload: undefined,
+    menu: [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+    ],
   }),
   computed: {
     ...mapWritableState(useDraftStore, ["application", "requiredDocuments", "fileUpload"]),
@@ -67,7 +131,8 @@ export default {
     ...mapActions(useDraftStore, ["getPrevious", "getNext", "save", "upload"]),
 
     async doUpload(doc) {
-      this.fileUpload = { document_type: "TESING" };
+      console.log(doc);
+      this.fileUpload = { document_type: doc.type };
       //await this.upload(doc).then(() => {});
     },
 

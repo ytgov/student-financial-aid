@@ -43,7 +43,6 @@
       </v-form>
     </v-card-text>
   </v-card>
-  {{ application.draft.csfa_expenses.expenses }}
 
   <div>
     <v-btn color="info" @click="backClick" class="float-left pl-3">

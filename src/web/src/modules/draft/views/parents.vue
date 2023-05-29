@@ -22,10 +22,18 @@
             <TextField v-model="item.last_name" label="Last name" />
           </v-col>
           <v-col cols="12" md="6">
-            <TextField v-model="item.relationship" label="Relationship" />
+            <v-select
+              :items="relationships"
+              item-title="description"
+              item-value="id"
+              v-model="item.relationship"
+              bg-color="white"
+              variant="outlined"
+              density="comfortable"
+              label="Relationship" />
           </v-col>
           <v-col cols="12" md="6">
-            <TextField v-model="item.sin" label="SIN" />
+            <SinNumber v-model="item.sin" label="SIN"/>
           </v-col>
           <v-divider v-if="key == 0" />
         </v-row>
@@ -48,15 +56,18 @@
 </template>
 
 <script>
-import { mapActions, mapWritableState } from "pinia";
+import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
 import AddressSelector from "@/components/forms/AddressSelector.vue";
 import TextField from "@/components/forms/TextField.vue";
+import { useReferenceStore } from "@/store/ReferenceStore";
+import SinNumber from "@/components/forms/SinNumber.vue";
 
 export default {
-  components: { AddressSelector, TextField },
+  components: { AddressSelector, TextField, SinNumber },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
+    ...mapState(useReferenceStore, ["relationships"]),
   },
   data() {
     return {};

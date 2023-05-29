@@ -90,6 +90,9 @@ Whitehorse, Yukon Y1A0B3`"></v-textarea>
       </div>
 
       <ApplicationCard v-for="(app, index) of myApplications" :application="app" class="mb-5"></ApplicationCard>
+      <v-alert variant="tonal" type="info" elevation="0" v-if="myApplications.length == 0">
+        Your student record doesn't currently have any applications for this academic year.
+      </v-alert>
     </v-col>
   </v-row>
 

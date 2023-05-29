@@ -1,5 +1,5 @@
 <template>
-  <v-btn variant="text" @click="swapLanguage" color="primary">
+  <v-btn class="d-none" variant="text" @click="swapLanguage" color="primary">
     <span v-if="currentLocale == 'fr'" style="font-size: 0.9rem !important">English</span>
     <span v-else style="font-size: 0.9rem !important">Français</span>
   </v-btn>

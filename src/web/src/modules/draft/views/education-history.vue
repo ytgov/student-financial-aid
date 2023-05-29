@@ -35,7 +35,7 @@
               v-model="item.left_high_school"
               label="Date you left high school"
               :minYear="1980"
-              :marginRight="'55px'"></YearMonthSelector>
+              style="margin-right: 55px"></YearMonthSelector>
             <div class="clear:both"></div>
           </v-col>
           <v-divider></v-divider>

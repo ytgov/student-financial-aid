@@ -25,14 +25,14 @@
 
         <v-textarea label="Notes" rows="3" variant="outlined" bg-color="white" density="comfortable"></v-textarea>
 
-        <v-btn color="primary" class="my-3">Upload</v-btn>
+        <v-btn color="primary" class="my-3" @click="uploadClick" :disabled="!this.file">Upload</v-btn>
       </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
-import { mapState, mapWritableState } from "pinia";
+import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
 
 export default {
@@ -49,9 +49,16 @@ export default {
     },
   },
   methods: {
+    ...mapActions(useDraftStore, ["upload"]),
     closeClick() {
       this.file = undefined;
       this.fileUpload = undefined;
+    },
+    uploadClick() {
+      console.log();
+      this.upload(this.file).then((resp) => {
+        this.show = false;
+      });
     },
   },
 };

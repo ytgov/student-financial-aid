@@ -19,15 +19,16 @@
           <v-radio label="Unspecified" value="Unspecified"></v-radio>
         </v-radio-group>
 
-        <Select
-          class="mb-5"
-          name="Marital status"
-          v-model="application.draft.statistical.marital_status"
+        <v-select
           :label="$t('eligibility.marital.title')"
-          :options="['Married', 'Single', 'Divorced', 'Widowed']" />
-        <!-- </ValidationProvider>
- -->
-        <!--  <ValidationProvider name="Citizenship" rules="required" tag="span" v-slot="{ errors, valid }"> -->
+          v-model="application.draft.statistical.marital_status"
+          :items="maritalStatus"
+          item-title="description"
+          item-value="id"
+          variant="outlined"
+          bg-color="white"
+          density="comfortable"></v-select>
+
         <Select
           class="mb-5"
           name="Citizenship"
@@ -35,30 +36,22 @@
           :label="$t('eligibility.citizenship.title')"
           :options="['Not recorded', 'Canadian citizen', 'Perminent resident', 'Protected person', 'Non citizen']" />
 
-        <!--   <ValidationProvider name="Aboriginal Status" rules="required" tag="span" v-slot="{ errors, valid }"> -->
-        <Select
-          class="mb-5"
+        <v-select
           v-model="application.draft.statistical.aboriginal_status"
           label="Aboriginal Status"
-          :options="[
-            'Not recorded',
-            'Non aboriginal',
-            'Yukon first nation status',
-            'Yukon first nation non-status',
-            'Metis',
-            'Inuit',
-            'Other first nation status',
-            'Other first nation non-status',
-          ]" />
+          :items="aboriginalStatus"
+          item-title="description"
+          item-value="id"
+          variant="outlined"
+          bg-color="white"
+          density="comfortable"></v-select>
+
         <Select
-          v-if="
-            application.draft.statistical.aboriginal_status &&
-            application.draft.statistical.aboriginal_status.indexOf('Yukon first nation') >= 0
-          "
+          v-if="application.draft.statistical.aboriginal_status && application.draft.statistical.aboriginal_status == 5"
           v-model="application.draft.statistical.first_nation"
           label="Yukon First Nation"
           item-title="description"
-          item-valud="id"
+          item-value="id"
           :options="firstNations" />
       </v-form>
     </v-card-text>
@@ -91,7 +84,7 @@ export default {
   },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
-    ...mapState(useReferenceStore, ["firstNations"]),
+    ...mapState(useReferenceStore, ["firstNations", "maritalStatus", "aboriginalStatus"]),
   },
   mounted() {},
   methods: {
