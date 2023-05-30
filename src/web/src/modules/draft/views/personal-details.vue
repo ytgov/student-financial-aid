@@ -46,12 +46,11 @@
               <!-- </ValidationProvider> -->
             </v-col>
             <v-col cols="12" md="12">
-              <!-- <ValidationProvider name="Date of Birth" rules="date" tag="span" v-slot="{ errors, valid }"> -->
-              <Select
-                label="Student category"
-                v-model="application.draft.personal_details.category"
-                :items="studentCategories" item-title="description" item-value="id" />
-              <!-- </ValidationProvider> -->
+
+              <v-radio-group label="Student category" v-model="application.draft.personal_details.category" inline
+              hide-details>
+                <v-radio v-for="cat of studentCategories" :label="cat.description" :value="cat.id"></v-radio>
+              </v-radio-group>
             </v-col>
           </v-row>
         </v-form>

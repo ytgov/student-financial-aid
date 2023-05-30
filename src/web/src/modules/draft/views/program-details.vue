@@ -17,10 +17,44 @@
             hide-details
             :label="$t('Institution')" />
         </v-col>
+
+        <v-col cols="12" md="6">
+          <v-select
+            label="Study field"
+            v-model="application.draft.program_details.study_field"
+            :items="studyFields"
+            item-title="description"
+            item-value="id"
+            variant="outlined"
+            bg-color="white"
+            hide-details
+            @update:model-value="application.draft.program_details.study_area = undefined"
+            density="comfortable"></v-select>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-select
+            label="Study area"
+            v-model="application.draft.program_details.study_area"
+            :items="studyAreas"
+            item-title="description"
+            item-value="id"
+            variant="outlined"
+            bg-color="white"
+            hide-details
+            density="comfortable"></v-select>
+        </v-col>
+
         <v-col cols="12">
-          <TextField
-            v-model="application.draft.program_details.program_name"
-            :label="$t('application.program_details.details.program_name')" />
+          <v-select
+            label="Program"
+            v-model="application.draft.program_details.program"
+            :items="programs"
+            item-title="description"
+            item-value="id"
+            variant="outlined"
+            bg-color="white"
+            hide-details
+            density="comfortable"></v-select>
         </v-col>
         <v-col cols="12" md="6">
           <TextField
@@ -84,7 +118,20 @@ export default {
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
     ...mapState(useDraftStore, ["availableSectionProgram"]),
-    ...mapState(useReferenceStore, ["institutions"]),
+    ...mapState(useReferenceStore, ["institutions", "studyFields", "programs"]),
+    studyAreas() {
+      console.log("FIELD", this.application.draft.program_details.study_field);
+
+      if (this.application.draft.program_details.study_field) {
+        let t = this.studyFields.filter((s) => s.id == this.application.draft.program_details.study_field);
+
+        console.log(t);
+
+        return this.studyFields
+          .filter((s) => s.id == this.application.draft.program_details.study_field)
+          .flatMap((s) => s.areas);
+      } else return [];
+    },
   },
   mounted() {
     if (!this.availableSectionProgram) this.$router.push(`/draft/${this.application.id}`);

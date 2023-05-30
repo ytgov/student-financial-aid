@@ -34,7 +34,9 @@
           name="Citizenship"
           v-model="application.draft.statistical.citizenship"
           :label="$t('eligibility.citizenship.title')"
-          :options="['Not recorded', 'Canadian citizen', 'Perminent resident', 'Protected person', 'Non citizen']" />
+          item-title="description"
+          item-value="id"
+          :options="citizenship" />
 
         <v-select
           v-model="application.draft.statistical.aboriginal_status"
@@ -84,7 +86,7 @@ export default {
   },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
-    ...mapState(useReferenceStore, ["firstNations", "maritalStatus", "aboriginalStatus"]),
+    ...mapState(useReferenceStore, ["firstNations", "maritalStatus", "aboriginalStatus", "citizenship"]),
   },
   mounted() {},
   methods: {

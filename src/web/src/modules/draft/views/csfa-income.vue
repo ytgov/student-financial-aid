@@ -16,7 +16,15 @@
         <div v-if="application.draft.csfa_income.has_income">
           <v-row v-for="(item, key) in application.draft.csfa_income.incomes">
             <v-col cols="12" md="4">
-              <TextField v-model="item.type" label="Type" />
+              <v-select
+                v-model="item.type"
+                item-value="id"
+                item-title="description"
+                variant="outlined"
+                bg-color="white"
+                density="comfortable"
+                label="Type"
+                :items="incomeTypes" />
             </v-col>
             <v-col cols="12" md="4">
               <v-text-field
@@ -55,13 +63,15 @@
 </template>
 
 <script>
-import { mapActions, mapWritableState } from "pinia";
+import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
+import { useReferenceStore } from "@/store/ReferenceStore";
 import TextField from "@/components/forms/TextField.vue";
 
 export default {
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
+    ...mapState(useReferenceStore, ["incomeTypes"]),
   },
   data() {
     return {};
