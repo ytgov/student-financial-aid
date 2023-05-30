@@ -16,6 +16,13 @@ export const useReferenceStore = defineStore("reference", {
     yukonHighSchools: new Array<any>(),
     maritalStatus: new Array<any>(),
     aboriginalStatus: new Array<any>(),
+    citizenship: new Array<any>(),
+    incomeTypes: new Array<any>(),
+    cities: new Array<any>(),
+    provinces: new Array<any>(),
+    countries: new Array<any>(),
+    studyFields: new Array<any>(),
+    programs: new Array<any>(),
   }),
   getters: {},
   actions: {
@@ -34,6 +41,13 @@ export const useReferenceStore = defineStore("reference", {
       await this.loadYukonHighSchools();
       await this.loadMaritalStatus();
       await this.loadAboriginalStatus();
+      await this.loadCitizenship();
+      await this.loadIncomeTypes();
+      await this.loadProvinces();
+      await this.loadCities();
+      await this.loadCountries();
+      await this.loadStudyFields();
+      await this.loadPrograms();
 
       console.log("Initialized reference store");
     },
@@ -58,6 +72,7 @@ export const useReferenceStore = defineStore("reference", {
         })
         .catch();
     },
+
     async loadRelationships() {
       const api = useApiStore();
 
@@ -78,6 +93,7 @@ export const useReferenceStore = defineStore("reference", {
         })
         .catch();
     },
+
     async loadStudentCategories() {
       const api = useApiStore();
 
@@ -88,6 +104,7 @@ export const useReferenceStore = defineStore("reference", {
         })
         .catch();
     },
+
     async loadYukonHighSchools() {
       const api = useApiStore();
 
@@ -99,6 +116,7 @@ export const useReferenceStore = defineStore("reference", {
         })
         .catch();
     },
+
     async loadMaritalStatus() {
       const api = useApiStore();
 
@@ -109,6 +127,7 @@ export const useReferenceStore = defineStore("reference", {
         })
         .catch();
     },
+
     async loadAboriginalStatus() {
       const api = useApiStore();
 
@@ -116,6 +135,83 @@ export const useReferenceStore = defineStore("reference", {
         .secureCall("get", `${REFERENCE_URL}/aboriginal_status`)
         .then((resp) => {
           this.aboriginalStatus = resp.data;
+        })
+        .catch();
+    },
+
+    async loadCitizenship() {
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${REFERENCE_URL}/citizenship`)
+        .then((resp) => {
+          this.citizenship = resp.data;
+        })
+        .catch();
+    },
+
+    async loadIncomeTypes() {
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${REFERENCE_URL}/income-type`)
+        .then((resp) => {
+          this.incomeTypes = resp.data;
+        })
+        .catch();
+    },
+
+    async loadCities() {
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${REFERENCE_URL}/city`)
+        .then((resp) => {
+          this.cities = resp.data;
+        })
+        .catch();
+    },
+
+    async loadProvinces() {
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${REFERENCE_URL}/province`)
+        .then((resp) => {
+          this.provinces = resp.data;
+        })
+        .catch();
+    },
+
+    async loadCountries() {
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${REFERENCE_URL}/country`)
+        .then((resp) => {
+          this.countries = resp.data;
+        })
+        .catch();
+    },
+
+    async loadStudyFields() {
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${REFERENCE_URL}/study-field`)
+        .then((resp) => {
+          this.studyFields = resp.data;
+        })
+        .catch();
+    },
+
+    async loadPrograms() {
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${REFERENCE_URL}/program`)
+        .then((resp) => {
+          this.programs = resp.data;
         })
         .catch();
     },

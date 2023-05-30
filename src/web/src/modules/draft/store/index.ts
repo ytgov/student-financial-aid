@@ -177,11 +177,11 @@ export const useDraftStore = defineStore("draft", {
         list = list.filter((i) => !i.name.startsWith("Spouse"));
 
       // check if has depenants
-      if (![2, 3, 8].includes(this.application?.draft.personal_details.category))
+      if ([1, 9].includes(this.application?.draft.personal_details.category))
         list = list.filter((i) => !i.name.startsWith("Student Dependants"));
 
       // check if is depenant
-      if ([2, 3, 4, 5, 6, 7, 8].includes(this.application?.draft.personal_details.category))
+      if (![1].includes(this.application?.draft.personal_details.category))
         list = list.filter((i) => !i.name.startsWith("Parents"));
 
       //check for STA
@@ -243,8 +243,10 @@ export const useDraftStore = defineStore("draft", {
       if (this.application && this.application.draft) {
         let s = this.application.draft.program_details;
         return (
-          s.program_name.length > 0 &&
+          s.program &&
           s.institution_id &&
+          s.study_field &&
+          s.study_area &&
           s.year_entering &&
           s.start_date_of_classes &&
           s.end_date_of_classes &&
@@ -304,9 +306,7 @@ export const useDraftStore = defineStore("draft", {
             s.home_address1.first &&
             s.home_address1.first.length > 0 &&
             s.home_address1.city &&
-            s.home_address1.city.length > 0 &&
             s.home_address1.region &&
-            s.home_address1.region.length > 0 &&
             s.home_address1.postal &&
             s.home_address1.postal.length >= 4
           )
@@ -321,9 +321,7 @@ export const useDraftStore = defineStore("draft", {
               s.home_address2.first &&
               s.home_address2.first.length > 0 &&
               s.home_address2.city &&
-              s.home_address2.city.length > 0 &&
               s.home_address2.region &&
-              s.home_address2.region.length > 0 &&
               s.home_address2.postal &&
               s.home_address2.postal.length >= 4
             )
@@ -345,9 +343,7 @@ export const useDraftStore = defineStore("draft", {
               s.home_address2.first &&
               s.home_address2.first.length > 0 &&
               s.home_address2.city &&
-              s.home_address2.city.length > 0 &&
               s.home_address2.region &&
-              s.home_address2.region.length > 0 &&
               s.home_address2.postal &&
               s.home_address2.postal.length >= 4
             )
@@ -370,7 +366,7 @@ export const useDraftStore = defineStore("draft", {
 
         if (s.aboriginal_status && s.aboriginal_status == 5 && !s.first_nation) return false;
 
-        return s.language && s.gender && s.marital_status && s.citizenship && s.aboriginal_status;
+        return s.language && s.gender && s.marital_status && s.citizenship;
       }
       return false;
     },

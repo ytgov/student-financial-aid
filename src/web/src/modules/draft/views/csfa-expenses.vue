@@ -20,6 +20,7 @@
               persistent-hint
               variant="outlined"
               bg-color="white"
+              :readonly="item.required"
               density="comfortable">
             </v-select>
           </v-col>

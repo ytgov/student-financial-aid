@@ -24,14 +24,14 @@
       <v-form>
         <v-row v-for="(item, key) in application.draft.residency.residency_history">
           <v-col cols="12" md="4">
-            <YearMonthSelector v-model="item.start" label="Residence: From - To" :maxDate="toFullDate(item.end)" />
+            <YearMonthSelector v-model="item.start" label="Residence: From" :maxDate="toFullDate(item.end)" />
           </v-col>
           <v-col cols="12" md="4">
             <v-text-field
               hide-details
               append-inner-icon="mdi-lock"
               readonly
-              label="To"
+              label="Residence: To"
               v-model="item.end"
               density="comfortable"
               variant="outlined"
@@ -41,10 +41,31 @@
             <Select v-model="item.in_school" label="In School?" :items="['Not in school', 'Full-time', 'Part-time']" />
           </v-col>
           <v-col cols="12" md="4">
-            <TextField v-model="item.city" label="City" />
+            <v-autocomplete
+              variant="outlined"
+              bg-color="white"
+              density="comfortable"
+              v-model="item.city"
+              :label="$t('components.address_selector.labels.address_city')"
+              clearable
+              :items="cities"
+              autocomplete="null"
+              item-value="id"
+              item-title="description" />
           </v-col>
-          <v-col cols="12" md="4">
-            <TextField v-model="item.province" label="Province" />
+          <v-col cols="12" md="4"
+            ><v-autocomplete
+              variant="outlined"
+              bg-color="white"
+              density="comfortable"
+              v-model="item.province"
+              :label="$t('components.address_selector.labels.address_province')"
+              clearable
+              :items="provinces"
+              autocomplete="null"
+              item-value="id"
+              item-title="description"
+              @input="catcher" />
           </v-col>
           <v-col cols="12" md="4">
             <v-btn
@@ -54,7 +75,19 @@
               color="warning"
               @click="remove(key)"
               class="float-right"></v-btn>
-            <Select v-model="item.country" label="Country" :style="key > 0 ? 'margin-right: 55px' : ''" />
+
+            <v-autocomplete
+              variant="outlined"
+              bg-color="white"
+              density="comfortable"
+              v-model="item.country"
+              :label="$t('Country')"
+              clearable
+              :items="countries"
+              autocomplete="null"
+              item-value="id"
+              item-title="description"
+              :style="key > 0 ? 'margin-right: 55px' : ''" />
           </v-col>
           <v-col cols="12" class="pt-0">
             <v-label>Duration: {{ calcDate(item) }} months</v-label>
@@ -88,12 +121,14 @@ import TextField from "@/components/forms/TextField.vue";
 import Select from "@/components/forms/Select.vue";
 import YearMonthSelector from "@/components/forms/YearMonthSelector.vue";
 import { useNotificationStore } from "@/store/NotificationStore";
+import { useReferenceStore } from "@/store/ReferenceStore";
 
 export default {
-  components: { DateSelector, TextField, Select, YearMonthSelector,  },
+  components: { DateSelector, TextField, Select, YearMonthSelector },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
     ...mapState(useDraftStore, ["residencyTotalMonths", "residencyMaxDate"]),
+    ...mapState(useReferenceStore, ["cities", "provinces", "countries"]),
 
     accountAfter() {
       return moment(this.application.draft.program_details.start_date_of_classes)
@@ -111,8 +146,6 @@ export default {
     this.application.draft.residency.residency_history = this.application.draft.residency.residency_history || [];
 
     if (this.application.draft.residency.residency_history.length == 0) {
-      console.log("INIT", this.residencyMaxDate);
-
       this.application.draft.residency.residency_history.push({
         end: this.residencyMaxDate,
         city: "",
