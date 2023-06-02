@@ -3,20 +3,46 @@
     <v-radio-group v-model="application.draft.addresses.primary">
       <v-card color="#eee5d1" variant="elevated" elevation="0" class="mb-5">
         <v-card-text>
+          <v-radio value="Permanent" label="This is my primary address" hide-details class="float-right"></v-radio>
           <h3 class="text-h3 mb-6">{{ $t("application.onboarding.addresses.legends.address") }}</h3>
           <v-divider class="my-3" />
-          <v-radio value="Permanent" label="This is my primary address" class="mb-3 ml-0 pl-0"></v-radio>
-          <AddressSelector v-model="application.draft.addresses.home_address1" />
+
+          <v-select
+            label="Use existing address?"
+            v-model="application.draft.addresses.home_address1_id"
+            variant="outlined"
+            bg-color="white"
+            density="comfortable"
+            :items="[{ address1: 'Add New Address', id: -1 }, ...addresses]"
+            item-title="address1"
+            item-value="id"></v-select>
+
+          <AddressSelector
+            v-if="application.draft.addresses.home_address1_id == -1"
+            v-model="application.draft.addresses.home_address1" />
         </v-card-text>
       </v-card>
 
       <v-card color="#eee5d1" variant="elevated" elevation="0">
         <v-card-text>
+          <v-radio value="School" label="This is my primary address" hide-details class="float-right"></v-radio>
           <h3 class="text-h3 mb-6">{{ $t("application.onboarding.addresses.legends.address_at_school") }}</h3>
           <p class="note">(Optional) If you do not have an address while at school yet just leave this form blank.</p>
           <v-divider class="my-3" />
-          <v-radio value="School" label="This is my primary address"></v-radio>
-          <AddressSelector v-model="application.draft.addresses.home_address2" />
+
+          <v-select
+            label="Use existing address?"
+            v-model="application.draft.addresses.home_address2_id"
+            variant="outlined"
+            bg-color="white"
+            density="comfortable"
+            :items="[{ address1: 'Add New Address', id: -1 }, ...addresses]"
+            item-title="address1"
+            item-value="id"></v-select>
+
+          <AddressSelector
+            v-if="application.draft.addresses.home_address2_id == -1"
+            v-model="application.draft.addresses.home_address2" />
         </v-card-text>
       </v-card>
     </v-radio-group>
@@ -38,22 +64,31 @@
 <script>
 import AddressSelector from "@/components/forms/AddressSelector.vue";
 import { useDraftStore } from "../store";
-import { mapActions, mapWritableState } from "pinia";
+import { mapActions, mapState, mapWritableState } from "pinia";
+import { useStudentStore } from "@/modules/student/store";
 
 export default {
   components: {
     AddressSelector,
   },
+  data: () => ({}),
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
+    ...mapState(useStudentStore, ["addresses"]),
   },
-  mounted() {
+  async mounted() {
     this.application.draft.addresses.home_address1 = this.application.draft.addresses.home_address1 || {};
     this.application.draft.addresses.home_address2 = this.application.draft.addresses.home_address2 || {};
     this.application.draft.addresses.primary = this.application.draft.addresses.primary || "Permanent";
+
+    this.application.draft.addresses.home_address1_id = this.application.draft.addresses.home_address1_id || -1;
+    this.application.draft.addresses.home_address2_id = this.application.draft.addresses.home_address2_id || -1;
+
+    await this.loadAddresses();
   },
   methods: {
     ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
+    ...mapActions(useStudentStore, ["loadAddresses"]),
 
     async backClick() {
       this.save().then(() => {

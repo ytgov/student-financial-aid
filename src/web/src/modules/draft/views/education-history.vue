@@ -10,7 +10,7 @@
         <v-row v-for="(item, key) in application.draft.education.education_history">
           <v-col cols="12" md="6">
             <v-autocomplete
-              variant="outlined"
+              variant="outlined"  
               hide-details
               bg-color="white"
               density="comfortable"
@@ -38,10 +38,10 @@
               style="margin-right: 55px"></YearMonthSelector>
             <div class="clear:both"></div>
           </v-col>
-          <v-divider></v-divider>
+          <!-- <v-divider></v-divider> -->
         </v-row>
 
-        <v-btn class="mt-6" color="info" @click="add()">Add another school</v-btn>
+      <!--   <v-btn class="mt-6" color="info" @click="add()">Add another school</v-btn> -->
       </v-form>
     </v-card-text>
   </v-card>

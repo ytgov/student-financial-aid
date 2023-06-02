@@ -18,7 +18,16 @@
         <div v-if="application.draft.other_funding.has_funding">
           <v-row v-for="(item, key) in application.draft.other_funding.other_fundings">
             <v-col cols="12" md="8">
-              <TextField type="text" v-model="item.agency" label="Agency Name" />
+              <v-select
+                variant="outlined"
+                bg-color="white"
+                density="comfortable"
+                hide-details
+                :items="agencies"
+                item-title="description"
+                item-value="id"
+                v-model="item.agency"
+                label="Agency Name" />
             </v-col>
             <v-col cols="12" md="4">
               <TextField type="text" v-model="item.amount" placeholder="0.00" label="Amount" />
@@ -77,13 +86,15 @@
 
 <script>
 import TextField from "@/components/forms/TextField.vue";
-import { mapActions, mapWritableState } from "pinia";
+import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
+import { useReferenceStore } from "@/store/ReferenceStore";
 
 export default {
   components: { TextField },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
+    ...mapState(useReferenceStore, ["agencies"]),
   },
   data() {
     return {};

@@ -20,7 +20,6 @@
       </ul>
 
       <v-divider class="my-3" />
-
       <v-form>
         <v-row v-for="(item, key) in application.draft.residency.residency_history">
           <v-col cols="12" md="4">
@@ -38,7 +37,14 @@
               bg-color="white" />
           </v-col>
           <v-col cols="12" md="4">
-            <Select v-model="item.in_school" label="In School?" :items="['Not in school', 'Full-time', 'Part-time']" />
+            <Select
+              v-model="item.in_school"
+              label="In School?"
+              :items="[
+                { value: 0, title: 'Not in school' },
+                { value: 1, title: 'Full-time' },
+                { value: 2, title: 'Part-time' },
+              ]" />
           </v-col>
           <v-col cols="12" md="4">
             <v-autocomplete
@@ -50,6 +56,7 @@
               clearable
               :items="cities"
               autocomplete="null"
+              hide-details
               item-value="id"
               item-title="description" />
           </v-col>
@@ -63,9 +70,9 @@
               clearable
               :items="provinces"
               autocomplete="null"
+              hide-details
               item-value="id"
-              item-title="description"
-              @input="catcher" />
+              item-title="description" />
           </v-col>
           <v-col cols="12" md="4">
             <v-btn
@@ -83,13 +90,14 @@
               v-model="item.country"
               :label="$t('Country')"
               clearable
+              hide-details
               :items="countries"
               autocomplete="null"
               item-value="id"
               item-title="description"
               :style="key > 0 ? 'margin-right: 55px' : ''" />
           </v-col>
-          <v-col cols="12" class="pt-0">
+          <v-col cols="12" class="pt-0 pl-6">
             <v-label>Duration: {{ calcDate(item) }} months</v-label>
           </v-col>
           <v-divider></v-divider>
@@ -99,6 +107,7 @@
       </v-form>
     </v-card-text>
   </v-card>
+
   <div>
     <v-btn color="info" @click="backClick" class="float-left pl-3">
       <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous
@@ -147,11 +156,12 @@ export default {
 
     if (this.application.draft.residency.residency_history.length == 0) {
       this.application.draft.residency.residency_history.push({
+        start: this.accountAfter,
         end: this.residencyMaxDate,
         city: "",
-        province: "Yukon",
-        country: "Canada",
-        in_school: "Not in school",
+        province: 3,
+        country: 1,
+        in_school: 0,
       });
     }
   },
@@ -172,9 +182,9 @@ export default {
           end: newEnd,
           readonly: true,
           city: "",
-          province: "Yukon",
-          country: "Canada",
-          in_school: "Not in school",
+          province: 3,
+          country: 1,
+          in_school: 0,
         });
       } else {
         let notify = useNotificationStore();

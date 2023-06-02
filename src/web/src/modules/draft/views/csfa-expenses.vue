@@ -12,11 +12,11 @@
           <v-col cols="12" md="6">
             <v-select
               v-model="item.type"
-              :items="types"
-              item-title="value"
-              item-value="value"
+              :items="unusedItems(item)"
+              item-title="description"
+              item-value="id"
               label="Type"
-              :hint="item.note || note(item.type)"
+              :hint="item.notes || note(item.type)"
               persistent-hint
               variant="outlined"
               bg-color="white"
@@ -61,100 +61,65 @@
 <script>
 import _ from "lodash";
 
-import { mapActions, mapWritableState } from "pinia";
+import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
 import TextField from "@/components/forms/TextField.vue";
 import Select from "@/components/forms/Select.vue";
 import Currency from "@/components/forms/Currency.vue";
+import { useReferenceStore } from "@/store/ReferenceStore";
 
 export default {
   components: { TextField, Select, Currency },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
-
-    note() {
-      return (type) => {
-        var item = _.find(this.types, (o) => {
-          return o.value == type;
-        });
-
-        return item ? item.note : false;
-      };
-    },
+    ...mapState(useReferenceStore, ["expenseCategories"]),
   },
   data() {
-    return {
-      types: [
-        /*  {
-          value: "Tuition and compulsory fees",
-          note: "(include even if someone else is paying on your behalf). Do not include residence fees",
-          required: true,
-        },
-        {
-          value: "Books and supplies",
-          note: "(e.g. books, pencils, pens, photocopy services, etc.) ",
-          required: true,
-        }, */
-        {
-          value: "Computer costs",
-          note: "(hardware, softwear, and supplies) ",
-        },
-        {
-          value: "Child support payments",
-          note: "(you may be required to provide supporting documentation) x (per month) ",
-        },
-        {
-          value: "Alimony support payments",
-          note: "(you may be required to provide supporting documentation) x (per month) ",
-        },
-        {
-          value: "Daycare costs",
-          note: "(enter the full cost before any subsidy amount you are eligible for) x (per month)",
-        },
-        {
-          value: "Care costs for dependant(s) ",
-          note: "with disabilities or other dependent children aged below 12 years. Provide supporting documentation from a doctor confirming the need for care",
-        },
-        {
-          value: "Part-time tuition fees, books and supplies",
-          note: " (actual amount) ",
-        },
-        {
-          value: "Medical/dental/optical",
-          note: "(out of pocket costs greater then covered under any insurance plan). Specify your medical/dental/optical costs: x (per month) ",
-        },
-        {
-          value: "Canada Student Loan payments",
-          note: "Spouse only. (full-time or part-time): x (per month) ",
-        },
-        {
-          value: "Other expenses",
-          note: "",
-        },
-      ],
-    };
+    return {};
   },
   beforeMount() {
     this.application.draft.csfa_expenses.expenses = this.application.draft.csfa_expenses.expenses || [];
 
     if (this.application.draft.csfa_expenses.expenses.length == 0) {
-      this.application.draft.csfa_expenses.expenses.push({
-        type: "Tuition and compulsory fees",
-        note: "(include even if someone else is paying on your behalf). Do not include residence fees",
-        required: true,
-      });
-      this.application.draft.csfa_expenses.expenses.push({
-        type: "Books and supplies",
-        note: "(e.g. books, pencils, pens, photocopy services, etc.) ",
-        required: true,
-      });
+      if (this.expenseCategories) {
+        let required = this.expenseCategories.filter((c) => c.is_required == true);
+
+        for (let req of required) {
+          this.application.draft.csfa_expenses.expenses.push({
+            description: req.description,
+            type: req.id,
+            amount: null,
+            notes: req.notes,
+            required: true,
+          });
+        }
+      }
     }
+  },
+  watch: {
+    expenseCategories(n, o) {
+      if (this.application.draft.csfa_expenses.expenses.length == 0) {
+        if (this.expenseCategories) {
+          let required = this.expenseCategories.filter((c) => c.is_required == true);
+
+          for (let req of required) {
+            this.application.draft.csfa_expenses.expenses.push({
+              description: req.description,
+              type: req.id,
+              amount: 0.0,
+              notes: req.notes,
+              required: true,
+            });
+          }
+        }
+      }
+    },
   },
   methods: {
     ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
     add() {
       this.application.draft.csfa_expenses.expenses.push({
-        type: "Computer costs",
+        type: null,
         amount: "",
         comments: "",
         required: false,
@@ -166,6 +131,17 @@ export default {
       }
     },
 
+    unusedItems(item) {
+      let existing = this.application.draft.csfa_expenses.expenses.map((e) => e.type);
+      let items = this.expenseCategories.filter((e) => !existing.includes(e.id) || e.id == item.type);
+
+      console.log("TEMS", items, item);
+      return items;
+    },
+
+    note(item) {
+      return this.expenseCategories.filter((e) => e.id == item).map((i) => i.notes)[0] || "";
+    },
     async backClick() {
       this.save().then(() => {
         this.$router.push(this.getPrevious("CSFA Expenses"));

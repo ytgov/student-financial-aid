@@ -48,7 +48,6 @@
       </v-form>
     </v-card-text>
   </v-card>
-
   <div>
     <v-btn color="info" @click="backClick" class="float-left pl-3">
       <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous

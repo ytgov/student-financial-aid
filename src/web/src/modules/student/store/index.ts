@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 import { useNotificationStore } from "@/store/NotificationStore";
 import { useApiStore } from "@/store/ApiStore";
-import { PORTAL_URL } from "@/urls";
+import { PORTAL_URL, STUDENT_URL } from "@/urls";
 import { clone } from "lodash";
 import { useUserStore } from "@/store/UserStore";
 
@@ -11,12 +11,14 @@ let m = useNotificationStore();
 interface StudentState {
   editStudent: Student | undefined;
   isLoading: Boolean;
+  addresses: any[];
 }
 
 export const useStudentStore = defineStore("student", {
   state: (): StudentState => ({
     editStudent: undefined,
     isLoading: false,
+    addresses: new Array<any>(),
   }),
   getters: {},
   actions: {
@@ -37,6 +39,19 @@ export const useStudentStore = defineStore("student", {
     },
     doneEdit() {
       this.editStudent = undefined;
+    },
+    loadAddresses() {
+      let u = useUserStore();
+      let user = u.user;
+
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${STUDENT_URL}/${user?.sub}/addresses`)
+        .then((resp) => {
+          this.addresses = resp.data;
+        })
+        .catch();
     },
   },
 });
