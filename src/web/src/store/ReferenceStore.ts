@@ -23,6 +23,8 @@ export const useReferenceStore = defineStore("reference", {
     countries: new Array<any>(),
     studyFields: new Array<any>(),
     programs: new Array<any>(),
+    agencies: new Array<any>(),
+    expenseCategories: new Array<any>(),
   }),
   getters: {},
   actions: {
@@ -48,6 +50,8 @@ export const useReferenceStore = defineStore("reference", {
       await this.loadCountries();
       await this.loadStudyFields();
       await this.loadPrograms();
+      await this.loadAgencies();
+      await this.loadExpenseCategories();
 
       console.log("Initialized reference store");
     },
@@ -66,7 +70,7 @@ export const useReferenceStore = defineStore("reference", {
       const api = useApiStore();
 
       api
-        .secureCall("get", `${REFERENCE_URL}/education_level`)
+        .secureCall("get", `${REFERENCE_URL}/education-level`)
         .then((resp) => {
           this.educationLevels = resp.data;
         })
@@ -121,7 +125,7 @@ export const useReferenceStore = defineStore("reference", {
       const api = useApiStore();
 
       api
-        .secureCall("get", `${REFERENCE_URL}/marital_status`)
+        .secureCall("get", `${REFERENCE_URL}/marital-status`)
         .then((resp) => {
           this.maritalStatus = resp.data;
         })
@@ -132,7 +136,7 @@ export const useReferenceStore = defineStore("reference", {
       const api = useApiStore();
 
       api
-        .secureCall("get", `${REFERENCE_URL}/aboriginal_status`)
+        .secureCall("get", `${REFERENCE_URL}/aboriginal-status`)
         .then((resp) => {
           this.aboriginalStatus = resp.data;
         })
@@ -212,6 +216,28 @@ export const useReferenceStore = defineStore("reference", {
         .secureCall("get", `${REFERENCE_URL}/program`)
         .then((resp) => {
           this.programs = resp.data;
+        })
+        .catch();
+    },
+
+    async loadAgencies() {
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${REFERENCE_URL}/agency`)
+        .then((resp) => {
+          this.agencies = resp.data;
+        })
+        .catch();
+    },
+
+    async loadExpenseCategories() {
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${REFERENCE_URL}/expense-category`)
+        .then((resp) => {
+          this.expenseCategories = resp.data;
         })
         .catch();
     },

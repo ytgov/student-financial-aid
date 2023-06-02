@@ -6,7 +6,7 @@
     "start_date": "",
     "institution": {}
   },
-  "funding_sources": { "sources": [] },
+  "funding_sources": { "sources": [], "csfa_amounts": "Full amount loans and grants" },
   "personal_details": {},
   "addresses": {},
   "statistical": {},

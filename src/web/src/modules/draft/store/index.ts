@@ -300,7 +300,13 @@ export const useDraftStore = defineStore("draft", {
       if (this.application && this.application.draft) {
         let s = this.application.draft.addresses;
 
+        if (s.home_address1_id != -1 && s.home_address2_id != -1) return true;
+        if (s.home_address1_id != -1 && s.primary == "Permanent") return true;
+        if (s.home_address2_id != -1 && s.primary == "School") return true;
+
         if (
+          s.primary == "Permanent" &&
+          s.home_address1_id == -1 &&
           !(
             s.home_address1 &&
             s.home_address1.first &&
@@ -316,6 +322,7 @@ export const useDraftStore = defineStore("draft", {
 
         if (s.primary == "School") {
           if (
+            s.home_address2_id == -1 &&
             !(
               s.home_address2 &&
               s.home_address2.first &&
@@ -429,7 +436,7 @@ export const useDraftStore = defineStore("draft", {
           if (this.residencyTotalMonths < 24) return false;
 
           for (let c of s.residency_history) {
-            if (!(c.start && c.end && c.city && c.province && c.country && c.in_school)) return false;
+            if (!(c.start && c.end && c.city && c.province && c.country && !isUndefined(c.in_school))) return false;
           }
 
           return true;
@@ -560,6 +567,10 @@ export const useDraftStore = defineStore("draft", {
         if (!(s.parents[0].first_name && s.parents[0].last_name && s.parents[0].relationship && s.parents[0].sin))
           return false;
 
+        if (s.parents[1].first_name || s.parents[1].last_name || s.parents[1].relationship || s.parents[1].sin) {
+          if (!(s.parents[1].first_name && s.parents[1].last_name && s.parents[1].relationship && s.parents[1].sin))
+            return false;
+        }
         return true;
       }
       return false;
@@ -659,8 +670,7 @@ export const useDraftStore = defineStore("draft", {
         )
           return false;
 
-        if (["Living at Parents", "Both"].includes(s.accomodations[0].living) && !s.accomodations[0].rent_to_parents)
-          return false;
+        if ([1, 3].includes(s.accomodations[0].living) && !s.accomodations[0].rent_to_parents) return false;
 
         if (s.accomodations[0].bus_service == false && !s.accomodations[0].distinct_from_school) return false;
 
@@ -669,8 +679,7 @@ export const useDraftStore = defineStore("draft", {
         )
           return false;
 
-        if (["Living at Parents", "Both"].includes(s.accomodations[1].living) && !s.accomodations[1].rent_to_parents)
-          return false;
+        if ([1, 3].includes(s.accomodations[1].living) && !s.accomodations[1].rent_to_parents) return false;
 
         if (s.accomodations[1].bus_service == false && !s.accomodations[1].distinct_from_school) return false;
 
@@ -731,7 +740,7 @@ export const useDraftStore = defineStore("draft", {
           if (s.expenses.length == 0) return false;
 
           for (let c of s.expenses) {
-            if (!(c.type && c.amount)) return false;
+            if (!(c.type && c.amount && c.amount > 0)) return false;
           }
           return true;
         }
@@ -875,7 +884,7 @@ export const useDraftStore = defineStore("draft", {
       }
     },
 
-    async save(): Promise<any> {
+    async save(notify: boolean = true): Promise<any> {
       if (this.application) {
         const api = useApiStore();
         const userStore = useUserStore();
@@ -890,7 +899,7 @@ export const useDraftStore = defineStore("draft", {
             update_date: new Date(),
           })
           .then((resp) => {
-            m.notify({ text: "Application Saved", variant: "success" });
+            if (notify) m.notify({ text: "Application Saved", variant: "success" });
             return resp.data;
           })
           .catch((err) => {
@@ -913,6 +922,7 @@ export const useDraftStore = defineStore("draft", {
           })
           .catch((err) => {
             console.log("ERROR HAPPENED", err);
+            m.notify({ text: "Error Submitting Application", variant: "error" });
             return {};
           });
       }

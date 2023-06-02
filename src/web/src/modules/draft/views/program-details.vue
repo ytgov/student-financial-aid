@@ -120,12 +120,8 @@ export default {
     ...mapState(useDraftStore, ["availableSectionProgram"]),
     ...mapState(useReferenceStore, ["institutions", "studyFields", "programs"]),
     studyAreas() {
-      console.log("FIELD", this.application.draft.program_details.study_field);
-
       if (this.application.draft.program_details.study_field) {
         let t = this.studyFields.filter((s) => s.id == this.application.draft.program_details.study_field);
-
-        console.log(t);
 
         return this.studyFields
           .filter((s) => s.id == this.application.draft.program_details.study_field)

@@ -5,14 +5,19 @@
   </p>
   <v-divider class="my-3" />
 
-  <v-alert v-if="!isComplete" type="info" variant="tonal" class="mb-5">
+  <v-alert v-if="!sectionsComplete" type="info" variant="tonal" class="mb-5">
+    It appears that <strong>{{ sectionInfo }}</strong> sections are complete and you have uploaded
+    <strong>{{ documentInfo }}</strong> documents. You may not submit the appication in the current state. All sections
+    must be complete prior to submission.
+  </v-alert>
+  <v-alert v-else type="info" variant="tonal" class="mb-5">
     It appears that <strong>{{ sectionInfo }}</strong> sections are complete and you have uploaded
     <strong>{{ documentInfo }}</strong> documents. You may submit the appication in the current state, but we recommend
     completing all of the sections prior to submission.
   </v-alert>
 
   <p class="mb-5">
-    To submit your appliation, you must now complete the Student Declaration section below and click "Submit".
+    To submit your application, you must now complete the Student Declaration section below and click "Submit".
   </p>
 
   <v-card color="#eee5d1" elevation="0" class="mb-5">
@@ -20,9 +25,20 @@
       <h3 class="text-h3 mb-6">Student Declaration</h3>
       <v-divider class="my-3" />
 
-      <v-text-field variant="outlined" bg-color="white" label="Type your name"></v-text-field>
+      <v-text-field
+        variant="outlined"
+        bg-color="white"
+        label="Type your name"
+        :disabled="!sectionsComplete"></v-text-field>
 
-      <v-btn color="primary" class="mr-3 mb-5 float-right" size="x-large" @click="saveClick">Submit</v-btn>
+      <v-btn
+        color="primary"
+        class="mr-3 mb-5 float-right"
+        size="x-large"
+        @click="saveClick"
+        :disabled="!sectionsComplete"
+        >Submit</v-btn
+      >
     </v-card-text>
   </v-card>
 
@@ -40,6 +56,17 @@ export default {
   computed: {
     ...mapState(useDraftStore, ["relevantSections", "requiredDocuments"]),
 
+    sectionsComplete() {
+      let sect = this.relevantSections.filter((s) => s.name != "Review and Submit");
+      let totSect = sect.length;
+      let comSect = sect.filter((s) => s.is_complete).length;
+      return totSect == comSect;
+    },
+    documentsComplete() {
+      let totSect = this.requiredDocuments.length;
+      let comSect = this.requiredDocuments.filter((s) => s.status != "Missing").length;
+      return totSect == comSect;
+    },
     sectionInfo() {
       let sect = this.relevantSections.filter((s) => s.name != "Review and Submit");
       let totSect = sect.length;
