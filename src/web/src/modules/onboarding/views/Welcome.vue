@@ -262,14 +262,14 @@ export default {
   methods: {
     ...mapActions(useNotificationStore, ["notify"]),
     ...mapActions(useOnboardingStore, ["tryCreateStudent", "tryLinkStudent"]),
+    ...mapActions(useUserStore, ["loadCurrentStudent"]),
 
     async findMatchClick() {
       if (this.user) {
         let result = await this.tryLinkStudent(this.user);
 
-        console.log("RESULTS OF LINK", result);
-
         if (result && result == true) {
+          await this.loadCurrentStudent();
           this.step = 5;
         } else this.step = 4;
       }
@@ -280,6 +280,7 @@ export default {
         let result = await this.tryCreateStudent(this.user).then((resp) => resp);
 
         if (result && result.id) {
+          await this.loadCurrentStudent();
           this.notify({ variant: "success", text: "Student record created" });
           this.step = 6;
         }

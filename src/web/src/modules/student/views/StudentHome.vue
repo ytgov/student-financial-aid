@@ -66,8 +66,7 @@
                 density="comfortable"
                 variant="outlined"
                 hide-details
-                :model-value="`2 Stope Way
-Whitehorse, Yukon Y1A0B3`"></v-textarea>
+                :model-value="studentAddress"></v-textarea>
             </v-col>
           </v-row>
 
@@ -125,7 +124,7 @@ export default {
     showCreateDialog: false,
   }),
   computed: {
-    ...mapState(useUserStore, ["student"]),
+    ...mapState(useUserStore, ["student", "studentAddress"]),
     ...mapState(useDraftStore, ["myApplications"]),
   },
   components: { ApplicationCard, AnnouncementList, RecentMessages },
@@ -143,6 +142,7 @@ export default {
   methods: {
     ...mapActions(useDraftStore, ["create", "loadApplications"]),
     ...mapActions(useStudentStore, ["edit"]),
+    
     createApplicationClick() {
       let inProgressCount = this.myApplications.filter((a) => a.status == "In Progress").length;
 

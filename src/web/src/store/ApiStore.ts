@@ -1,6 +1,6 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import { useNotificationStore } from "@/store/NotificationStore";
-import { SecureAPICall } from "./helpers/axiosAPIConfig";
+import { SecureAPICall, SecureAPIUpload } from "./helpers/axiosAPIConfig";
 
 //refs are reactive variables
 //computed are reactive variables that are derived from other reactive variables
@@ -40,8 +40,22 @@ export const useApiStore = defineStore("api", () => {
         return { error: err };
       });
   }
+
+  async function secureUpload(method: string, url: string, data?: any) {
+    return SecureAPIUpload(method, "")
+      .request({ url, data })
+      .then((resp) => {
+        return resp.data;
+      })
+      .catch((err) => {
+        doApiErrorMessage(err);
+        return { error: err };
+      });
+  }
+
   return {
     secureCall,
+    secureUpload,
   };
 });
 
