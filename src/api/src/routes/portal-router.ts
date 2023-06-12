@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { loadStudent, loadUser } from "../middleware";
 import { PROXY_BASE_URL } from "../config";
 import { ProxyService } from "../services/proxy-service";
@@ -48,9 +48,26 @@ portalRouter.post("/application/:sub/:draftId/upload", async (req: Request, res:
   res.status(404).send();
 });
 
+portalRouter.put("*", async (req: Request, res: Response) => {
+  let response = await proxyService.proxy(req.baseUrl.replace("/api/portal", ""), req.method, req.body);
+
+  if (response && response.data && response.data.data) return res.json({ data: response.data.data });
+  else if (response && response.data) return res.json({ data: response.data });
+  else if (response) return res.json({});
+});
+
+function proxyLogger(proxy: any, req: Request, res: Response) {
+  console.log("PROXYMIDDLEWARE", req.url, req.method);
+}
+
 portalRouter.use(
   "*",
-  createProxyMiddleware({ target: PROXY_BASE_URL.replace("/api/portal", ""), changeOrigin: true, secure: false })
+  createProxyMiddleware({
+    target: PROXY_BASE_URL.replace("/api/portal", ""),
+    changeOrigin: true,
+    secure: false,
+    //onProxyReq: proxyLogger,
+  })
 );
 
 /* 
