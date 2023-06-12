@@ -48,7 +48,10 @@ portalRouter.post("/application/:sub/:draftId/upload", async (req: Request, res:
   res.status(404).send();
 });
 
-portalRouter.use("*", createProxyMiddleware({ target: PROXY_BASE_URL.replace("/api/portal", ""), changeOrigin: true }));
+portalRouter.use(
+  "*",
+  createProxyMiddleware({ target: PROXY_BASE_URL.replace("/api/portal", ""), changeOrigin: true, secure: false })
+);
 
 /* 
 portalRouter.use("*", async (req: Request, res: Response) => {
