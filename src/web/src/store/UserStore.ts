@@ -13,6 +13,7 @@ export const useUserStore = defineStore("user", {
     user: undefined,
     student: undefined,
     lastLoaded: undefined,
+    studentAddress: undefined,
   }),
   getters: {
     student_id(state) {
@@ -87,6 +88,7 @@ interface UserStore {
   user: User | undefined;
   student: any | undefined;
   lastLoaded: Date | undefined;
+  studentAddress: string | undefined;
 }
 
 export interface User {

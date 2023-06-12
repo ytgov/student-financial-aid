@@ -6,13 +6,7 @@
         <v-btn icon @click="closeClick" color="white"><v-icon>mdi-close</v-icon></v-btn>
       </v-toolbar>
       <v-card-text>
-        <v-text-field
-          label="Document type"
-          variant="outlined"
-          bg-color="white"
-          readonly
-          density="comfortable"
-          v-model="fileUpload.document_type" />
+        <p class="mb-4">{{ fileUpload.description }}</p>
 
         <v-file-input
           label="Choose file"
@@ -20,6 +14,10 @@
           bg-color="white"
           prepend-icon=""
           prepend-inner-icon="mdi-paperclip"
+          accept="image/*,.pdf,.doc,.docx"
+          hint="We accept files in image formats, PDF or Microsoft Word"
+          persistent-hint
+          class="mb-5"
           v-model="file">
         </v-file-input>
 
@@ -34,11 +32,12 @@
 <script lang="ts">
 import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
+import { isArray } from "lodash";
 
 export default {
   data: () => ({
     show: false,
-    file: undefined,
+    file: null,
   }),
   computed: {
     ...mapState(useDraftStore, ["application"]),
@@ -49,15 +48,17 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useDraftStore, ["upload"]),
+    ...mapActions(useDraftStore, ["upload", "loadRequiredDocuments"]),
     closeClick() {
-      this.file = undefined;
+      this.file = null;
       this.fileUpload = undefined;
     },
-    uploadClick() {
-      console.log();
-      this.upload(this.file).then((resp) => {
-        this.show = false;
+    async uploadClick() {
+      let t = isArray(this.file) ? this.file[0] : this.file;
+
+      this.upload(t).then(async (resp) => {
+        await this.loadRequiredDocuments();
+        this.closeClick();
       });
     },
   },

@@ -20,13 +20,13 @@
         <div v-for="(doc, key) in requiredDocuments">
           <v-list-item>
             <template v-slot:prepend>
-              <v-avatar color="success" v-if="doc.status == 'Accepted'">
+              <v-avatar color="success" v-if="doc.status_description == 'Accepted'">
                 <v-icon color="white">mdi-file</v-icon>
               </v-avatar>
-              <v-avatar color="error" v-else-if="doc.status == 'Rejected'">
+              <v-avatar color="error" v-else-if="doc.status_description == 'Rejected'">
                 <v-icon color="white">mdi-alert-outline</v-icon>
               </v-avatar>
-              <v-avatar color="warning" v-else-if="doc.status == 'Missing'">
+              <v-avatar color="warning" v-else-if="doc.status_description == 'Missing'">
                 <v-icon color="white">mdi-upload</v-icon>
               </v-avatar>
               <v-avatar color="grey" v-else>
@@ -36,9 +36,10 @@
             <div class="d-flex">
               <div>
                 <span style="font-size: 14px; font-weight: 700">{{ doc.description }}</span>
-                <span v-if="doc.file_name" class="pl-1">: {{ doc.file_name }}</span>
+                <span v-if="doc.upload" class="pl-1">: {{ doc.upload.file_name }}</span>
                 <br />
-                {{ doc.status }}
+                {{ doc.status_description }}
+                <span v-if="doc.upload"> - Uploaded on {{ formatDate(doc.upload.upload_date) }}</span>
               </div>
               <v-spacer></v-spacer>
 
@@ -53,19 +54,29 @@
                   <v-divider></v-divider>
 
                   <v-list>
-                    <v-list-item>
+                    <v-list-item v-if="doc.document_location" @click="openTemplate(doc)">
                       <v-icon class="mr-2" color="primary">mdi-file-pdf-box</v-icon> Download Template
                     </v-list-item>
 
-                    <v-list-item @click="doUpload(doc)" v-if="doc.status == 'Missing'">
+                    <v-list-item @click="doUpload(doc)" v-if="doc.status_description == 'Missing'">
                       <v-icon class="mr-2" color="primary">mdi-upload</v-icon> Upload
                     </v-list-item>
 
-                    <v-list-item v-if="['Unreviewed', 'Rejected', 'Unreviewed'].includes(doc.status)">
+                    <v-list-item @click="doUpload(doc)" v-if="doc.status_description != 'Missing'">
+                      <v-icon class="mr-2" color="primary">mdi-upload</v-icon> Upload Another
+                    </v-list-item>
+
+                    <v-list-item @click="doReplace(doc)" v-if="doc.status_description != 'Missing'">
+                      <v-icon class="mr-2" color="primary">mdi-upload</v-icon> Replace
+                    </v-list-item>
+
+                    <v-list-item
+                      @click="doDownload(doc)"
+                      v-if="['Unreviewed', 'Rejected', 'Unreviewed', 'Pending'].includes(doc.status_description)">
                       <v-icon class="mr-2" color="primary">mdi-eye</v-icon> View Uploaded File
                     </v-list-item>
 
-                    <v-list-item v-if="['Unreviewed', 'Rejected', 'Unreviewed'].includes(doc.status)">
+                    <v-list-item v-if="['Unreviewed', 'Rejected', 'Unreviewed'].includes(doc.status_description)">
                       <v-icon class="mr-2" color="primary">mdi-delete</v-icon> Remove
                     </v-list-item>
                   </v-list>
@@ -98,6 +109,7 @@
 import UploadDialog from "../components/upload-dialog.vue";
 import { mapActions, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
+import moment from "moment";
 
 export default {
   components: { UploadDialog },
@@ -122,29 +134,41 @@ export default {
       false,
       false,
       false,
+      false,
+      false,
+      false,
     ],
   }),
   computed: {
     ...mapWritableState(useDraftStore, ["application", "requiredDocuments", "fileUpload"]),
   },
+  async mounted() {
+    await this.loadRequiredDocuments();
+  },
   methods: {
-    ...mapActions(useDraftStore, ["getPrevious", "getNext", "save", "upload"]),
+    ...mapActions(useDraftStore, ["getPrevious", "getNext", "save", "loadRequiredDocuments", "getDownloadUrl"]),
 
     async doUpload(doc) {
-      console.log(doc);
-      this.fileUpload = { document_type: doc.type };
-      //await this.upload(doc).then(() => {});
+      this.fileUpload = doc;
+      this.fileUpload.replace = false;
     },
 
-    docChanged(doc) {
-      if (doc) {
-        console.log(doc);
-      }
+    async doReplace(doc) {
+      this.fileUpload = doc;
+      this.fileUpload.replace = true;
+      this.fileUpload.replace_id = doc.upload.object_key;
+    },
+
+    doDownload(doc) {
+      window.open(this.getDownloadUrl(doc.upload), "_blank");
     },
 
     statusColor(status) {
       if (status == "Missing") return "warning";
       else if (status == "Verified") return "success";
+    },
+    formatDate(date) {
+      return moment(date).format("YYYY-MM-DD @ h:mm A");
     },
 
     async backClick() {
@@ -159,6 +183,9 @@ export default {
       this.save().then(() => {
         this.$router.push(this.getNext("Documents"));
       });
+    },
+    openTemplate(doc) {
+      window.open(doc.document_location, "_blank");
     },
   },
 };

@@ -21,6 +21,7 @@ export const useDraftStore = defineStore("draft", {
     myApplications: new Array<any>(),
     application: undefined as Draft | undefined,
     fileUpload: undefined as FileUpload | undefined,
+    requiredDocuments: new Array<any>(),
   }),
   getters: {
     relevantSections(): any[] {
@@ -422,7 +423,7 @@ export const useDraftStore = defineStore("draft", {
 
       if (this.application && this.application.draft) {
         for (let item of this.application.draft.residency.residency_history) {
-          if (item.start && item.end) total += moment(`${item.end}/15`).diff(moment(`${item.start}/01`), "months");
+          if (item.start && item.end) total += 1 + moment(`${item.end}/15`).diff(moment(`${item.start}/01`), "months");
         }
       }
       return total;
@@ -773,37 +774,6 @@ export const useDraftStore = defineStore("draft", {
         this.completeSectionFunding
       );
     },
-
-    requiredDocuments(): any[] {
-      return [
-        {
-          type: "Transcript",
-          description: "Transcript",
-          file_name: "",
-          status: "Unreviewed",
-          menu: false,
-        },
-        {
-          type: "Student Declaration",
-          description: "Student Declaration",
-          status: "Missing",
-          menu: false,
-        },
-        {
-          type: "Parent Declaration",
-          description: "Parent Declaration",
-          status: "Rejected",
-          menu: false,
-        },
-        {
-          type: "Reference Letter",
-          description: "Reference Letter",
-          file_name: "Michael Letter.pdf",
-          status: "Accepted",
-          menu: false,
-        },
-      ];
-    },
   },
   actions: {
     async loadApplications(): Promise<void> {
@@ -900,6 +870,7 @@ export const useDraftStore = defineStore("draft", {
           })
           .then((resp) => {
             if (notify) m.notify({ text: "Application Saved", variant: "success" });
+            this.loadRequiredDocuments();
             return resp.data;
           })
           .catch((err) => {
@@ -928,15 +899,36 @@ export const useDraftStore = defineStore("draft", {
       }
     },
 
+    async loadRequiredDocuments(): Promise<any> {
+      let userStore = useUserStore();
+      const api = useApiStore();
+
+      return api
+        .secureCall("get", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application?.id}/required-documents`)
+        .then((resp) => {
+          this.requiredDocuments = resp.data;
+        })
+        .catch((err) => {
+          console.log("ERROR HAPPENED", err);
+        })
+        .finally(() => {
+          Promise.resolve();
+        });
+    },
+
     async upload(file: any): Promise<any> {
       if (this.application) {
         const api = useApiStore();
         const userStore = useUserStore();
 
-        console.log(this.fileUpload, file);
+        let form = new FormData();
+        form.append("file", file);
+        form.append("requirement_type_id", this.fileUpload?.requirement_type_id.toString() || "");
+        form.append("replace", this.fileUpload?.replace ? "true" : "false");
+        form.append("replace_id", this.fileUpload?.replace_id || "");
 
         return api
-          .secureCall("post", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}/upload`, { file })
+          .secureUpload("post", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}/upload`, form)
           .then((resp) => {
             return resp.data;
           })
@@ -945,6 +937,14 @@ export const useDraftStore = defineStore("draft", {
             return {};
           });
       }
+    },
+
+    getDownloadUrl(upload: any) {
+      if (this.application) {
+        const userStore = useUserStore();
+        return `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}/files/${upload.object_key}`;
+      }
+      return "";
     },
 
     resume(current: string = ""): string {
@@ -1024,4 +1024,8 @@ interface Draft {
 interface FileUpload {
   to_upload: any;
   document_type: string;
+  description: string;
+  requirement_type_id: number;
+  replace: boolean;
+  replace_id?: string;
 }

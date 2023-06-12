@@ -107,7 +107,7 @@
       </v-form>
     </v-card-text>
   </v-card>
-
+  
   <div>
     <v-btn color="info" @click="backClick" class="float-left pl-3">
       <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous
@@ -204,7 +204,7 @@ export default {
       return start < end;
     },
     calcDate(item) {
-      if (item.start && item.end) return moment(item.end).diff(moment(item.start), "months");
+      if (item.start && item.end) return 1 + moment(item.end).diff(moment(item.start), "months");
       return 0;
     },
     toFullDate(input) {

@@ -99,7 +99,7 @@ export default {
       });
     },
     async saveClick() {
-      this.save().then(async () => {
+      this.save(false).then(async () => {
         this.submit().then((resp) => {
           this.$router.push("/student");
         });

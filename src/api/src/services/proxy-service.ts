@@ -15,4 +15,16 @@ export class ProxyService {
         return undefined;
       });
   }
+
+  async fileProxy(path: string, method: string, data: any = undefined): Promise<any> {
+    console.log("FILE PROXY TO", `${PROXY_BASE_URL}${path}`, method, data);
+
+    return axios
+      .request({ url: `${PROXY_BASE_URL}${path}`, data, method, headers: { "Content-Type": "multipart/form-data" } })
+      .then((resp) => resp)
+      .catch((e) => {
+        console.log("ERROR: PortalService.proxy", e);
+        return undefined;
+      });
+  }
 }
