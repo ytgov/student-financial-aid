@@ -301,9 +301,18 @@ export const useDraftStore = defineStore("draft", {
       if (this.application && this.application.draft) {
         let s = this.application.draft.addresses;
 
-        if (s.home_address1_id != -1 && s.home_address2_id != -1) return true;
-        if (s.home_address1_id != -1 && s.primary == "Permanent") return true;
-        if (s.home_address2_id != -1 && s.primary == "School") return true;
+        if (
+          isUndefined(s.home_address1) &&
+          isUndefined(s.home_address2) &&
+          isUndefined(s.home_address1_id) &&
+          isUndefined(s.home_address2_id)
+        )
+          return false;
+
+        if (s.home_address1_id && s.home_address1_id != -1 && s.home_address2_id && s.home_address2_id != -1)
+          return true;
+        if (s.home_address1_id && s.home_address1_id != -1 && s.primary == "Permanent") return true;
+        if (s.home_address2_id && s.home_address2_id != -1 && s.primary == "School") return true;
 
         if (
           s.primary == "Permanent" &&
@@ -338,28 +347,30 @@ export const useDraftStore = defineStore("draft", {
           }
         }
 
-        if (
-          (s.home_address2 && s.home_address2.first) ||
-          s.home_address2.second ||
-          s.home_address2.city ||
-          s.home_address2.region ||
-          s.home_address2.postal
-        ) {
+        if (!isUndefined(s.home_address2)) {
           if (
-            !(
-              s.home_address2 &&
-              s.home_address2.first &&
-              s.home_address2.first.length > 0 &&
-              s.home_address2.city &&
-              s.home_address2.region &&
-              s.home_address2.postal &&
-              s.home_address2.postal.length >= 4
-            )
+            s.home_address2.first ||
+            s.home_address2.second ||
+            s.home_address2.city ||
+            s.home_address2.region ||
+            s.home_address2.postal
           ) {
-            return false;
+            if (
+              !(
+                s.home_address2.first &&
+                s.home_address2.first.length > 0 &&
+                s.home_address2.city &&
+                s.home_address2.region &&
+                s.home_address2.postal &&
+                s.home_address2.postal.length >= 4
+              )
+            ) {
+              return false;
+            }
           }
         }
 
+        console.log("A5");
         return true;
       }
       return false;
@@ -645,6 +656,14 @@ export const useDraftStore = defineStore("draft", {
     },
 
     completeSectionDocuments(): boolean {
+      if (this.application && this.application.draft) {
+        let requiredDocs = this.requiredDocuments;
+
+        for (let doc of requiredDocs) {
+          if (doc.status_description == "Missing") return false;
+        }
+      }
+
       return true;
     },
     availableSectionDocuments(): boolean {

@@ -14,6 +14,8 @@ export const useUserStore = defineStore("user", {
     student: undefined,
     lastLoaded: undefined,
     studentAddress: undefined,
+    feedback: undefined,
+    feedbackVisible: false,
   }),
   getters: {
     student_id(state) {
@@ -80,6 +82,27 @@ export const useUserStore = defineStore("user", {
     editStudent() {
       this.editStudent = this.student;
     },
+    showFeedback() {
+      this.feedback = { date: new Date(), text: "" };
+      this.feedbackVisible = true;
+    },
+    closeFeedback() {
+      this.feedback = undefined;
+      this.feedbackVisible = false;
+    },
+    async sendFeedback() {
+      this.feedback.date = new Date();
+      this.feedback.url = window.location.href;
+
+      let api = useApiStore();
+      let m = useNotificationStore();
+
+      await api.secureCall("post", `${STUDENT_URL}/feedback`, this.feedback).then((resp) => {
+        this.student = resp.data;
+        this.closeFeedback();
+        m.notify({ variant: "success", text: "Thank you for your feedback" });
+      });
+    },
   },
 });
 
@@ -89,6 +112,8 @@ interface UserStore {
   student: any | undefined;
   lastLoaded: Date | undefined;
   studentAddress: string | undefined;
+  feedback: any | undefined;
+  feedbackVisible: boolean;
 }
 
 export interface User {
