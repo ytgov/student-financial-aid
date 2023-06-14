@@ -17,6 +17,13 @@
         </template>
 
         <v-list density="compact">
+          <v-list-item @click="openFeedbackClick">
+            <template v-slot:prepend>
+              <v-icon>mdi-comment-quote-outline</v-icon>
+            </template>
+            <v-list-item-title style="font-size: 0.9rem !important">Feedback</v-list-item-title>
+          </v-list-item>
+
           <!-- <v-list-item to="/student">
               <template v-slot:prepend>
                 <v-icon>mdi-account</v-icon>
@@ -24,19 +31,19 @@
               <v-list-item-title style="font-size: 0.9rem !important">My profile</v-list-item-title>
             </v-list-item> -->
 
-          <v-list-item to="/messages/inbox">
+          <!--  <v-list-item to="/messages/inbox">
             <template v-slot:prepend>
               <v-icon>mdi-message</v-icon>
             </template>
             <v-list-item-title style="font-size: 0.9rem !important">My Messages</v-list-item-title>
-          </v-list-item>
-
+          </v-list-item> -->
+          <!-- 
           <v-list-item to="/faq">
             <template v-slot:prepend>
               <v-icon>mdi-frequently-asked-questions</v-icon>
             </template>
             <v-list-item-title style="font-size: 0.9rem !important">FAQs</v-list-item-title>
-          </v-list-item>
+          </v-list-item> -->
 
           <v-list-item to="/contact">
             <template v-slot:prepend>
@@ -71,6 +78,7 @@
       <h2>Loading {{ title }}</h2>
     </div>
   </v-overlay>
+  <FeedbackDialog></FeedbackDialog>
 </template>
 
 <script lang="ts">
@@ -80,9 +88,11 @@ import LangaugeSwitcher from "../i18n/language-switcher.vue";
 import { LOGOUT_URL } from "../urls";
 
 import { mapState, mapActions, mapWritableState } from "pinia";
+import FeedbackDialog from "@/components/FeedbackDialog.vue";
+
 export default {
   name: "Default",
-  components: { LangaugeSwitcher },
+  components: { LangaugeSwitcher, FeedbackDialog },
   data() {
     return {
       showOverlay: true,
@@ -102,7 +112,7 @@ export default {
     this.showOverlay = false;
   },
   methods: {
-    ...mapActions(useUserStore, ["initialize"]),
+    ...mapActions(useUserStore, ["initialize", "showFeedback"]),
 
     goHome() {
       if (this.student && this.student.id) this.$router.push("/student");
@@ -111,6 +121,10 @@ export default {
 
     logoutClick() {
       window.location.replace(LOGOUT_URL);
+    },
+
+    openFeedbackClick() {
+      this.showFeedback();
     },
   },
 };
