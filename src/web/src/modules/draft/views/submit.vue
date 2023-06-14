@@ -57,14 +57,9 @@ export default {
     ...mapState(useDraftStore, ["relevantSections", "requiredDocuments"]),
 
     sectionsComplete() {
-      let sect = this.relevantSections.filter((s) => s.name != "Review and Submit");
+      let sect = this.relevantSections.filter((s) => s.name != "Review and Submit" && s.name != "Documents");
       let totSect = sect.length;
       let comSect = sect.filter((s) => s.is_complete).length;
-      return totSect == comSect;
-    },
-    documentsComplete() {
-      let totSect = this.requiredDocuments.length;
-      let comSect = this.requiredDocuments.filter((s) => s.status != "Missing").length;
       return totSect == comSect;
     },
     sectionInfo() {
@@ -76,7 +71,7 @@ export default {
     },
     documentInfo() {
       let totSect = this.requiredDocuments.length;
-      let comSect = this.requiredDocuments.filter((s) => s.status != "Missing").length;
+      let comSect = this.requiredDocuments.filter((s) => s.status_description != "Missing").length;
 
       return `${comSect} out of ${totSect}`;
     },
@@ -85,7 +80,7 @@ export default {
       let sectDone = sect.length == sect.filter((s) => s.is_complete).length;
 
       let docsDone =
-        this.requiredDocuments.length == this.requiredDocuments.filter((s) => s.status != "Missing").length;
+        this.requiredDocuments.length == this.requiredDocuments.filter((s) => s.status_description != "Missing").length;
 
       return sectDone && docsDone;
     },
