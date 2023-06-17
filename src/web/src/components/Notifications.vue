@@ -2,6 +2,7 @@
   <v-snackbar
     v-model="showNotification"
     location="bottom right"
+    timeout="2000"
     :color="prettyMessage(message).color"
   >
     <v-icon class="mr-3" color="white">{{ prettyMessage(message).icon }}</v-icon>

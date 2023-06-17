@@ -877,7 +877,8 @@ export const useDraftStore = defineStore("draft", {
       if (this.application) {
         const api = useApiStore();
         const userStore = useUserStore();
-
+        this.application.update_date = new Date();
+        
         return api
           .secureCall("put", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}`, {
             academic_year_id: this.academic_year.id,
@@ -890,6 +891,7 @@ export const useDraftStore = defineStore("draft", {
           .then((resp) => {
             if (notify) m.notify({ text: "Application Saved", variant: "success" });
             this.loadRequiredDocuments();
+
             return resp.data;
           })
           .catch((err) => {
