@@ -85,7 +85,7 @@ export default {
 
     async backClick() {
       this.save().then(() => {
-        this.$router.push(this.getPrevious("Parents"));
+        this.$router.push(this.getPrevious("Parent Details"));
       });
     },
     async saveClick() {
@@ -93,7 +93,7 @@ export default {
     },
     async nextClick() {
       this.save().then(() => {
-        this.$router.push(this.getNext("Parents"));
+        this.$router.push(this.getNext("Parent Details"));
       });
     },
   },

@@ -100,7 +100,7 @@ export default {
 
     async backClick() {
       this.save().then(() => {
-        this.$router.push(this.getPrevious("Personal Details"));
+        this.$router.push(this.getPrevious("Student Details"));
       });
     },
     async saveClick() {
@@ -108,7 +108,7 @@ export default {
     },
     async nextClick() {
       this.save().then(() => {
-        this.$router.push(this.getNext("Personal Details"));
+        this.$router.push(this.getNext("Student Details"));
       });
     },
   },

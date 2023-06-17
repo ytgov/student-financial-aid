@@ -77,7 +77,7 @@ export default {
 
     async backClick() {
       this.save().then(() => {
-        this.$router.push(this.getPrevious("Consent Release"));
+        this.$router.push(this.getPrevious("Consent"));
       });
     },
     async saveClick() {
@@ -85,7 +85,7 @@ export default {
     },
     async nextClick() {
       this.save().then(() => {
-        this.$router.push(this.getNext("Consent Release"));
+        this.$router.push(this.getNext("Consent"));
       });
     },
   },

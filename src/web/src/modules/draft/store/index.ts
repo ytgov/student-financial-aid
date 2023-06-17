@@ -36,8 +36,8 @@ export const useDraftStore = defineStore("draft", {
           is_complete: this.completeSectionTerms,
         },
         {
-          name: "Personal Details",
-          uri: `/draft/${app.id}/personal-details`,
+          name: "Student Details",
+          uri: `/draft/${app.id}/student-details`,
           is_complete: this.completeSectionPersonal,
           disabled: !this.availableSectionPersonal,
         },
@@ -54,8 +54,8 @@ export const useDraftStore = defineStore("draft", {
           disabled: !this.availableSectionStatistical,
         },
         {
-          name: "Consent Release",
-          uri: `/draft/${app.id}/consent-release`,
+          name: "Consent",
+          uri: `/draft/${app.id}/consent`,
           is_complete: this.completeSectionConsent,
           disabled: !this.availableSectionConsent,
         },
@@ -131,8 +131,8 @@ export const useDraftStore = defineStore("draft", {
           disabled: !this.availableSectionCSFAExpenses,
         },
         {
-          name: "Parents",
-          uri: `/draft/${app.id}/parents`,
+          name: "Parent Details",
+          uri: `/draft/${app.id}/parent-details`,
           is_complete: this.completeSectionParents,
           disabled: !this.availableSectionParents,
         },

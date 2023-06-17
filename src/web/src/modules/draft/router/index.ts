@@ -39,7 +39,7 @@ const routes = [
             component: () => import("../views/funding-sources.vue"),
           },
           {
-            path: "personal-details",
+            path: "student-details",
             component: () => import("../views/personal-details.vue"),
           },
           {
@@ -55,7 +55,7 @@ const routes = [
             component: () => import("../views/statistical.vue"),
           },
           {
-            path: "consent-release",
+            path: "consent",
             component: () => import("../views/consent-release.vue"),
           },
           {
@@ -87,7 +87,7 @@ const routes = [
             component: () => import("../views/csfa-expenses.vue"),
           },
           {
-            path: "parents",
+            path: "parent-details",
             component: () => import("../views/parents.vue"),
           },
           {
