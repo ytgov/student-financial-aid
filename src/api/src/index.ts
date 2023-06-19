@@ -4,6 +4,7 @@ import path from "path";
 import helmet from "helmet";
 import fileUpload from "express-fileupload";
 import { auth } from "express-openid-connect";
+import * as ExpressSession from "express-session";
 import {
   API_PORT,
   FRONTEND_URL,
@@ -13,19 +14,18 @@ import {
   AUTH_SECRET,
   AUTH_CLIENTSECRET,
   AUTH_REDIRECT,
+  SENTRY_DSN,
 } from "./config";
 import { doHealthCheck } from "./utils/health-check";
 import { authRouter, portalRouter, userRouter } from "./routes";
 
-import * as ExpressSession from "express-session";
-
-//import { configureLocalAuthentication } from "./routes/auth-local";
-//runMigrations();
+import * as Sentry from "@sentry/node";
+if (SENTRY_DSN.length > 0) Sentry.init({ dsn: SENTRY_DSN });
 
 const app = express();
 app.use(express.json({ limit: "25mb" })); // for parsing application/json
 app.use(express.urlencoded({ extended: true, limit: "25mb" })); // for parsing application/x-www-form-urlencoded
-app.use(fileUpload());
+app.use(fileUpload({ limits: { fileSize: 25000000 } })); // 25mb
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
