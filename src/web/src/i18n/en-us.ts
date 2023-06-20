@@ -308,7 +308,7 @@ export const en = {
       },
       consent_release: {
         legends: {
-          consent: "Consent to release",
+          consent: "Consent",
         },
         excerpt:
           "Would you like a friend, parent, spouse or other person to communicate with our office on your behalf regarding your funding?  If yes, please complete this section.",
@@ -392,7 +392,7 @@ export const en = {
       },
       index: {
         legends: {
-          personal_details: "Personal Details",
+          personal_details: "Student Details",
         },
         buttons: {
           save: "Save personal details",

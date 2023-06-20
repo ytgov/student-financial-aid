@@ -406,7 +406,7 @@ export const fr = {
       },
       index: {
         legends: {
-          personal_details: "Personal Details",
+          personal_details: "Student Details",
         },
         buttons: {
           save: "Sauver détails personnels",
