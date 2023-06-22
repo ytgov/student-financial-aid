@@ -14,11 +14,12 @@
             bg-color="white"
             density="comfortable"
             variant="outlined"
-            hide-details
+            persistent-hint
+            hint="If your institution isn't listed, please select 'Not listed'"
             :label="$t('Institution')" />
         </v-col>
 
-        <v-col cols="12" md="6">
+        <!--<v-col cols="12" md="6">
           <v-select
             label="Study field"
             v-model="application.draft.program_details.study_field"
@@ -30,23 +31,24 @@
             hide-details
             @update:model-value="application.draft.program_details.study_area = undefined"
             density="comfortable"></v-select>
-        </v-col>
-        <v-col cols="12" md="6">
-          <v-select
-            label="Study area"
+        </v-col> -->
+        <v-col cols="12" md="12">
+          <v-autocomplete
+            label="Program name"
             v-model="application.draft.program_details.study_area"
             :items="studyAreas"
             item-title="description"
             item-value="id"
             variant="outlined"
             bg-color="white"
-            hide-details
-            density="comfortable"></v-select>
+            persistent-hint
+            hint="If your program isn't listed, please select 'Not listed'"
+            density="comfortable"></v-autocomplete>
         </v-col>
 
-        <v-col cols="12">
+        <v-col cols="12" md="6">
           <v-select
-            label="Program"
+            label="Program type"
             v-model="application.draft.program_details.program"
             :items="programs"
             item-title="description"
@@ -57,30 +59,34 @@
             density="comfortable"></v-select>
         </v-col>
         <v-col cols="12" md="6">
-          <TextField
-            type="number"
-            v-model="application.draft.program_details.duration_of_program"
-            :label="$t('application.program_details.details.duration_of_program')" />
-        </v-col>
-        <v-col cols="12" md="6">
-          <TextField
-            type="number"
-            v-model="application.draft.program_details.year_entering"
-            :label="$t('application.program_details.details.year_entering')" />
-        </v-col>
-        <v-col cols="12" md="12">
           <Select
             v-model="application.draft.program_details.attendance"
             :label="$t('application.program_details.details.attendance')"
             :options="['Full Time', 'Part Time']" />
         </v-col>
         <v-col cols="12" md="6">
+          <TextField
+            type="number"
+            min="1"
+            v-model="application.draft.program_details.duration_of_program"
+            :label="$t('application.program_details.details.duration_of_program')" />
+        </v-col>
+        <v-col cols="12" md="6">
+          <TextField
+            type="number"
+            min="1"
+            v-model="application.draft.program_details.year_entering"
+            :label="$t('application.program_details.details.year_entering')" />
+        </v-col>
+        <v-col cols="12" md="6">
           <DateSelector
+            :min="startMinDate"
             v-model="application.draft.program_details.start_date_of_classes"
             :label="$t('application.program_details.details.start_date_of_classes')" />
         </v-col>
         <v-col cols="12" md="6">
           <DateSelector
+            :min="endMinDate"
             v-model="application.draft.program_details.end_date_of_classes"
             :label="$t('application.program_details.details.end_date_of_classes')" />
         </v-col>
@@ -118,19 +124,25 @@ export default {
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
     ...mapState(useDraftStore, ["availableSectionProgram"]),
-    ...mapState(useReferenceStore, ["institutions", "studyFields", "programs"]),
-    studyAreas() {
-      if (this.application.draft.program_details.study_field) {
-        let t = this.studyFields.filter((s) => s.id == this.application.draft.program_details.study_field);
+    ...mapState(useReferenceStore, ["institutions", "studyAreas", "programs"]),
 
-        return this.studyFields
-          .filter((s) => s.id == this.application.draft.program_details.study_field)
-          .flatMap((s) => s.areas);
-      } else return [];
+    startMinDate() {
+      return new Date(`${this.application.academic_year_id}-8-1`);
+    },
+    endMinDate() {
+      if (this.application.draft.program_details.start_date_of_classes)
+        return this.application.draft.program_details.start_date_of_classes;
+
+      return this.startMinDate;
     },
   },
   mounted() {
     if (!this.availableSectionProgram) this.$router.push(`/draft/${this.application.id}`);
+
+    if (!this.application.draft.program_details.start_date_of_classes)
+      this.application.draft.program_details.start_date_of_classes = new Date(
+        `${this.application.academic_year_id}-8-1`
+      );
   },
   methods: {
     ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),

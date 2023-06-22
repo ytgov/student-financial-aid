@@ -19,6 +19,13 @@
           <v-radio label="Unspecified" value="Unspecified"></v-radio>
         </v-radio-group>
 
+        <v-radio-group v-model="application.draft.statistical.disability" inline :label="$t('Disability')">
+          <v-radio label="No Disability" value="None"></v-radio>
+          <v-radio label="Permanent Disability" value="Permanent"></v-radio>
+          <v-radio label="Persistent / Prolonged Disability" value="Persistent"></v-radio>
+          <v-radio label="Other" value="Other"></v-radio>
+        </v-radio-group>
+
         <v-select
           :label="$t('eligibility.marital.title')"
           v-model="application.draft.statistical.marital_status"
@@ -55,6 +62,21 @@
           item-title="description"
           item-value="id"
           :options="firstNations" />
+
+        <v-divider />
+        <p class="my-3">Other Statistical Information</p>
+
+        <v-row>
+          <v-col cols="12" md="4" class="my-0 py-0">
+            <v-checkbox
+              label="Visible Minority"
+              v-model="application.draft.statistical.visible_minority"
+              hide-details></v-checkbox>
+          </v-col>
+          <v-col cols="12" md="4" class="my-0 py-0">
+            <v-checkbox label="Crown Ward" v-model="application.draft.statistical.crown_ward" hide-details></v-checkbox>
+          </v-col>
+        </v-row>
       </v-form>
     </v-card-text>
   </v-card>

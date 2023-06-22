@@ -81,7 +81,8 @@
                 density="comfortable"
                 hide-details
                 v-model="item.distinct_from_school"
-                label="Distance from school/work (km)" />
+                min="0"
+                label="How many kilometeres is your daily commute?" />
             </v-col>
           </v-row>
           <v-divider class="my-4" v-if="key == 0" />

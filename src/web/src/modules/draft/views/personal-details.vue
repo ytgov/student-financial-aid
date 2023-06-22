@@ -9,19 +9,57 @@
           <v-row>
             <v-col cols="12" md="4">
               <!--  <ValidationProvider name="First Name" rules="required|max:10" tag="span" v-slot="{ errors, valid }"> -->
-              <TextField v-model="application.draft.personal_details.first_name" :label="$t('student.first_name')" />
+              <TextField
+                v-model="application.draft.personal_details.first_name"
+                :label="$t('student.first_name')"
+                append-inner-icon="mdi-lock"
+                readonly />
               <!-- </ValidationProvider> -->
             </v-col>
             <v-col cols="12" md="4">
               <!-- <ValidationProvider name="Middle Name" rules="notrequired" tag="span" v-slot="{ errors, valid }"> -->
-              <TextField v-model="application.draft.personal_details.middle_name" label="Middle name (optional)" />
+              <TextField
+                v-model="application.draft.personal_details.middle_name"
+                label="Middle name (optional)"
+                append-inner-icon="mdi-lock"
+                readonly />
               <!-- </ValidationProvider> -->
             </v-col>
             <v-col cols="12" md="4">
               <!--  <ValidationProvider name="Last Name" rules="required|max:10" tag="span" v-slot="{ errors, valid }"> -->
-              <TextField v-model="application.draft.personal_details.last_name" :label="$t('student.last_name')" />
+              <TextField
+                v-model="application.draft.personal_details.last_name"
+                :label="$t('student.last_name')"
+                append-inner-icon="mdi-lock"
+                readonly />
               <!--  </ValidationProvider> -->
             </v-col>
+
+            <v-col cols="12" md="6">
+              <!-- <ValidationProvider name="Social Insurance Number" rules="sin" tag="span" v-slot="{ errors, valid }"> -->
+              <SinNumber
+                label="Social Insurance Number"
+                v-model="application.draft.personal_details.sin"
+                append-inner-icon="mdi-lock"
+                readonly />
+              <!--  </ValidationProvider> -->
+            </v-col>
+            <v-col cols="12" md="6">
+              <!-- <ValidationProvider name="Date of Birth" rules="date" tag="span" v-slot="{ errors, valid }"> -->
+              <TextField
+                label="Date of birth"
+                :value="formatDate(application.draft.personal_details.birth_date)"
+                append-inner-icon="mdi-lock"
+                readonly />
+              <!-- </ValidationProvider> -->
+            </v-col>
+
+            <v-col cols="12">
+              To change any of the information above, you must request a change on
+              <router-link to="/student">Student Home</router-link>
+            </v-col>
+
+            <v-divider></v-divider>
 
             <v-col cols="12" md="6">
               <!-- <ValidationProvider name="Home Email" rules="required|email" tag="span" v-slot="{ errors, valid }"> -->
@@ -33,24 +71,6 @@
               <!--  <ValidationProvider name="Home Phone" rules="required|phone" tag="span" v-slot="{ errors, valid }"> -->
               <TextField v-model="application.draft.personal_details.home_phone" label="Phone Number" />
               <!-- </ValidationProvider> -->
-            </v-col>
-
-            <v-col cols="12" md="6">
-              <!-- <ValidationProvider name="Social Insurance Number" rules="sin" tag="span" v-slot="{ errors, valid }"> -->
-              <SinNumber label="Social Insurance Number" v-model="application.draft.personal_details.sin" />
-              <!--  </ValidationProvider> -->
-            </v-col>
-            <v-col cols="12" md="6">
-              <!-- <ValidationProvider name="Date of Birth" rules="date" tag="span" v-slot="{ errors, valid }"> -->
-              <DateSelector label="Date of birth" v-model="application.draft.personal_details.birth_date" />
-              <!-- </ValidationProvider> -->
-            </v-col>
-            <v-col cols="12" md="12">
-
-              <v-radio-group label="Student category" v-model="application.draft.personal_details.category" inline
-              hide-details>
-                <v-radio v-for="cat of studentCategories" :label="cat.description" :value="cat.id"></v-radio>
-              </v-radio-group>
             </v-col>
           </v-row>
         </v-form>
@@ -78,9 +98,9 @@ import TextField from "@/components/forms/TextField.vue";
 import DateSelector from "@/components/forms/DateSelector.vue";
 import Select from "@/components/forms/Select.vue";
 
-import { mapActions, mapState, mapWritableState } from "pinia";
+import { mapActions, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
-import { useReferenceStore } from "@/store/ReferenceStore";
+import moment from "moment";
 
 export default {
   components: {
@@ -92,7 +112,6 @@ export default {
   data: () => ({}),
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
-    ...mapState(useReferenceStore, ["studentCategories"]),
   },
   mounted() {},
   methods: {
@@ -110,6 +129,10 @@ export default {
       this.save().then(() => {
         this.$router.push(this.getNext("Student Details"));
       });
+    },
+    formatDate(input) {
+      if (input) return moment.utc(input).format("YYYY-MM-DD");
+      return "";
     },
   },
 };

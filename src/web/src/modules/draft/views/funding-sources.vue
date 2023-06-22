@@ -59,6 +59,28 @@
           </v-radio-group>
         </div>
 
+        <div
+          v-if="
+            item.name == 'Canada Student Financial Assistance (Part-Time)' &&
+            application.draft.funding_sources.sources.includes('Canada Student Financial Assistance (Part-Time)')
+          "
+          class="ml-9 mb-4"
+          style="position: relative; margin-top: -10px">
+          To apply, download and complete the application form from <a href="">xxxxxxxxx</a> and submit it through the Documents
+          section.
+        </div>
+
+        <div
+          v-if="
+            item.name == 'Student Training Allowance' &&
+            application.draft.funding_sources.sources.includes('Student Training Allowance')
+          "
+          class="ml-9"
+          style="position: relative; margin-top: -20px">
+          <v-checkbox label="I will need to maintain a second residency in another community while I'm attending school" 
+          hide-details/>
+        </div>
+
         <div class="text-error ml-9 d-flex" style="position: relative; margin-top: -10px">{{ item.message }}</div>
       </div>
     </v-card-text>

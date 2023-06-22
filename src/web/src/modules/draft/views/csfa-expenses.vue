@@ -10,7 +10,20 @@
       <v-form>
         <v-row v-for="(item, key) in application.draft.csfa_expenses.expenses">
           <v-col cols="12" md="6">
+            <v-text-field
+              v-if="item.required"
+              readonly
+              density="comfortable"
+              variant="outlined"
+              bg-color="white"
+              :value="item.description"
+              :hint="item.notes || note(item.type)"
+              append-inner-icon="mdi-lock"
+              persistent-hint>
+            </v-text-field>
+
             <v-select
+              v-else
               v-model="item.type"
               :items="unusedItems(item)"
               item-title="description"
@@ -134,8 +147,6 @@ export default {
     unusedItems(item) {
       let existing = this.application.draft.csfa_expenses.expenses.map((e) => e.type);
       let items = this.expenseCategories.filter((e) => !existing.includes(e.id) || e.id == item.type);
-
-      console.log("TEMS", items, item);
       return items;
     },
 
