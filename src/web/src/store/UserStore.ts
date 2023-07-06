@@ -23,8 +23,8 @@ export const useUserStore = defineStore("user", {
       return state.user?.student_id;
     },
     studentAddress(state) {
-      if (this.contactInfo && this.contactInfo.address_display) {
-        return this.contactInfo.address_display;
+      if (state.contactInfo && state.contactInfo.address_display) {
+        return state.contactInfo.address_display;
       }
       return "";
     },
