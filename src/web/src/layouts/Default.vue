@@ -45,7 +45,7 @@
             <v-list-item-title style="font-size: 0.9rem !important">FAQs</v-list-item-title>
           </v-list-item> -->
 
-          <v-list-item to="/contact">
+          <v-list-item href="mailto:sfa@yukon.ca">
             <template v-slot:prepend>
               <v-icon>mdi-phone</v-icon>
             </template>

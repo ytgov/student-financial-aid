@@ -69,7 +69,7 @@
 
             <v-col cols="12" md="6">
               <!--  <ValidationProvider name="Home Phone" rules="required|phone" tag="span" v-slot="{ errors, valid }"> -->
-              <TextField v-model="application.draft.personal_details.home_phone" label="Phone Number" />
+              <TextField v-model="application.draft.personal_details.home_phone" label="Phone number" />
               <!-- </ValidationProvider> -->
             </v-col>
           </v-row>

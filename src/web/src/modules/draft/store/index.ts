@@ -669,6 +669,8 @@ export const useDraftStore = defineStore("draft", {
       if (this.application && this.application.draft) {
         let requiredDocs = this.requiredDocuments;
 
+        if (requiredDocs.length == 0) return false;
+
         for (let doc of requiredDocs) {
           if (doc.status_description == "Missing") return false;
         }
