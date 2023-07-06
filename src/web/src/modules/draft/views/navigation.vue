@@ -57,7 +57,6 @@
       </v-col>
     </v-row>
   </div>
-
 </template>
 
 <script>
@@ -78,12 +77,13 @@ export default {
       this.selectDraftById(id);
     });
     await this.initialize();
+    await this.loadRequiredDocuments();
   },
   beforeUnmount() {
     console.log("BEFORE UNMONT, SHOULD SAVE");
   },
   methods: {
-    ...mapActions(useDraftStore, ["selectDraftById", "loadApplications", "save"]),
+    ...mapActions(useDraftStore, ["selectDraftById", "loadApplications", "save", "loadRequiredDocuments"]),
     ...mapActions(useReferenceStore, ["initialize"]),
     localePath(val) {
       return val;

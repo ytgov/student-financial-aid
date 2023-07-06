@@ -16,27 +16,38 @@
     completing all of the sections prior to submission.
   </v-alert>
 
-  <p class="mb-5">
-    To submit your application, you must now complete the Student Declaration section below and click "Submit".
-  </p>
+  <p class="mb-5"></p>
 
   <v-card color="#eee5d1" elevation="0" class="mb-5">
     <v-card-text>
       <h3 class="text-h3 mb-6">Student Declaration</h3>
       <v-divider class="my-3" />
 
-      <v-text-field
-        variant="outlined"
-        bg-color="white"
-        label="Type your name"
-        :disabled="!sectionsComplete"></v-text-field>
+      <v-row>
+        <v-col cols="12" sm="1">
+          <v-checkbox
+            variant="outlined"
+            v-model="consent1"
+            bg-color="white"
+            label=""
+            :disabled="!allowConsent"></v-checkbox>
+        </v-col>
+        <v-col>
+          <p class="mb-5">
+            By checking this box, I make this declaration conscientiously that I, as the applicant, believing that the
+            information in this application is true and correct, and acknowledge that it is of the same force and effect
+            as if made under oath. I understand that knowingly providing false or misleading information in relation to
+            this application constitutes an offence pursuant to the provisions of the Criminal Code of Canada.
+          </p>
+        </v-col>
+      </v-row>
 
       <v-btn
         color="primary"
         class="mr-3 mb-5 float-right"
         size="x-large"
         @click="saveClick"
-        :disabled="!sectionsComplete"
+        :disabled="!sectionsComplete || consent1 == false"
         >Submit</v-btn
       >
     </v-card-text>
@@ -53,6 +64,9 @@ import { useDraftStore } from "../store";
 
 export default {
   mounted() {},
+  data: () => ({
+    consent1: false,
+  }),
   computed: {
     ...mapState(useDraftStore, ["relevantSections", "requiredDocuments"]),
 
@@ -83,6 +97,9 @@ export default {
         this.requiredDocuments.length == this.requiredDocuments.filter((s) => s.status_description != "Missing").length;
 
       return sectDone && docsDone;
+    },
+    allowConsent() {
+      return this.isComplete || true;
     },
   },
   methods: {

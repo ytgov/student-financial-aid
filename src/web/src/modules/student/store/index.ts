@@ -26,7 +26,13 @@ export const useStudentStore = defineStore("student", {
       let u = useUserStore();
       let api = useApiStore();
 
-      api.secureCall("put", `${PORTAL_URL}`, this.editStudent).then(async (resp) => {
+      let editable = {
+        email: this.editStudent?.email,
+        phone: this.editStudent?.home_phone,
+        address: this.editStudent?.address,
+      };
+
+      api.secureCall("put", `${STUDENT_URL}`, editable).then(async (resp) => {
         await u.loadCurrentStudent();
         m.notify({ text: "Student saved", variant: "success" });
 
@@ -65,4 +71,5 @@ export interface Student {
   first_name: string;
   last_name: string;
   portal_id: string;
+  address?: {};
 }

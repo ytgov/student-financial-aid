@@ -1,5 +1,6 @@
 import axios from "axios";
 import { PROXY_BASE_URL } from "../config";
+import * as Sentry from "@sentry/node";
 
 export class ProxyService {
   constructor() {}
@@ -11,7 +12,7 @@ export class ProxyService {
       .request({ url: `${PROXY_BASE_URL}${path}`, data, method })
       .then((resp) => resp)
       .catch((e) => {
-        console.log("ERROR: PortalService.proxy", e);
+        Sentry.captureException(e);
         return undefined;
       });
   }
@@ -23,7 +24,7 @@ export class ProxyService {
       .request({ url: `${PROXY_BASE_URL}${path}`, data, method, headers: { "Content-Type": "multipart/form-data" } })
       .then((resp) => resp)
       .catch((e) => {
-        console.log("ERROR: PortalService.fileProxy", e);
+        Sentry.captureException(e);
         return undefined;
       });
   }

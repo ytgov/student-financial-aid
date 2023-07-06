@@ -18,7 +18,10 @@
           <v-row v-for="(item, key) in application.draft.consent.consents">
             <v-col cols="12">
               <v-btn icon="mdi-delete" color="warning" size="small" @click="remove(key)" class="float-right"></v-btn>
-              <TextField v-model="item.person" label="Consent person" style="margin-right: 55px" />
+              <TextField
+                v-model="item.person"
+                label="Consent person (First and Last name)"
+                style="margin-right: 55px" />
             </v-col>
 
             <v-divider />

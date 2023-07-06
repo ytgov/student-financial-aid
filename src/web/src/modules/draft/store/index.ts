@@ -130,12 +130,12 @@ export const useDraftStore = defineStore("draft", {
           is_complete: this.completeSectionCSFAExpenses,
           disabled: !this.availableSectionCSFAExpenses,
         },
-        {
+        /* {
           name: "Parent Details",
           uri: `/draft/${app.id}/parent-details`,
           is_complete: this.completeSectionParents,
           disabled: !this.availableSectionParents,
-        },
+        }, */
         /* {
           name: "Parent Dependants",
           uri: `/draft/${app.id}/parent-dependants`,
@@ -182,8 +182,11 @@ export const useDraftStore = defineStore("draft", {
         list = list.filter((i) => !i.name.startsWith("Student Dependants"));
 
       // check if is depenant
-      if (![1].includes(this.application?.draft.personal_details.category))
-        list = list.filter((i) => !i.name.startsWith("Parents"));
+      /* if (![1].includes(this.application?.draft.personal_details.category))
+        list = list.filter((i) => !i.name.startsWith("Parent")); */
+
+      if (this.application?.draft.program_details.attendance == "Part Time")
+        list = list.filter((i) => !i.name.startsWith("Education History"));
 
       //check for STA
       if (!this.application?.draft.funding_sources.sources.includes("Student Training Allowance"))
@@ -246,7 +249,6 @@ export const useDraftStore = defineStore("draft", {
         return (
           s.program &&
           s.institution_id &&
-          s.study_field &&
           s.study_area &&
           s.year_entering &&
           s.start_date_of_classes &&
@@ -282,13 +284,7 @@ export const useDraftStore = defineStore("draft", {
       if (this.application && this.application.draft) {
         let s = this.application.draft.personal_details;
         return (
-          s.first_name.length > 0 &&
-          s.last_name.length > 0 &&
-          s.home_email &&
-          s.home_phone &&
-          s.sin &&
-          s.birth_date &&
-          s.category
+          s.first_name.length > 0 && s.last_name.length > 0 && s.home_email && s.home_phone && s.sin && s.birth_date
         );
       }
       return false;
@@ -370,7 +366,6 @@ export const useDraftStore = defineStore("draft", {
           }
         }
 
-        console.log("A5");
         return true;
       }
       return false;
@@ -384,8 +379,7 @@ export const useDraftStore = defineStore("draft", {
         let s = this.application.draft.statistical;
 
         if (s.aboriginal_status && s.aboriginal_status == 5 && !s.first_nation) return false;
-
-        return s.language && s.gender && s.marital_status && s.citizenship;
+        return s.language && s.gender && s.marital_status && s.citizenship && s.disability;
       }
       return false;
     },
@@ -440,12 +434,27 @@ export const useDraftStore = defineStore("draft", {
       return total;
     },
 
+    residencyRequireMonths(store) {
+      if (
+        store.application &&
+        store.application.draft &&
+        store.application.draft.funding_sources &&
+        store.application.draft.funding_sources.sources
+      ) {
+        for (let fs of store.application.draft.funding_sources.sources) {
+          if (fs == "Yukon Grant" || fs == "Student Training Allowance") return 24;
+        }
+      }
+
+      return 12;
+    },
+
     completeSectionResidency(store): boolean {
       if (store.application && store.application.draft) {
         let s = store.application.draft.residency;
 
         if (s && s.residency_history && s.residency_history.length > 0) {
-          if (this.residencyTotalMonths < 24) return false;
+          if (this.residencyTotalMonths < this.residencyRequireMonths) return false;
 
           for (let c of s.residency_history) {
             if (!(c.start && c.end && c.city && c.province && c.country && !isUndefined(c.in_school))) return false;
@@ -471,6 +480,7 @@ export const useDraftStore = defineStore("draft", {
     completeSectionEducation(): boolean {
       if (this.application && this.application.draft) {
         let s = this.application.draft.education;
+        if (!this.application.draft.personal_details.category) return false;
 
         for (let c of s.education_history) {
           if (!(c.left_high_school && c.school)) return false;
@@ -658,6 +668,8 @@ export const useDraftStore = defineStore("draft", {
     completeSectionDocuments(): boolean {
       if (this.application && this.application.draft) {
         let requiredDocs = this.requiredDocuments;
+
+        if (requiredDocs.length == 0) return false;
 
         for (let doc of requiredDocs) {
           if (doc.status_description == "Missing") return false;
@@ -878,7 +890,7 @@ export const useDraftStore = defineStore("draft", {
         const api = useApiStore();
         const userStore = useUserStore();
         this.application.update_date = new Date();
-        
+
         return api
           .secureCall("put", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}`, {
             academic_year_id: this.academic_year.id,

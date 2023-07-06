@@ -10,7 +10,7 @@
         <v-row v-for="(item, key) in application.draft.education.education_history">
           <v-col cols="12" md="6">
             <v-autocomplete
-              variant="outlined"  
+              variant="outlined"
               hide-details
               bg-color="white"
               density="comfortable"
@@ -39,9 +39,19 @@
             <div class="clear:both"></div>
           </v-col>
           <!-- <v-divider></v-divider> -->
+
+          <v-col cols="12" md="12">
+            <v-radio-group
+              label="Student category"
+              v-model="application.draft.personal_details.category"
+              inline
+              hide-details>
+              <v-radio v-for="cat of studentCategories" :label="cat.description" :value="cat.id"></v-radio>
+            </v-radio-group>
+          </v-col>
         </v-row>
 
-      <!--   <v-btn class="mt-6" color="info" @click="add()">Add another school</v-btn> -->
+        <!--   <v-btn class="mt-6" color="info" @click="add()">Add another school</v-btn> -->
       </v-form>
     </v-card-text>
   </v-card>
@@ -78,7 +88,7 @@ export default {
   },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
-    ...mapState(useReferenceStore, ["yukonHighSchools"]),
+    ...mapState(useReferenceStore, ["yukonHighSchools", "studentCategories"]),
   },
   data() {
     return {};

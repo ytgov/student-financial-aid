@@ -18,7 +18,7 @@
   </v-card>
 
   <v-row>
-    <v-col>
+    <v-col cols="12" md="6">
       <h4 class="text-h5 mb-4">Student Information</h4>
       <v-card class="mb-5" elevation="0" v-if="student">
         <v-card-text style="font-size: 15px">
@@ -26,9 +26,10 @@
             <v-col cols="12" md="6">
               <v-text-field
                 label="Full name"
-                :model-value="`${student.first_name} ${student.initials} ${student.last_name}`"
+                :model-value="`${student.first_name} ${student.initials || ''} ${student.last_name}`"
                 density="comfortable"
                 variant="outlined"
+                append-inner-icon="mdi-lock"
                 hide-details
                 readonly></v-text-field>
             </v-col>
@@ -38,6 +39,7 @@
                 :model-value="`${formatDate(student.birth_date)}`"
                 density="comfortable"
                 variant="outlined"
+                append-inner-icon="mdi-lock"
                 hide-details
                 readonly></v-text-field>
             </v-col>
@@ -47,6 +49,7 @@
                 :model-value="student.sin"
                 density="comfortable"
                 variant="outlined"
+                append-inner-icon="mdi-lock"
                 hide-details
                 readonly></v-text-field>
             </v-col>
@@ -56,15 +59,18 @@
                 :model-value="student.email"
                 density="comfortable"
                 variant="outlined"
+                append-inner-icon="mdi-lock"
                 hide-details
                 readonly></v-text-field>
             </v-col>
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="12">
               <v-textarea
                 label="Home address"
-                rows="2"
+                rows="3"
+                readonly
                 density="comfortable"
                 variant="outlined"
+                append-inner-icon="mdi-lock"
                 hide-details
                 :model-value="studentAddress"></v-textarea>
             </v-col>
@@ -77,7 +83,7 @@
       <v-divider class="mt-7 mb-7"></v-divider>
       <RecentMessages></RecentMessages> -->
     </v-col>
-    <v-col>
+    <v-col cols="12" md="6">
       <AnnouncementList />
 
       <div>
@@ -142,7 +148,7 @@ export default {
   methods: {
     ...mapActions(useDraftStore, ["create", "loadApplications"]),
     ...mapActions(useStudentStore, ["edit"]),
-    
+
     createApplicationClick() {
       let inProgressCount = this.myApplications.filter((a) => a.status == "In Progress").length;
 

@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { useNotificationStore } from "@/store/NotificationStore";
 import { useApiStore } from "@/store/ApiStore";
 import { PROFILE_URL, STUDENT_URL } from "@/urls";
-import { isArray } from "lodash";
+import { add, isArray } from "lodash";
 
 //let m = useNotificationStore();
 
@@ -13,13 +13,20 @@ export const useUserStore = defineStore("user", {
     user: undefined,
     student: undefined,
     lastLoaded: undefined,
-    studentAddress: undefined,
     feedback: undefined,
     feedbackVisible: false,
+    contactInfo: undefined,
+    addresses: new Array<any>(),
   }),
   getters: {
     student_id(state) {
       return state.user?.student_id;
+    },
+    studentAddress(state) {
+      if (this.contactInfo && this.contactInfo.address_display) {
+        return this.contactInfo.address_display;
+      }
+      return "";
     },
   },
   actions: {
@@ -46,8 +53,18 @@ export const useUserStore = defineStore("user", {
     async loadCurrentStudent() {
       let api = useApiStore();
       if (this.user) {
-        await api.secureCall("get", `${STUDENT_URL}`).then((resp) => {
+        await api.secureCall("get", `${STUDENT_URL}`).then(async (resp) => {
           this.student = resp.data;
+
+          if (this.student) {
+            this.contactInfo = {
+              email: this.student.email,
+              telephone: this.student.telephone,
+              address: {},
+            };
+
+            await this.loadAddresses();
+          }
         });
       } else {
         this.student = undefined;
@@ -79,9 +96,63 @@ export const useUserStore = defineStore("user", {
       });
     },
 
-    editStudent() {
-      this.editStudent = this.student;
+    loadAddresses() {
+      let u = useUserStore();
+      let user = u.user;
+
+      const api = useApiStore();
+
+      api
+        .secureCall("get", `${STUDENT_URL}/${user?.sub}/addresses`)
+        .then((resp) => {
+          this.addresses = resp.data;
+          let address = {};
+          let address_display = "";
+
+          if (this.addresses && this.addresses.length > 0) {
+            let homeAddresses = this.addresses.filter((a) => a.address_type_id == 1);
+            if (homeAddresses.length > 0)
+              address = {
+                id: homeAddresses[0].id,
+                address_type_id: homeAddresses[0].address_type_id,
+                first: homeAddresses[0].address1,
+                second: homeAddresses[0].address2,
+                city: homeAddresses[0].city_id,
+                region: homeAddresses[0].province_id,
+                postal: homeAddresses[0].postal_code,
+              };
+            address_display = homeAddresses[0].address_display;
+          }
+
+          if (this.contactInfo) {
+            this.contactInfo.address = address;
+            this.contactInfo.address_display = address_display;
+          }
+        })
+        .catch();
     },
+
+    editStudentContactInfo() {},
+
+    saveStudentContactInfo() {
+      if (this.contactInfo) {
+        const api = useApiStore();
+        const m = useNotificationStore();
+
+        return api
+          .secureCall("put", `${STUDENT_URL}/${this.user?.sub}`, this.contactInfo)
+          .then((resp) => {
+            m.notify({ text: "Contact Information Saved", variant: "success" });
+            this.loadCurrentStudent();
+            return resp.data;
+          })
+          .catch((err) => {
+            console.log("ERROR HAPPENED", err);
+            return {};
+          });
+      }
+    },
+
     showFeedback() {
       this.feedback = { date: new Date(), text: "" };
       this.feedbackVisible = true;
@@ -111,9 +182,10 @@ interface UserStore {
   user: User | undefined;
   student: any | undefined;
   lastLoaded: Date | undefined;
-  studentAddress: string | undefined;
   feedback: any | undefined;
   feedbackVisible: boolean;
+  contactInfo: { email: string; telephone: string; address: any; address_display?: string } | undefined;
+  addresses: any[];
 }
 
 export interface User {

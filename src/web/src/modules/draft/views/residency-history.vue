@@ -21,6 +21,23 @@
 
       <v-divider class="my-3" />
       <v-form>
+        <v-row>
+          <v-col cols="12">
+            <v-select
+              label="Travel from school to Yukon"
+              v-model="application.draft.residency.has_traveled"
+              variant="outlined"
+              bg-color="white"
+              density="comfortable"
+              :items="travelOptions"></v-select>
+            <YearMonthSelector
+              v-if="application.draft.residency.has_traveled == 1"
+              v-model="application.draft.residency.last_return_date"
+              label="When was the last time you have returned to the Yukon?"></YearMonthSelector>
+          </v-col>
+          <v-divider></v-divider>
+        </v-row>
+
         <v-row v-for="(item, key) in application.draft.residency.residency_history">
           <v-col cols="12" md="4">
             <YearMonthSelector v-model="item.start" label="Residence: From" :maxDate="toFullDate(item.end)" />
@@ -107,7 +124,7 @@
       </v-form>
     </v-card-text>
   </v-card>
-  
+
   <div>
     <v-btn color="info" @click="backClick" class="float-left pl-3">
       <v-icon class="mr-2">mdi-arrow-left</v-icon> Previous
@@ -136,7 +153,7 @@ export default {
   components: { DateSelector, TextField, Select, YearMonthSelector },
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
-    ...mapState(useDraftStore, ["residencyTotalMonths", "residencyMaxDate"]),
+    ...mapState(useDraftStore, ["residencyTotalMonths", "residencyMaxDate", "residencyRequireMonths"]),
     ...mapState(useReferenceStore, ["cities", "provinces", "countries"]),
 
     accountAfter() {
@@ -145,13 +162,19 @@ export default {
         .subtract(25, "month")
         .format("YYYY/MM");
     },
+    travelOptions() {
+      return [
+        { title: `I have returned to the Yukon in the last ${this.residencyRequireMonths} months`, value: 1 },
+        { title: `I have not returned to the Yukon in the last ${this.residencyRequireMonths} months`, value: 0 },
+        { title: `I have not left Yukon in the last ${this.residencyRequireMonths} months`, value: -1 },
+      ];
+    },
   },
   data() {
-    return {
-      isValid: false,
-    };
+    return {};
   },
   mounted() {
+    this.application.draft.residency.has_traveled = this.application.draft.residency.has_traveled || 1;
     this.application.draft.residency.residency_history = this.application.draft.residency.residency_history || [];
 
     if (this.application.draft.residency.residency_history.length == 0) {
@@ -204,7 +227,7 @@ export default {
       return start < end;
     },
     calcDate(item) {
-      if (item.start && item.end) return 1 + moment(item.end).diff(moment(item.start), "months");
+      if (item.start && item.end) return moment(item.end).diff(moment(item.start), "months");
       return 0;
     },
     toFullDate(input) {

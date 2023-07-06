@@ -21,7 +21,7 @@ export const useReferenceStore = defineStore("reference", {
     cities: new Array<any>(),
     provinces: new Array<any>(),
     countries: new Array<any>(),
-    studyFields: new Array<any>(),
+    studyAreas: new Array<any>(),
     programs: new Array<any>(),
     agencies: new Array<any>(),
     expenseCategories: new Array<any>(),
@@ -48,7 +48,7 @@ export const useReferenceStore = defineStore("reference", {
       await this.loadProvinces();
       await this.loadCities();
       await this.loadCountries();
-      await this.loadStudyFields();
+      await this.loadStudyAreas();
       await this.loadPrograms();
       await this.loadAgencies();
       await this.loadExpenseCategories();
@@ -198,13 +198,13 @@ export const useReferenceStore = defineStore("reference", {
         .catch();
     },
 
-    async loadStudyFields() {
+    async loadStudyAreas() {
       const api = useApiStore();
 
       api
-        .secureCall("get", `${REFERENCE_URL}/study-field`)
+        .secureCall("get", `${REFERENCE_URL}/study-area`)
         .then((resp) => {
-          this.studyFields = resp.data;
+          this.studyAreas = resp.data;
         })
         .catch();
     },

@@ -51,13 +51,12 @@
             </v-col>
             <v-col>
               <v-btn icon="mdi-delete" size="small" color="warning" @click="remove(key)" class="float-right"></v-btn>
-              <v-textarea
+              <v-text-field
                 v-model="item.comments"
                 label="Comments"
                 hide-details
                 bg-color="white"
                 density="comfortable"
-                rows="4"
                 style="margin-right: 55px"
                 variant="outlined" />
             </v-col>

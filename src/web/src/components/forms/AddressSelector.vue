@@ -20,6 +20,7 @@
         v-model="output.city"
         :label="$t('components.address_selector.labels.address_city')"
         clearable
+        hide-details
         :items="cities"
         autocomplete="null"
         item-value="id"
@@ -34,6 +35,7 @@
         v-model="output.region"
         :label="$t('components.address_selector.labels.address_province')"
         clearable
+        hide-details
         :items="provinces"
         autocomplete="null"
         item-value="id"

@@ -52,3 +52,5 @@ export const MAIL_CONFIG = {
 };
 
 export const PROXY_BASE_URL = process.env.PROXY_BASE_URL || "http://localhost:3100/api/portal";
+
+export const SENTRY_DSN = process.env.SENTRY_DSN || "";
