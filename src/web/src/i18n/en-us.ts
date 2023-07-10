@@ -236,7 +236,7 @@ export const en = {
     documents: {
       title: "Supporting documents",
       excerpt:
-        "Please upload the following supporting documents... If a document is uploaded incorrectly, you will receive a notification to resubmit your documents.",
+        "Please upload the following supporting documents before submitting your application. There may be a delay in assessing your application if a document is uploaded incorrectly or missing.",
       error: "You cannot submit your application until all your documents are uploaded.",
       buttons: {
         delete: "Delete",

@@ -2,7 +2,7 @@
   <v-card color="#eee5d1" variant="elevated" elevation="0" class="mb-5">
     <v-card-text>
       <h3 class="text-h3 mb-6">{{ $t("Funding Sources") }}</h3>
-      <p>Please check any funding sources you would like to apply for fro the list below</p>
+      <p>Please check any funding sources you would like to apply for from the list below</p>
       <v-divider class="my-3" />
 
       <div v-for="(item, key) of fundingSources">

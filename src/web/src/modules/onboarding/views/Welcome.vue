@@ -94,8 +94,10 @@
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
-                    v-model="linkStudent.portal_id"
-                    label="Existing student portal ID"
+                    v-model="linkStudent.year_completed"
+                    type="number"
+                    min="1900" max="2100"
+                    label="Year completed high school"
                     variant="outlined"
                     density="comfortable"
                     hint=""
