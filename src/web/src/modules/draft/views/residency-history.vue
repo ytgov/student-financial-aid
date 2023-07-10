@@ -1,26 +1,15 @@
 <template>
   <v-card color="#eee5d1" elevation="0">
     <v-card-text>
-      <h3 class="text-h3 mb-6">{{ $t("application.onboarding.residency_history.legends.consent") }}</h3>
-      <p class="mb-3">
-        Student consent to release information to another person: Please provide a complete breakdown of where you were
-        physically living for the 2 years immediately prior to starting classes.
-      </p>
-      <ul style="margin-left: 20px">
-        <li>
-          Separate the two years into periods of time when you were in high school or post-secondary including summer
-          breaks as full-time, part-time or not in school at all.
-        </li>
-        <li>Include all absence and returns to Yukon.</li>
-        <li>There should not be any gap in this two-year period.</li>
-        <li>
-          You must account for the timeframe between <strong>{{ accountAfter }}</strong> and
-          <strong>{{ residencyMaxDate }}</strong>
-        </li>
-      </ul>
-
-      <v-divider class="my-3" />
       <v-form>
+        <h3 class="text-h3 mb-6">{{ $t("application.onboarding.residency_history.legends.consent") }}</h3>
+        <p class="mb-3">
+          Student consent to release information to another person: Please provide a complete breakdown of where you
+          were physically living for the 2 years immediately prior to starting classes.
+        </p>
+
+        <v-divider class="my-3" />
+
         <v-row>
           <v-col cols="12">
             <v-select
@@ -35,8 +24,23 @@
               v-model="application.draft.residency.last_return_date"
               label="When was the last time you have returned to the Yukon?"></YearMonthSelector>
           </v-col>
-          <v-divider></v-divider>
         </v-row>
+
+        <v-divider class="mt-5 mb-3" />
+        <ul style="margin-left: 20px">
+          <li>
+            Separate the two years into periods of time when you were in high school or post-secondary including summer
+            breaks as full-time, part-time or not in school at all.
+          </li>
+          <li>Include all absences and returns to Yukon.</li>
+          <li>There should not be any gap in this two-year period.</li>
+          <li>
+            You must account for the time frame between <strong>{{ accountAfter }}</strong> and
+            <strong>{{ residencyMaxDate }}</strong>
+          </li>
+        </ul>
+
+        <v-divider class="mt-3 mb-5" />
 
         <v-row v-for="(item, key) in application.draft.residency.residency_history">
           <v-col cols="12" md="4">

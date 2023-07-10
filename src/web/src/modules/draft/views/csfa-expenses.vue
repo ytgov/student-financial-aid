@@ -48,12 +48,15 @@
               color="warning"
               @click="remove(key)"
               class="float-right"></v-btn>
-            <TextField v-model="item.comments" label="Comments" style="margin-right: 55px" />
+            <TextField v-model="item.comments" label="Comments (optional)" style="margin-right: 55px" />
           </v-col>
           <v-divider />
         </v-row>
 
-        <v-btn class="mt-6" color="info" @click="add()">Add expense</v-btn>
+
+
+        <p class="mt-7">Additional expenses, such as medical, dental, and day care, can be added here. Do not include payments such as rent, vehicle, insurance, groceries, cellphone, visa, etc. These costs are either pre-calculated or are ineligible.</p>
+        <v-btn class="mt-3" color="info" @click="add()">Add expense</v-btn>
       </v-form>
     </v-card-text>
   </v-card>

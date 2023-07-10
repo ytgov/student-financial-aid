@@ -116,7 +116,7 @@ export const useReferenceStore = defineStore("reference", {
         .secureCall("get", `${REFERENCE_URL}/high-school/3`)
         .then((resp) => {
           this.yukonHighSchools = resp.data;
-          this.yukonHighSchools.push({ id: -1, name: "I did not attend a Yukon high school" });
+          this.yukonHighSchools.unshift({ id: -1, name: "I did not attend a Yukon high school" });
         })
         .catch();
     },

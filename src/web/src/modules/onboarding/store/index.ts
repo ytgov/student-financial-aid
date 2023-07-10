@@ -24,7 +24,7 @@ export const useOnboardingStore = defineStore("onboarding", {
       email_address: "",
       first_name: "",
       last_name: "",
-      portal_id: "",
+      year_completed: "",
     },
     isLoading: false,
     createStudent: { first_name: "", last_name: "", sin: "", date_of_birth: "", email: "" },
@@ -89,7 +89,7 @@ export interface LinkStudent {
   email_address: string;
   first_name: string;
   last_name: string;
-  portal_id: string;
+  year_completed: string;
 }
 
 export interface CreateStudent {
