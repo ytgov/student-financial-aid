@@ -45,6 +45,7 @@ portalRouter.post("/application/:sub/:draftId/upload", async (req: Request, res:
 });
 
 portalRouter.post("*", async (req: Request, res: Response) => {
+  console.log("PROXYPOST", req.url, req.method);
   let response = await proxyService.proxy(req.originalUrl.replace("/api/portal", ""), req.method, req.body);
 
   if (response && response.data && response.data.data) return res.json({ data: response.data.data });
@@ -53,6 +54,7 @@ portalRouter.post("*", async (req: Request, res: Response) => {
 });
 
 portalRouter.put("*", async (req: Request, res: Response) => {
+  console.log("PROXYPUT", req.url, req.method);
   let response = await proxyService.proxy(req.originalUrl.replace("/api/portal", ""), req.method, req.body);
 
   if (response && response.data && response.data.data) return res.json({ data: response.data.data });
@@ -66,7 +68,7 @@ portalRouter.use(
     target: PROXY_BASE_URL.replace("/api/portal", ""),
     changeOrigin: true,
     secure: false,
-    //onProxyReq: proxyLogger,
+    onProxyReq: proxyLogger,
   })
 );
 
