@@ -225,7 +225,7 @@ export const useDraftStore = defineStore("draft", {
           });
 
       // Alkan and YukonU
-      let STAAllowList = [4664, 5326, 3488];
+      let STAAllowList = [4664, 5326, 3488, 5648];
 
       if (!STAAllowList.includes(this.application?.draft.program_details.institution_id))
         fullList
