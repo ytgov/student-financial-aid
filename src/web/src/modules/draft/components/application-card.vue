@@ -20,7 +20,7 @@
         variant="text">
         Edit
       </v-btn>
-      <v-btn v-else color="primary" class="my-0" variant="text"> View </v-btn>
+      <!--  <v-btn v-else color="primary" class="my-0" variant="text"> View </v-btn> -->
 
       <v-btn
         v-if="application.status == 'In Progress'"
@@ -71,10 +71,10 @@ export default {
     },
     chipColor() {
       if (this.application.status == "In Progress") return "warning";
-      return "mdi-lock";
+      return "success";
     },
     isDraft() {
-      if (this.application.application_json) return true;
+      if (this.application.application_json && this.application.status == "In Progress") return true;
 
       return false;
     },
@@ -85,7 +85,8 @@ export default {
       if (this.isDraft) {
         this.selectDraft(this.application);
         this.$router.push(this.resume());
-      } else this.$router.push(`/application/${this.application.id}`);
+      }
+      //else this.$router.push(`/application/${this.application.id}`);
     },
     formatDate(input: any) {
       if (input) {

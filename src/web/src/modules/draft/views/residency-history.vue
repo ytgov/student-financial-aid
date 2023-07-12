@@ -3,10 +3,6 @@
     <v-card-text>
       <v-form>
         <h3 class="text-h3 mb-6">{{ $t("application.onboarding.residency_history.legends.consent") }}</h3>
-        <p class="mb-3">
-          Student consent to release information to another person: Please provide a complete breakdown of where you
-          were physically living for the 2 years immediately prior to starting classes.
-        </p>
 
         <v-divider class="my-3" />
 
@@ -27,6 +23,11 @@
         </v-row>
 
         <v-divider class="mt-5 mb-3" />
+        <p class="mb-2" style="font-weight: bold">
+          Please provide a complete breakdown of where you were physically living for the
+          {{ `${residencyRequireMonths / 12} year${residencyRequireMonths / 12 > 1 ? "s" : ""}` }} immediately prior to
+          starting classes.
+        </p>
         <ul style="margin-left: 20px">
           <li>
             Separate the two years into periods of time when you were in high school or post-secondary including summer
