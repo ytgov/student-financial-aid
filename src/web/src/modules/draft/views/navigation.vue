@@ -26,7 +26,7 @@
                 <div class="py-1">Application</div>
                 <v-spacer />
                 <div class="float-right mb-1 text-right">
-                  <v-chip color="warning" size="small" variant="elevated">In-Progress</v-chip>
+                  <v-chip color="warning" size="small" variant="elevated">{{ application.status }}</v-chip>
                 </div>
               </v-list-item-subtitle>
             </v-list-item>
