@@ -4,8 +4,8 @@
       <v-form>
         <h3 class="text-h3 mb-6">{{ $t("application.onboarding.residency_history.legends.consent") }}</h3>
         <p class="mb-3">
-          Student consent to release information to another person: Please provide a complete breakdown of where you
-          were physically living for the 2 years immediately prior to starting classes.
+          Please provide a complete breakdown of where you were physically living for the 2 years immediately prior to
+          starting classes.
         </p>
 
         <v-divider class="my-3" />
