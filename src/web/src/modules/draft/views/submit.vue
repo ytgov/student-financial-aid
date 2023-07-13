@@ -149,7 +149,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "pinia";
+import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
 import { useUserStore } from "@/store/UserStore";
 
