@@ -96,7 +96,8 @@
                   <v-text-field
                     v-model="linkStudent.year_completed"
                     type="number"
-                    min="1900" max="2100"
+                    min="1900"
+                    max="2100"
                     label="Year completed high school"
                     variant="outlined"
                     density="comfortable"
@@ -153,6 +154,11 @@
                 </v-col>
               </v-row>
               <v-divider class="my-4"></v-divider>
+
+              <v-alert variant="tonal" type="error" v-if="showCreateError" class="mb-3">
+                There is an error that is blocking the account from being created. Please contact the SFA office @
+                867-667-5929 for assistance setting up your account.
+              </v-alert>
 
               <v-card-actions>
                 <v-btn variant="text" @click="step = 1"> Back </v-btn>
@@ -228,6 +234,7 @@ export default {
   data: () => ({
     step: 1,
     first_time: "1",
+    showCreateError: false,
   }),
   computed: {
     ...mapWritableState(useOnboardingStore, ["createStudent", "linkStudent"]),
@@ -279,12 +286,16 @@ export default {
 
     async createStudentClick() {
       if (this.user) {
+        this.showCreateError = false;
         let result = await this.tryCreateStudent(this.user).then((resp) => resp);
 
         if (result && result.id) {
           await this.loadCurrentStudent();
           this.notify({ variant: "success", text: "Student record created" });
           this.step = 6;
+        } else {
+          this.notify({ variant: "error", text: "Student record not created" });
+          this.showCreateError = true;
         }
       }
     },
