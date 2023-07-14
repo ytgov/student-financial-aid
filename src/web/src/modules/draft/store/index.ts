@@ -429,7 +429,10 @@ export const useDraftStore = defineStore("draft", {
 
       if (this.application && this.application.draft) {
         for (let item of this.application.draft.residency.residency_history) {
-          if (item.start && item.end) total += 1 + moment(`${item.end}/15`).diff(moment(`${item.start}/01`), "months");
+          if (item.start && item.end) {
+            let end = moment(`${item.end}/15`).startOf("month");
+            total += 1 + end.diff(moment(`${item.start}/01`), "months");
+          }
         }
       }
       return total;
