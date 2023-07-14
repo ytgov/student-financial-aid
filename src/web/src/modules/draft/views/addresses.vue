@@ -1,51 +1,65 @@
 <template>
   <v-form>
-    <v-radio-group v-model="application.draft.addresses.primary">
-      <v-card color="#eee5d1" variant="elevated" elevation="0" class="mb-5">
-        <v-card-text>
-          <v-radio value="Permanent" label="This is my primary address" hide-details class="float-right"></v-radio>
-          <h3 class="text-h3 mb-6">{{ $t("application.onboarding.addresses.legends.address") }}</h3>
-          <v-divider class="my-3" />
+    <v-card color="#eee5d1" variant="elevated" elevation="0" class="mb-5">
+      <v-card-text>
+        <v-checkbox
+          v-model="application.draft.addresses.primary"
+          value="Permanent"
+          label="This is my primary address"
+          hide-details
+          class="float-right" />
+        <h3 class="text-h3 mb-6">{{ $t("application.onboarding.addresses.legends.address") }}</h3>
+        <v-divider class="my-3" />
 
-          <v-select
-            label="Use existing address?"
-            v-model="application.draft.addresses.home_address1_id"
-            variant="outlined"
-            bg-color="white"
-            density="comfortable"
-            :items="[{ address1: 'Add New Address', id: -1 }, ...addresses]"
-            item-title="address1"
-            item-value="id"></v-select>
+        <v-select
+          label="Use existing address?"
+          v-model="application.draft.addresses.home_address1_id"
+          variant="outlined"
+          bg-color="white"
+          density="comfortable"
+          :items="[{ address_display: 'Add New Address', id: -1 }, ...addresses]"
+          item-title="address_display"
+          item-value="id"></v-select>
 
-          <AddressSelector
-            v-if="application.draft.addresses.home_address1_id == -1"
-            v-model="application.draft.addresses.home_address1" />
-        </v-card-text>
-      </v-card>
+        <AddressSelector
+          v-if="application.draft.addresses.home_address1_id == -1"
+          v-model="application.draft.addresses.home_address1" />
+      </v-card-text>
+    </v-card>
 
-      <v-card color="#eee5d1" variant="elevated" elevation="0">
-        <v-card-text>
-          <v-radio value="School" label="This is my primary address" hide-details class="float-right"></v-radio>
-          <h3 class="text-h3 mb-6">{{ $t("application.onboarding.addresses.legends.address_at_school") }}</h3>
-          <p class="note">(Optional) If you do not have an address while at school yet just leave this form blank.</p>
-          <v-divider class="my-3" />
+    <v-checkbox
+      label="I want my letters to be mailed to an address that is different from my Permanent mailing address"
+      name="showSchool"
+      @update:modelValue="showSchoolChanged"
+      v-model="showSchoolAddress"></v-checkbox>
 
-          <v-select
-            label="Use existing address?"
-            v-model="application.draft.addresses.home_address2_id"
-            variant="outlined"
-            bg-color="white"
-            density="comfortable"
-            :items="[{ address1: 'Add New Address', id: -1 }, ...addresses]"
-            item-title="address1"
-            item-value="id"></v-select>
+    <v-card color="#eee5d1" variant="elevated" elevation="0" v-if="showSchoolAddress">
+      <v-card-text>
+        <v-checkbox
+          v-model="application.draft.addresses.primary"
+          value="School"
+          label="This is my primary address"
+          hide-details
+          class="float-right" />
+        <h3 class="text-h3 mb-6">{{ $t("application.onboarding.addresses.legends.address_at_school") }}</h3>
+        <p class="note">(Optional) If you do not have an address while at school yet just leave this form blank.</p>
+        <v-divider class="my-3" />
 
-          <AddressSelector
-            v-if="application.draft.addresses.home_address2_id == -1"
-            v-model="application.draft.addresses.home_address2" />
-        </v-card-text>
-      </v-card>
-    </v-radio-group>
+        <v-select
+          label="Use existing address?"
+          v-model="application.draft.addresses.home_address2_id"
+          variant="outlined"
+          bg-color="white"
+          density="comfortable"
+          :items="[{ address1: 'Add New Address', id: -1 }, ...addresses]"
+          item-title="address1"
+          item-value="id"></v-select>
+
+        <AddressSelector
+          v-if="application.draft.addresses.home_address2_id == -1"
+          v-model="application.draft.addresses.home_address2" />
+      </v-card-text>
+    </v-card>
   </v-form>
 
   <div>
@@ -71,7 +85,9 @@ export default {
   components: {
     AddressSelector,
   },
-  data: () => ({}),
+  data: () => ({
+    showSchoolAddress: false,
+  }),
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
     ...mapState(useStudentStore, ["addresses"]),
@@ -89,6 +105,10 @@ export default {
   methods: {
     ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
     ...mapActions(useStudentStore, ["loadAddresses"]),
+
+    showSchoolChanged(n, o) {
+      if (n == false) this.application.draft.addresses.primary = "Permanent";
+    },
 
     async backClick() {
       this.save().then(() => {
