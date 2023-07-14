@@ -72,6 +72,16 @@
               <TextField v-model="application.draft.personal_details.home_phone" label="Phone number" />
               <!-- </ValidationProvider> -->
             </v-col>
+
+            <v-col cols="12" md="12">
+              <p class="mb-3">
+                At the start of classes, which of the following options best describes you: <br />(From the top, choose
+                the first selection that matches your situation)
+              </p>
+              <v-radio-group v-model="application.draft.personal_details.category" hide-details>
+                <v-radio v-for="cat of studentCategories" :label="cat.description" :value="cat.id"></v-radio>
+              </v-radio-group>
+            </v-col>
           </v-row>
         </v-form>
         <!--  </ValidationObserver> -->
@@ -98,8 +108,9 @@ import TextField from "@/components/forms/TextField.vue";
 import DateSelector from "@/components/forms/DateSelector.vue";
 import Select from "@/components/forms/Select.vue";
 
-import { mapActions, mapWritableState } from "pinia";
+import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
+import { useReferenceStore } from "@/store/ReferenceStore";
 import moment from "moment";
 
 export default {
@@ -112,6 +123,7 @@ export default {
   data: () => ({}),
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
+    ...mapState(useReferenceStore, ["studentCategories"]),
   },
   mounted() {},
   methods: {

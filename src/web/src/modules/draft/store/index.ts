@@ -283,6 +283,7 @@ export const useDraftStore = defineStore("draft", {
     completeSectionPersonal(): boolean {
       if (this.application && this.application.draft) {
         let s = this.application.draft.personal_details;
+        if (!s.category) return false;
         return (
           s.first_name.length > 0 && s.last_name.length > 0 && s.home_email && s.home_phone && s.sin && s.birth_date
         );
@@ -480,7 +481,6 @@ export const useDraftStore = defineStore("draft", {
     completeSectionEducation(): boolean {
       if (this.application && this.application.draft) {
         let s = this.application.draft.education;
-        if (!this.application.draft.personal_details.category) return false;
 
         for (let c of s.education_history) {
           if (!(c.left_high_school && c.school)) return false;
