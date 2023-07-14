@@ -283,6 +283,7 @@ export const useDraftStore = defineStore("draft", {
     completeSectionPersonal(): boolean {
       if (this.application && this.application.draft) {
         let s = this.application.draft.personal_details;
+        if (!s.category) return false;
         return (
           s.first_name.length > 0 && s.last_name.length > 0 && s.home_email && s.home_phone && s.sin && s.birth_date
         );
@@ -428,7 +429,10 @@ export const useDraftStore = defineStore("draft", {
 
       if (this.application && this.application.draft) {
         for (let item of this.application.draft.residency.residency_history) {
-          if (item.start && item.end) total += 1 + moment(`${item.end}/15`).diff(moment(`${item.start}/01`), "months");
+          if (item.start && item.end) {
+            let end = moment(`${item.end}/15`).startOf("month");
+            total += 1 + end.diff(moment(`${item.start}/01`), "months");
+          }
         }
       }
       return total;
@@ -480,7 +484,6 @@ export const useDraftStore = defineStore("draft", {
     completeSectionEducation(): boolean {
       if (this.application && this.application.draft) {
         let s = this.application.draft.education;
-        if (!this.application.draft.personal_details.category) return false;
 
         for (let c of s.education_history) {
           if (!(c.left_high_school && c.school)) return false;

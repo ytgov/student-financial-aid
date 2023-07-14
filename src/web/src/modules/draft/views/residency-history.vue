@@ -164,7 +164,7 @@ export default {
     accountAfter() {
       return moment(this.application.draft.program_details.start_date_of_classes)
         .startOf("month")
-        .subtract(25, "month")
+        .subtract(this.residencyRequireMonths, "month")
         .format("YYYY/MM");
     },
     travelOptions() {
@@ -232,7 +232,9 @@ export default {
       return start < end;
     },
     calcDate(item) {
-      if (item.start && item.end) return moment(item.end).diff(moment(item.start), "months");
+      if (item.start && item.end) {
+        return moment(item.end).diff(moment(item.start), "months") + 1;
+      }
       return 0;
     },
     toFullDate(input) {
