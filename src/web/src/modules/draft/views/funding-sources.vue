@@ -66,8 +66,12 @@
           "
           class="ml-9 mb-4"
           style="position: relative; margin-top: -10px">
-          To apply, download and complete the application form from <a href="">xxxxxxxxx</a> and submit it through the Documents
-          section.
+          To apply, download and complete the 
+          <a
+            href="https://www.canada.ca/content/dam/canada/employment-social-development/migration/do[…]ts/assets/portfolio/docs/en/student_loans/forms/SDE0031_EN.pdf"
+            >application form</a
+          >
+          and submit it through the Documents section.
         </div>
 
         <div
@@ -77,8 +81,28 @@
           "
           class="ml-9"
           style="position: relative; margin-top: -20px">
-          <v-checkbox label="I will need to maintain a second residency in another community while I'm attending school" 
-          hide-details/>
+          <v-checkbox
+            v-model="application.draft.funding_sources.second_residence"
+            label="I will need to maintain a second residency in another community while I'm attending school"
+            hide-details />
+        </div>
+        <div
+          v-if="
+            item.name == 'Yukon Excellence Awards' &&
+            application.draft.funding_sources.sources.includes('Yukon Excellence Awards')
+          "
+          class="ml-9"
+          style="position: relative; margin-top: -15px; vertical-align: top">
+          <div style="display: inline-block; position: relative; top: -15px">
+            The amount of YEA I would like to request:
+          </div>
+          <text-field
+            type="number"
+            v-model="application.draft.funding_sources.yea_amount"
+            class="d-inline-flex ml-2"
+            prepend-inner-icon="mdi-currency-usd"
+            density="compact"
+            style="max-width: 180px"></text-field>
         </div>
 
         <div class="text-error ml-9 d-flex" style="position: relative; margin-top: -10px">{{ item.message }}</div>
