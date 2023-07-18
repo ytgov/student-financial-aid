@@ -14,7 +14,7 @@ import {
   AUTH_SECRET,
   AUTH_CLIENTSECRET,
   AUTH_REDIRECT,
-  SENTRY_DSN,
+  SENTRY_DSN
 } from "./config";
 import { doHealthCheck } from "./utils/health-check";
 import { authRouter, portalRouter, userRouter } from "./routes";
@@ -38,8 +38,8 @@ app.use(
       "object-src": ["'none'"],
       "script-src": ["'self'", "'unsafe-eval'"],
       "script-src-attr": ["'none'"],
-      "style-src": ["'self'", "https:", "'unsafe-inline'"],
-    },
+      "style-src": ["'self'", "https:", "'unsafe-inline'"]
+    }
   })
 );
 
@@ -48,7 +48,7 @@ app.use(
     secret: "supersecret",
     resave: true,
     saveUninitialized: true,
-    cookie: { secure: false },
+    cookie: { secure: false }
   })
 );
 
@@ -65,14 +65,14 @@ app.use(
     authorizationParams: {
       response_type: "code",
       response_mode: "form_post",
-      scope: "openid profile email",
+      scope: "openid profile email"
     },
     clientSecret: AUTH_CLIENTSECRET,
     clientAuthMethod: "client_secret_post",
 
     routes: {
-      callback: "/auth/callback",
-    },
+      callback: "/auth/callback"
+    }
   })
 );
 
@@ -81,7 +81,7 @@ app.use(
   cors({
     origin: FRONTEND_URL,
     optionsSuccessStatus: 200,
-    credentials: true,
+    credentials: true
   })
 );
 

@@ -18,7 +18,8 @@
                 <v-radio label="Yes, I have applied for Student Financial Assistance in the Yukon" value="1"></v-radio>
                 <v-radio
                   label="No, I have never applied for Student Financial Assistance in the Yukon"
-                  value="0"></v-radio>
+                  value="0"
+                ></v-radio>
               </v-radio-group>
               <v-divider class="mb-4"></v-divider>
 
@@ -45,7 +46,8 @@
                     label="First name"
                     variant="outlined"
                     density="comfortable"
-                    hide-details></v-text-field>
+                    hide-details
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -53,7 +55,8 @@
                     label="Last name"
                     variant="outlined"
                     density="comfortable"
-                    hide-details></v-text-field>
+                    hide-details
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -63,7 +66,8 @@
                     variant="outlined"
                     density="comfortable"
                     @update:model-value="sinChanged2"
-                    hide-details></v-text-field>
+                    hide-details
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <DateSelector v-model="linkStudent.date_of_birth" label="Date of birth" max="today" />
@@ -74,7 +78,8 @@
                     label="Home phone"
                     variant="outlined"
                     density="comfortable"
-                    hide-details></v-text-field>
+                    hide-details
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -82,7 +87,8 @@
                     label="Home postal code"
                     variant="outlined"
                     density="comfortable"
-                    hide-details></v-text-field>
+                    hide-details
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -90,7 +96,8 @@
                     label="Email address"
                     variant="outlined"
                     density="comfortable"
-                    hide-details></v-text-field>
+                    hide-details
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -102,7 +109,8 @@
                     variant="outlined"
                     density="comfortable"
                     hint=""
-                    hide-details></v-text-field>
+                    hide-details
+                  ></v-text-field>
                 </v-col>
               </v-row>
 
@@ -129,7 +137,8 @@
                     label="First name"
                     variant="outlined"
                     density="comfortable"
-                    hide-details></v-text-field>
+                    hide-details
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -137,7 +146,8 @@
                     label="Last name"
                     variant="outlined"
                     density="comfortable"
-                    hide-details></v-text-field>
+                    hide-details
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -147,7 +157,8 @@
                     variant="outlined"
                     density="comfortable"
                     @update:model-value="sinChanged"
-                    hide-details></v-text-field>
+                    hide-details
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <DateSelector v-model="createStudent.date_of_birth" label="Date of birth" max="today" />
@@ -181,7 +192,7 @@
               <p>
                 You can go back and try again or contact the SFA office for additional assistance at
                 <a href="mailto:sfa@yukon.ca">sfa@yukon.ca</a> or call
-                <a href="tel:8671111111">(867) 111-2222</a> during regular business hours.
+                <a href="tel: 8676675929"> (867) 667-5929</a> during regular business hours.
               </p>
             </v-card-text>
 
@@ -234,7 +245,7 @@ export default {
   data: () => ({
     step: 1,
     first_time: "1",
-    showCreateError: false,
+    showCreateError: false
   }),
   computed: {
     ...mapWritableState(useOnboardingStore, ["createStudent", "linkStudent"]),
@@ -242,7 +253,7 @@ export default {
     ...mapState(useUserStore, ["user", "student"]),
     matchFound() {
       return this.linkStudent.sin.length > 0;
-    },
+    }
   },
   async mounted() {
     if (this.user) {
@@ -266,7 +277,7 @@ export default {
         console.log("YOU have been onboarded already");
         this.$router.push("/student");
       }
-    },
+    }
   },
   methods: {
     ...mapActions(useNotificationStore, ["notify"]),
@@ -287,7 +298,7 @@ export default {
     async createStudentClick() {
       if (this.user) {
         this.showCreateError = false;
-        let result = await this.tryCreateStudent(this.user).then((resp) => resp);
+        let result = await this.tryCreateStudent(this.user).then(resp => resp);
 
         if (result && result.id) {
           await this.loadCurrentStudent();
@@ -305,7 +316,7 @@ export default {
     },
     sinChanged2(newV: any) {
       this.linkStudent.sin = this.linkStudent.sin.replace(/[^0-9.]/g, "").substring(0, 9);
-    },
-  },
+    }
+  }
 };
 </script>
