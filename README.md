@@ -45,3 +45,15 @@ cd ./src/web
 npm install
 npm run start
 ```
+
+### Development with `sfa-client` back-end
+
+1. Clone the `sfa-client` repo into the same root directory as this project via `git clone git@github.com:icefoganalytics/sfa-client.git`
+
+   Directory structure should look like: - my-organization - sfa-client - student-financial-aid
+
+2. Boot the `sfa-client` back-end using `cd ./sfa-client && API_PORT=3100 dev up` in its repo.
+
+3. In a new tab, from the `my-originalization` directory, boot the `sfa-client` api service via `cd ./student-financial-aid/src/api && npm run start`
+
+4. In a new tab, from the `my-originalization` directory, boot the `sfa-client` web service via `cd ./student-financial-aid/src/web && npm run start`
