@@ -50,11 +50,10 @@ npm run start
 
 1. Clone the `sfa-client` repo into the same root directory as this project via `git clone git@github.com:icefoganalytics/sfa-client.git`
 
-2. You should now be able to see both repositories side by side.
-   i.e. `ls` should output `sfa-client` and `student-financial-aid`
+   Directory structure should look like: - my-organization - sfa-client - student-financial-aid
 
-3. Boot the `sfa-client` back-end using `cd ./sfa-client && API_PORT=3100 dev up` in its repo.
+2. Boot the `sfa-client` back-end using `cd ./sfa-client && API_PORT=3100 dev up` in its repo.
 
-4. In a new tab, boot the local api service via `cd ./student-financial-aid/src/api && npm run start`
+3. In a new tab, from the `my-originalization` directory, boot the `sfa-client` api service via `cd ./student-financial-aid/src/api && npm run start`
 
-5. In a new tab, boot the local web service via `cd ./student-financial-aid/src/web && npm run start`
+4. In a new tab, from the `my-originalization` directory, boot the `sfa-client` web service via `cd ./student-financial-aid/src/web && npm run start`
