@@ -1,0 +1,11 @@
+@startuml "Application Submission Pipeline"
+
+[*] --> Draft : User creates Application
+Draft --> Draft : User edits Application
+Draft --> Submitted : User submits Application
+Draft : application_draft table
+Submitted : application table
+Submitted --> Submitted : Admin reviews Application
+Submitted --> [*] : End
+
+@enduml
