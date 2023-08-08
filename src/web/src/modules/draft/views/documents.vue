@@ -2,9 +2,19 @@
   <v-card color="#eee5d1" variant="elevated" elevation="0" class="mb-5">
     <v-card-text>
       <h3 class="text-h3 mb-6">{{ $t("application.documents.title") }}</h3>
-      <p>
+      <p class="d-none">
         {{ $t("application.documents.excerpt") }}
       </p>
+      <p class="mb-3">
+        Please upload the following documents before submitting your application. If a document doesn't apply to you,
+        you do not need to upload it. As a temporary measure, the Portal will allow you to submit the application
+        without attaching all listed documents.
+      </p>
+      <p class="mb-3">The <strong>Program Info Form</strong> is mandatory for all applications.</p>
+      <p class="mb-3">
+        There may be a delay in assessing your application if a required document is uploaded incorrectly or missing.
+      </p>
+
       <v-divider class="my-3" />
 
       <v-list lines="two" style="border: 1px #ccc solid; border-radius: 4px">
