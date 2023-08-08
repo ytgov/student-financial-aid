@@ -775,7 +775,7 @@ export const useDraftStore = defineStore("draft", {
           if (s.expenses.length == 0) return false;
 
           for (let c of s.expenses) {
-            if (!(c.type && c.amount && c.amount > 0)) return false;
+            if (!(c.type && c.amount && c.amount >= 0)) return false;
           }
           return true;
         }
