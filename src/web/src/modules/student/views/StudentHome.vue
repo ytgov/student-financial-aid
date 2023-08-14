@@ -94,7 +94,11 @@
         <h4 class="text-h5 mb-4">My Applications</h4>
       </div>
 
-      <ApplicationCard v-for="(app, index) of myApplications" :application="app" class="mb-5"></ApplicationCard>
+      <div v-for="(app, index) of myApplications">
+        <DraftCard v-if="app.status == 'In Progress'" :application="app" class="mb-5"></DraftCard>
+        <ApplicationCard v-else :application="app" class="mb-5"></ApplicationCard>
+      </div>
+
       <v-alert variant="tonal" type="info" elevation="0" v-if="myApplications.length == 0">
         Your student record doesn't currently have any applications for this academic year.
       </v-alert>
@@ -118,6 +122,7 @@
 <script lang="ts">
 import { mapActions, mapState } from "pinia";
 import { useDraftStore } from "@/modules/draft/store";
+import DraftCard from "@/modules/draft/components/draft-card.vue";
 import ApplicationCard from "@/modules/draft/components/application-card.vue";
 import AnnouncementList from "@/modules/notifications/components/announcement-list.vue";
 import RecentMessages from "@/modules/messages/components/recent-messages.vue";
@@ -133,7 +138,7 @@ export default {
     ...mapState(useUserStore, ["student", "studentAddress"]),
     ...mapState(useDraftStore, ["myApplications"]),
   },
-  components: { ApplicationCard, AnnouncementList, RecentMessages },
+  components: { ApplicationCard, DraftCard, AnnouncementList, RecentMessages },
   async mounted() {
     if (this.student) await this.loadApplications();
     else {
