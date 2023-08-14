@@ -48,6 +48,7 @@
 import { mapActions, mapState } from "pinia";
 import { useUserStore } from "@/store/UserStore";
 import { useApplicationStore } from "../store";
+import { isArray } from "lodash";
 
 export default {
   data: () => ({
@@ -61,7 +62,11 @@ export default {
     ],
   }),
   mounted() {
-    this.loadApplication(this.$route.params.applicationId);
+    let applicationId = parseInt(
+      isArray(this.$route.params.applicationId) ? this.$route.params.applicationId[0] : this.$route.params.applicationId
+    );
+
+    this.loadApplication(applicationId);
   },
   computed: {
     ...mapState(useUserStore, ["student", "studentAddress"]),

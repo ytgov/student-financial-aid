@@ -60,7 +60,6 @@ export default {
   },
   methods: {
     sendMessage() {
-      this.messages.push({title:"test"})
       this.messageText = "";
     },
   },
