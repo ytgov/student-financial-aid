@@ -1,0 +1,16 @@
+'See https://plantuml.com/state-diagram
+
+@startuml "Application Submission Pipeline"
+[*] --> Draft : Student creates Application
+Draft : application_draft table
+Submitted : application table
+state "Chat System" as Chat : system for Admin <-> Student communication
+Draft --> Draft : Student edits Application
+Draft --> Submitted : Student submits Application
+Submitted --> Submitted : Admin reviews Application
+Submitted --> Chat : Admin requests changes from Student
+Chat --> Chat : Student responds to Admin with new data
+Chat --> Submitted : Admin updates Application with new data from Student
+Chat --> [*] : End
+
+@enduml
