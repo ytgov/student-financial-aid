@@ -9,7 +9,7 @@
 
       <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form>
-        <v-radio-group v-model="application.draft.consent.allow_others">
+        <v-radio-group v-model="application.draft.consent.allow_others" @change="allowChange">
           <v-radio label="I do not wish to allow anyone else to communicate on my behalf" :value="false"></v-radio>
           <v-radio label="I authorize the following people:" :value="true"></v-radio>
         </v-radio-group>
@@ -18,10 +18,7 @@
           <v-row v-for="(item, key) in application.draft.consent.consents">
             <v-col cols="12">
               <v-btn icon="mdi-delete" color="warning" size="small" @click="remove(key)" class="float-right"></v-btn>
-              <TextField
-                v-model="item.person"
-                label="Consent person (First and Last name)"
-                style="margin-right: 55px" />
+              <TextField v-model="item.person" label="Consent person full legal name" style="margin-right: 55px" />
             </v-col>
 
             <v-divider />
@@ -75,6 +72,13 @@ export default {
     remove(key) {
       if (key > -1) {
         this.application.draft.consent.consents.splice(key, 1); // 2nd parameter means remove one item only
+      }
+    },
+    allowChange() {
+      if (this.application.draft.consent.allow_others === true) {
+        if (this.application.draft.consent.consents.length == 0) this.addconsent();
+      } else {
+        this.application.draft.consent.consents = [];
       }
     },
 
