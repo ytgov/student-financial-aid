@@ -31,7 +31,7 @@
               <v-list-item-title style="font-size: 0.9rem !important">My profile</v-list-item-title>
             </v-list-item> -->
 
-          <!--  <v-list-item to="/messages/inbox">
+           <!-- <v-list-item to="/messages/inbox">
             <template v-slot:prepend>
               <v-icon>mdi-message</v-icon>
             </template>
