@@ -53,9 +53,11 @@
           <v-divider />
         </v-row>
 
-
-
-        <p class="mt-7">Additional expenses, such as medical, dental, and day care, can be added here. Do not include payments such as rent, vehicle, insurance, groceries, cellphone, visa, etc. These costs are either pre-calculated or are ineligible.</p>
+        <p class="mt-7">
+          Additional expenses, such as medical, dental, and day care, can be added here. Do not include payments such as
+          rent, vehicle, insurance, groceries, cellphone, visa, etc. These costs are either pre-calculated or are
+          ineligible.
+        </p>
         <v-btn class="mt-3" color="info" @click="add()">Add expense</v-btn>
       </v-form>
     </v-card-text>
