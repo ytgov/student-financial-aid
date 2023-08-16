@@ -8,7 +8,7 @@
       <v-divider class="my-3" />
       <!-- <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form>
-        <v-radio-group v-model="application.draft.csfa_income.has_income">
+        <v-radio-group v-model="application.draft.csfa_income.has_income" @change="hasIncomeChange">
           <v-radio label="I do not anticipate any income" :value="false"></v-radio>
           <v-radio label="I will have the following income:" :value="true"></v-radio>
         </v-radio-group>
@@ -90,6 +90,13 @@ export default {
     remove(key) {
       if (key > -1) {
         this.application.draft.csfa_income.incomes.splice(key, 1); // 2nd parameter means remove one item only
+      }
+    },
+    hasIncomeChange() {
+      if (this.application.draft.csfa_income.has_income === true) {
+        if (this.application.draft.csfa_income.incomes.length == 0) this.add();
+      } else {
+        this.application.draft.csfa_income.incomes = [];
       }
     },
 

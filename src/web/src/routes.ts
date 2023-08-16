@@ -7,6 +7,7 @@ import eligibilityRoutes from "@/modules/eligibility/router";
 import { onboardingRoutes } from "@/modules/onboarding/router";
 import { studentRoutes } from "@/modules/student/router";
 import { useUserStore } from "./store/UserStore";
+import { applicationRoutes } from "@/modules/application/router";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -24,6 +25,7 @@ const routes: Array<RouteRecordRaw> = [
 
       ...onboardingRoutes,
       ...studentRoutes,
+      ...applicationRoutes,
 
       {
         path: "/faq",

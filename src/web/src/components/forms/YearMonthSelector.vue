@@ -29,7 +29,7 @@ export default {
   components: { VueDatePicker },
   data() {
     return {
-      month: { month: 1, year: 2023 },
+      month: undefined as { month: number; year: number } | undefined,
       has_focus: false,
     };
   },
@@ -38,11 +38,8 @@ export default {
       let parts = this.modelValue.split("/");
 
       if (parts.length == 2) {
-        this.month.year = parts[0];
-        this.month.month = parseInt(parts[1]) - 1;
+        this.month = { year: parts[0], month: parseInt(parts[1]) - 1 };
       }
-    } else {
-      this.month = { month: 1, year: 2023 };
     }
   },
   watch: {

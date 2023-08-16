@@ -9,7 +9,7 @@
 
       <!--  <ValidationObserver ref="observer" v-slot="{ invalid, errors }"> -->
       <v-form>
-        <v-radio-group v-model="application.draft.student_dependants.has_dependants">
+        <v-radio-group v-model="application.draft.student_dependants.has_dependants" @change="hasDependantsChange">
           <v-radio label="I do not have any dependants" :value="false"></v-radio>
           <v-radio label="I have the following dependants:" :value="true"></v-radio>
         </v-radio-group>
@@ -141,6 +141,13 @@ export default {
     remove(key) {
       if (key > -1) {
         this.application.draft.student_dependants.dependants.splice(key, 1); // 2nd parameter means remove one item only
+      }
+    },
+    hasDependantsChange() {
+      if (this.application.draft.student_dependants.has_dependants === true) {
+        if (this.application.draft.student_dependants.dependants.length == 0) this.add();
+      } else {
+        this.application.draft.student_dependants.dependants = [];
       }
     },
 

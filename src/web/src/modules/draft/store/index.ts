@@ -206,6 +206,7 @@ export const useDraftStore = defineStore("draft", {
           is_part_time: true,
           is_full_time: false,
         },
+        { name: "Canada Student Grant for Students with Disabilities" },
         { name: "Canadian Army Scholarship" },
         { name: "Yukon Huskys CB Radio Club Scholarship" },
         { name: "Nicholas John Harach Scholarship" },
@@ -233,6 +234,11 @@ export const useDraftStore = defineStore("draft", {
           .map(
             (p) => ((p as any).message = "(Only applicable if attending Yukon University or Alkan Air Flight Training)")
           );
+
+      if (this.application?.draft.statistical.disability == "None")
+        fullList
+          .filter((s) => s.name == "Canada Student Grant for Students with Disabilities")
+          .map((p) => ((p as any).message = "(Only applicable for students with disabilities)"));
 
       return fullList;
     },

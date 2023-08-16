@@ -24,13 +24,6 @@
           </v-col>
 
           <v-col cols="12" md="6">
-            <v-btn
-              v-if="key > 0"
-              icon="mdi-delete"
-              size="small"
-              color="warning"
-              @click="remove(key)"
-              class="float-right"></v-btn>
             <YearMonthSelector
               v-model="item.left_high_school"
               label="Date you left high school"
@@ -38,11 +31,7 @@
               style="margin-right: 55px"></YearMonthSelector>
             <div class="clear:both"></div>
           </v-col>
-          <!-- <v-divider></v-divider> -->
-
         </v-row>
-
-        <!--   <v-btn class="mt-6" color="info" @click="add()">Add another school</v-btn> -->
       </v-form>
     </v-card-text>
   </v-card>
@@ -85,26 +74,17 @@ export default {
     return {};
   },
   beforeMount() {
+    console.log(this.application.draft.education.education_history)
     this.application.draft.education.education_history = this.application.draft.education.education_history || [
       {
         school: "",
-        left_high_school: `${new Date().getFullYear()}/06`,
+        left_high_school: "",
       },
     ];
   },
   watch: {},
   methods: {
     ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
-    add() {
-      this.application.draft.education.education_history.push({
-        school: "",
-        left_high_school: `${new Date().getFullYear()}/06`,
-      });
-    },
-    remove(key) {
-      this.application.draft.education.education_history.splice(key, 1);
-    },
-
     async backClick() {
       this.save().then(() => {
         this.$router.push(this.getPrevious("Education History"));
