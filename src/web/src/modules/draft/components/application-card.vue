@@ -7,10 +7,12 @@
     @click="openClick"
     elevation="0"
     style="cursor: pointer">
-    <v-chip size="small" :color="chipColor" variant="flat" class="float-right">{{ application.status || "Submitted" }}</v-chip>
+    <v-chip size="small" :color="chipColor" variant="flat" class="float-right">{{
+      application.status || "Submitted"
+    }}</v-chip>
     <v-alert-title class="mb-0">Academic Year {{ application.academicYearId }}</v-alert-title>
     <div class="v-alert-subtitle">
-      Last update: {{ formatDate(application.updatedAt || application.onlineSubmitDate) }}
+      Last update: {{ formatDate(application.updatedAt || application.onlineSubmitDate || application.update_date) }}
     </div>
     {{ application.description }}
     <div style="margin-left: -16px" class="mt-2">
@@ -51,6 +53,9 @@ export default {
   methods: {
     ...mapActions(useDraftStore, ["selectDraft", "resume", "delete"]),
     openClick() {
+      // check if displaying a submitted draft. If so, don't navigate
+      if (this.application.application_json) return;
+
       this.$router.push(this.applicationUrl);
     },
     formatDate(input: any) {
