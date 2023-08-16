@@ -20,7 +20,7 @@
             item.name == 'Canada Student Financial Assistance (Full-Time)' &&
             application.draft.funding_sources.sources.includes('Canada Student Financial Assistance (Full-Time)')
           ">
-          <v-radio-group v-model="application.draft.funding_sources.csfa_amounts">
+          <v-radio-group v-model="application.draft.funding_sources.csfa_amounts" @change="amountsChange">
             <v-radio
               class="disableable ml-7"
               label="I want to apply for the full amount possible (loan and grants)"
@@ -49,6 +49,7 @@
                 I want to apply for the full amount of grants, and loans up to:
                 <text-field
                   type="number"
+                  :disabled="application.draft.funding_sources.csfa_amounts != 'Grants and loans up to'"
                   v-model="application.draft.funding_sources.csfa_loan_amount"
                   class="d-inline-flex ml-2"
                   prepend-inner-icon="mdi-currency-usd"
@@ -66,9 +67,10 @@
           "
           class="ml-9 mb-4"
           style="position: relative; margin-top: -10px">
-          To apply, download and complete the 
+          To apply, download and complete the
           <a
-            href="https://www.canada.ca/content/dam/canada/employment-social-development/migration/do[…]ts/assets/portfolio/docs/en/student_loans/forms/SDE0031_EN.pdf"
+            target="_blank"
+            href="https://www.canada.ca/content/dam/canada/employment-social-development/migration/documents/assets/portfolio/docs/en/student_loans/forms/SDE0031_EN.pdf"
             >application form</a
           >
           and submit it through the Documents section.
@@ -103,6 +105,22 @@
             prepend-inner-icon="mdi-currency-usd"
             density="compact"
             style="max-width: 180px"></text-field>
+        </div>
+
+        <div
+          v-if="
+            item.name == 'Canada Student Grant for Students with Disabilities' &&
+            application.draft.funding_sources.sources.includes('Canada Student Grant for Students with Disabilities')
+          "
+          class="ml-9"
+          style="position: relative; margin-top: -15px; vertical-align: top">
+          To apply, download and complete the
+          <a
+            target="_blank"
+            href="https://yukon.ca/en/schedule-d-canada-student-financial-assistance-application-grants-students-disabilities"
+            >application form</a
+          >
+          and submit it through the Documents section.
         </div>
 
         <div class="text-error ml-9 d-flex" style="position: relative; margin-top: -10px">{{ item.message }}</div>
@@ -172,6 +190,11 @@ export default {
   },
   methods: {
     ...mapActions(useDraftStore, ["getPrevious", "getNext", "save"]),
+
+    amountsChange() {
+      if (this.application.draft.funding_sources.csfa_amounts != "Grants and loans up to")
+        this.application.draft.funding_sources.csfa_loan_amount = undefined;
+    },
 
     async backClick() {
       this.save().then(() => {
