@@ -36,6 +36,7 @@
                 :label="$t('components.address_selector.labels.address_city')"
                 clearable
                 :items="cities"
+                hide-details
                 autocomplete="null"
                 item-value="id"
                 item-title="description" />
@@ -49,6 +50,7 @@
                 :label="$t('components.address_selector.labels.address_province')"
                 clearable
                 :items="provinces"
+                hide-details
                 autocomplete="null"
                 item-value="id"
                 item-title="description" />
@@ -65,15 +67,18 @@
                 placeholder="0.00"
                 label="Rent paid to parents" />
             </v-col>
-            <v-col cols="12" md="6" v-if="[2, 3].includes(item.living)">
-              <v-checkbox hide-details v-model="item.own_home" label="I own my own home" />
+            <v-col cols="12" md="4" v-if="[2, 3].includes(item.living)" class="py-1">
+              <v-checkbox hide-details v-model="item.own_home" label="I own my own home" class="my-0" />
+            </v-col>
+            <v-col cols="12" md="4" class="py-1">
+              <v-checkbox v-model="item.living_with_spouse" label="Living with spouse?" hide-details class="my-0" />
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12" md="4" class="py-0">
               <v-checkbox v-model="item.bus_service" label="Bus service available?" hide-details />
             </v-col>
-            <v-col cols="12" md="8" class="py-0" v-if="!item.bus_service">
+            <v-col cols="12" md="8" class="py-0">
               <v-text-field
                 type="number"
                 variant="outlined"
@@ -130,13 +135,13 @@ export default {
       {
         heading: "Pre-study Accomodation",
         note: "Your pre-study accommodations is the 4-month period just before your classes start in this academic year. ",
-        living: "Living at Parents",
+        living: 1,
         bus_service: true,
       },
       {
         heading: "Study Accomodation",
         note: "Your study accommodations includes all months from your start to end date of classes for this application period.",
-        living: "Living at Parents",
+        living: 1,
         bus_service: true,
       },
     ];
