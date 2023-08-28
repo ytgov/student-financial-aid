@@ -74,7 +74,6 @@ export default {
     return {};
   },
   beforeMount() {
-    console.log(this.application.draft.education.education_history)
     this.application.draft.education.education_history = this.application.draft.education.education_history || [
       {
         school: "",
