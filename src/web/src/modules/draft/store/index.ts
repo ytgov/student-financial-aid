@@ -6,7 +6,7 @@ import { APPLICATION_URL } from "@/urls";
 import { useUserStore } from "@/store/UserStore";
 
 import blankDraft from "./blank-draft.json";
-import { clone, isUndefined } from "lodash";
+import { clone, isInteger, isUndefined } from "lodash";
 import moment from "moment";
 
 let m = useNotificationStore();
@@ -492,7 +492,7 @@ export const useDraftStore = defineStore("draft", {
         let s = this.application.draft.education;
 
         for (let c of s.education_history) {
-          if (!(c.left_high_school && c.school)) return false;
+          if (!(c.left_high_school && isInteger(c.school))) return false;
         }
 
         return true;
