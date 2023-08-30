@@ -46,7 +46,7 @@ export const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  console.log("BEFORE GO TO", to.fullPath, to.meta);
+  //console.log("BEFORE GO TO", to.fullPath, to.meta);
 
   if (to.meta && to.meta.auth == true) {
     const u = useUserStore();

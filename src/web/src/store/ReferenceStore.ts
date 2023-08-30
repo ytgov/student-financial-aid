@@ -113,7 +113,7 @@ export const useReferenceStore = defineStore("reference", {
       const api = useApiStore();
 
       api
-        .secureCall("get", `${REFERENCE_URL}/high-school/3`)
+        .secureCall("get", `${REFERENCE_URL}/high-school/3`) // the /3 denotes Yukon High Schools only (province_id filtered)
         .then((resp) => {
           this.yukonHighSchools = resp.data;
           this.yukonHighSchools.unshift({ id: 0, name: "I did not attend a Yukon high school" });

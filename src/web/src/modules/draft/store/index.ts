@@ -6,7 +6,7 @@ import { APPLICATION_URL } from "@/urls";
 import { useUserStore } from "@/store/UserStore";
 
 import blankDraft from "./blank-draft.json";
-import { clone, isUndefined } from "lodash";
+import { clone, isInteger, isUndefined } from "lodash";
 import moment from "moment";
 
 let m = useNotificationStore();
@@ -24,7 +24,7 @@ export const useDraftStore = defineStore("draft", {
     requiredDocuments: new Array<any>(),
   }),
   getters: {
-    relevantSections(): any[] {
+    relevantSections(): { name: string; uri: string; is_complete?: boolean; disabled?: boolean }[] {
       let app = this.application;
 
       if (!app) return [];
@@ -492,7 +492,7 @@ export const useDraftStore = defineStore("draft", {
         let s = this.application.draft.education;
 
         for (let c of s.education_history) {
-          if (!(c.left_high_school && c.school)) return false;
+          if (!(c.left_high_school && isInteger(c.school))) return false;
         }
 
         return true;
@@ -1003,19 +1003,19 @@ export const useDraftStore = defineStore("draft", {
       return "";
     },
 
-    getNext(current: string): string {
-      if (!this.application) return "";
+    getNext(currentSectionName: string): string {
+      const currentIndex = this.relevantSections.findIndex((s) => s.name == currentSectionName);
+      if (currentIndex === -1) throw new Error("Could not find passed section.")
 
-      for (let i = 0; i < this.relevantSections.length; i++) {
-        let sect = this.relevantSections[i];
-        if (current == sect.name) {
-          let next = this.relevantSections[i + 1];
-          if (next.disabled) return sect.uri;
+      const currentSection = this.relevantSections[currentIndex]
+      const nextSection = this.relevantSections[currentIndex + 1]
+      const firstSection = this.relevantSections[0]
 
-          return this.relevantSections[i + 1].uri;
-        }
-      }
-      return "";
+      if (firstSection === undefined) return ""
+      if (nextSection === undefined) return firstSection.uri
+      if (nextSection.disabled) return firstSection.uri
+
+      return nextSection.uri
     },
 
     getPrevious(current: string): string {
