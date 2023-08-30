@@ -24,7 +24,7 @@ export const useDraftStore = defineStore("draft", {
     requiredDocuments: new Array<any>(),
   }),
   getters: {
-    relevantSections(): any[] {
+    relevantSections(): { name: string; uri: string; is_complete?: boolean; disabled?: boolean }[] {
       let app = this.application;
 
       if (!app) return [];
@@ -1003,19 +1003,19 @@ export const useDraftStore = defineStore("draft", {
       return "";
     },
 
-    getNext(current: string): string {
-      if (!this.application) return "";
+    getNext(currentSectionName: string): string {
+      const currentIndex = this.relevantSections.findIndex((s) => s.name == currentSectionName);
+      if (currentIndex === -1) throw new Error("Could not find passed section.")
 
-      for (let i = 0; i < this.relevantSections.length; i++) {
-        let sect = this.relevantSections[i];
-        if (current == sect.name) {
-          let next = this.relevantSections[i + 1];
-          if (next.disabled) return sect.uri;
+      const currentSection = this.relevantSections[currentIndex]
+      const nextSection = this.relevantSections[currentIndex + 1]
+      const firstSection = this.relevantSections[0]
 
-          return this.relevantSections[i + 1].uri;
-        }
-      }
-      return "";
+      if (firstSection === undefined) return ""
+      if (nextSection === undefined) return firstSection.uri
+      if (nextSection.disabled) return firstSection.uri
+
+      return nextSection.uri
     },
 
     getPrevious(current: string): string {
