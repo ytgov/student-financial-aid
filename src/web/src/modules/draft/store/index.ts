@@ -6,8 +6,9 @@ import { APPLICATION_URL } from "@/urls";
 import { useUserStore } from "@/store/UserStore";
 
 import blankDraft from "./blank-draft.json";
-import { clone, isInteger, isUndefined } from "lodash";
+import { clone, isInteger, isString, isUndefined } from "lodash";
 import moment from "moment";
+import { copyFileSync } from "fs";
 
 let m = useNotificationStore();
 
@@ -467,7 +468,17 @@ export const useDraftStore = defineStore("draft", {
           if (this.residencyTotalMonths < this.residencyRequireMonths) return false;
 
           for (let c of s.residency_history) {
-            if (!(c.start && c.end && c.city && c.province && c.country && !isUndefined(c.in_school))) return false;
+            if (!(isInteger(c.city) && isInteger(c.province) && isInteger(c.country) && !isUndefined(c.in_school)))
+              return false;
+
+            if (isString(c.start) && c.start.length >= 6 && c.start.indexOf("/") >= 0) {
+              let p = c.start.split("/");
+              if (!(p.length == 2 && isInteger(parseInt(p[0])) && isInteger(parseInt(p[1])))) return false;
+            }
+            if (isString(c.end) && c.end.length >= 6 && c.end.indexOf("/") >= 0) {
+              let p = c.end.split("/");
+              if (!(p.length == 2 && isInteger(parseInt(p[0])) && isInteger(parseInt(p[1])))) return false;
+            }
           }
 
           return true;
@@ -492,7 +503,14 @@ export const useDraftStore = defineStore("draft", {
         let s = this.application.draft.education;
 
         for (let c of s.education_history) {
-          if (!(c.left_high_school && isInteger(c.school))) return false;
+          if (!isInteger(c.school)) return false;
+
+          if (isString(c.left_high_school) && c.left_high_school.length >= 6 && c.left_high_school.indexOf("/") >= 0) {
+            let p = c.left_high_school.split("/");
+            if (p.length == 2 && isInteger(parseInt(p[0])) && isInteger(parseInt(p[1]))) continue;
+          }
+
+          return false;
         }
 
         return true;
@@ -1005,17 +1023,17 @@ export const useDraftStore = defineStore("draft", {
 
     getNext(currentSectionName: string): string {
       const currentIndex = this.relevantSections.findIndex((s) => s.name == currentSectionName);
-      if (currentIndex === -1) throw new Error("Could not find passed section.")
+      if (currentIndex === -1) throw new Error("Could not find passed section.");
 
-      const currentSection = this.relevantSections[currentIndex]
-      const nextSection = this.relevantSections[currentIndex + 1]
-      const firstSection = this.relevantSections[0]
+      const currentSection = this.relevantSections[currentIndex];
+      const nextSection = this.relevantSections[currentIndex + 1];
+      const firstSection = this.relevantSections[0];
 
-      if (firstSection === undefined) return ""
-      if (nextSection === undefined) return firstSection.uri
-      if (nextSection.disabled) return firstSection.uri
+      if (firstSection === undefined) return "";
+      if (nextSection === undefined) return firstSection.uri;
+      if (nextSection.disabled) return firstSection.uri;
 
-      return nextSection.uri
+      return nextSection.uri;
     },
 
     getPrevious(current: string): string {
