@@ -51,7 +51,6 @@
 
 <script>
 import TextField from "@/components/forms/TextField.vue";
-import DateSelector from "@/components/forms/DateSelector.vue";
 import Select from "@/components/forms/Select.vue";
 
 import { mapActions, mapState, mapWritableState } from "pinia";
@@ -63,7 +62,6 @@ export default {
   components: {
     TextField,
     Select,
-    DateSelector,
     YearMonthSelector,
   },
   computed: {
