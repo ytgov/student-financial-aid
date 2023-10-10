@@ -31,9 +31,11 @@ export default createVuetify({
           yg_twilight: "#512A44",
           yg_lichen: "#DC4405",
           yg_sun: "#F2A900",
+          error: "#F44336",
         },
       },
-      dark: {
+      /* dark: {
+        dark: true,
         colors: {
           yg_moss: "#7A9A01",
           yg_blue: "#0097a9",
@@ -41,8 +43,9 @@ export default createVuetify({
           yg_twilight: "#512A44",
           yg_lichen: "#DC4405",
           yg_sun: "#F2A900",
+          surface: '#FFFFFF',
         },
-      },
+      }, */
     },
   },
 });
