@@ -37,7 +37,7 @@ import { isArray } from "lodash";
 export default {
   data: () => ({
     show: false,
-    file: null,
+    file: undefined,
   }),
   computed: {
     ...mapState(useDraftStore, ["application"]),
@@ -50,7 +50,7 @@ export default {
   methods: {
     ...mapActions(useDraftStore, ["upload", "loadRequiredDocuments"]),
     closeClick() {
-      this.file = null;
+      this.file = undefined;
       this.fileUpload = undefined;
     },
     async uploadClick() {

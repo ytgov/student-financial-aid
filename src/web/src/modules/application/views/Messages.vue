@@ -6,7 +6,7 @@
         <v-col cols="12" md="7">
           <v-list style="border: 1px #bbb solid; border-radius: 4px">
             <div v-for="(item, idx) of messages">
-              <v-list-item lines="3" :subtitle="item.subtitle" :title="item.title"> </v-list-item>
+              <v-list-item lines="three" :subtitle="item.subtitle" :title="item.title"> </v-list-item>
               <v-divider class="mt-1" v-if="idx < messages.length - 1"></v-divider>
             </div>
           </v-list>
