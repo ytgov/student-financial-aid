@@ -1,5 +1,5 @@
 <template>
-  <div class="top" :class="has_focus ? 'hf' : ''">
+  <div class="top" :class="has_focus ? 'hf' : ''" style="height: 50px;">
     <div style="position: absolute; z-index: 22; height: 5px !important; width: 100%; top: -1px">
       <div class="inlay">
         <label>{{ label }}</label>
@@ -9,7 +9,7 @@
       v-model="month"
       month-picker
       format="yyyy/MM"
-      :clearable="true"
+      :clearable="false"
       :max-date="maxDate"
       :teleport="true"
       :auto-apply="true"

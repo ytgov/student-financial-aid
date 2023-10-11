@@ -4,8 +4,14 @@ h2,
 h3,
 p,
 div {
-  color: #323232 !important;
+  color: #323232;
 }
+
+.bg-error div,
+.bg-error span .bg-error i {
+  color: white;
+}
+
 html {
   font-size: 15px;
 }
@@ -75,7 +81,7 @@ ul.v-breadcrumbs {
 }
 
 .text-error {
-  color: #9b1b27 !important;
+  color: #f44336 !important;
 }
 
 .v-btn.v-size--small {
@@ -132,4 +138,13 @@ table.table {
   border-bottom: 0px;
   padding: 3px 6px;
   font-weight: 400;
+}
+
+.dp__main input {
+  height: 50px;
+  display: flex;
+}
+
+.dp__input_wrap {
+  box-sizing: inherit;
 }

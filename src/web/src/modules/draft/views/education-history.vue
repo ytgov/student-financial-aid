@@ -27,7 +27,7 @@
             <YearMonthSelector
               v-model="item.left_high_school"
               label="Date you left high school"
-              :minYear="1980"
+              :minYear="1970"
               style="margin-right: 55px"></YearMonthSelector>
             <div class="clear:both"></div>
           </v-col>
@@ -51,7 +51,6 @@
 
 <script>
 import TextField from "@/components/forms/TextField.vue";
-import DateSelector from "@/components/forms/DateSelector.vue";
 import Select from "@/components/forms/Select.vue";
 
 import { mapActions, mapState, mapWritableState } from "pinia";
@@ -63,7 +62,6 @@ export default {
   components: {
     TextField,
     Select,
-    DateSelector,
     YearMonthSelector,
   },
   computed: {

@@ -220,7 +220,7 @@ export default {
 <style>
 .disableable .v-selection-control--error .v-label {
   text-decoration: line-through !important;
-  color: #9b1b27 !important;
+  color: #F44336 !important;
 }
 .disableable .v-selection-control--disabled {
   opacity: 1 !important;

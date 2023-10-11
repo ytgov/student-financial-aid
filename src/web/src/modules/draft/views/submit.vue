@@ -112,7 +112,8 @@
         variant="outlined"
         density="comfortable"
         readonly
-        :value="`${student.first_name} ${student.last_name}`" append-inner-icon="mdi-lock"></v-text-field>
+        :value="`${student.first_name} ${student.last_name}`"
+        append-inner-icon="mdi-lock"></v-text-field>
 
       <v-row>
         <v-col cols="12" sm="1">
@@ -137,9 +138,18 @@
         class="mr-3 mb-5 float-right"
         size="x-large"
         @click="saveClick"
-        :disabled="!sectionsComplete || consent1 == false"
+        :disabled="!sectionsComplete || consent1 == false || isLoading"
         >Submit</v-btn
       >
+      <v-alert
+        type="error"
+        density="compact"
+        v-if="errorText"
+        style="clear: both"
+        title="We ran into a problem submitting your application">
+        <v-icon>mdi-chevron-right</v-icon><strong>{{ errorText }}</strong><br>
+        Please review your application for any possible errors and contact the Student Financial Assistance office at 867-667-5929 if this problem persists.
+      </v-alert>
     </v-card-text>
   </v-card>
 
@@ -158,6 +168,8 @@ export default {
   data: () => ({
     consent1: false,
     consent2: false,
+    isLoading: false,
+    errorText: null,
   }),
   computed: {
     ...mapWritableState(useDraftStore, ["application"]),
@@ -205,10 +217,22 @@ export default {
       });
     },
     async saveClick() {
+      this.isLoading = true;
+      this.errorText = null;
+
       this.save(false).then(async () => {
-        this.submit().then((resp) => {
-          this.$router.push("/student");
-        });
+        this.submit()
+          .then((resp) => {
+            console.log("SAVE RESP", resp);
+
+            if (resp.error) {
+              console.log("I HAD AN ERROR");
+              this.errorText = resp.error;
+            } else this.$router.push("/student");
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
       });
     },
   },

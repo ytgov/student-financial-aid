@@ -464,6 +464,11 @@ export const useDraftStore = defineStore("draft", {
       if (store.application && store.application.draft) {
         let s = store.application.draft.residency;
 
+        if (s.has_traveled === 1) {
+          if (!(isString(s.last_return_date) && s.last_return_date.length >= 6 && s.last_return_date.indexOf("/") >= 0))
+            return false;
+        }
+
         if (s && s.residency_history && s.residency_history.length > 0) {
           if (this.residencyTotalMonths < this.residencyRequireMonths) return false;
 
@@ -948,13 +953,18 @@ export const useDraftStore = defineStore("draft", {
         return api
           .secureCall("put", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}/submit`, {})
           .then((resp) => {
-            m.notify({ text: "Application Submitted", variant: "success" });
+            if (resp.data.error) {
+              m.notify({ text: "Error Submitting Application", variant: "error" });
+            } else {
+              m.notify({ text: "Application Submitted", variant: "success" });
+            }
+
             return resp.data;
           })
           .catch((err) => {
             console.log("ERROR HAPPENED", err);
             m.notify({ text: "Error Submitting Application", variant: "error" });
-            return {};
+            return { error: err };
           });
       }
     },
