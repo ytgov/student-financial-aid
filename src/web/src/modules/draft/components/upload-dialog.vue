@@ -33,6 +33,10 @@
 import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
 import { isArray } from "lodash";
+import { File } from "buffer";
+import { useNotificationStore } from "@/store/NotificationStore";
+
+const uploadExtensions = [".pdf", ".doc", ".docx", ".tif", ".tiff", ".gif", ".jpg", ".jpeg", ".png", ".bmp"];
 
 export default {
   data: () => ({
@@ -42,7 +46,6 @@ export default {
   computed: {
     ...mapState(useDraftStore, ["application"]),
     ...mapWritableState(useDraftStore, ["fileUpload"]),
-
     visible() {
       return this.fileUpload ? true : false;
     },
@@ -54,12 +57,21 @@ export default {
       this.fileUpload = undefined;
     },
     async uploadClick() {
-      let t = isArray(this.file) ? this.file[0] : this.file;
+      let t = (isArray(this.file) ? this.file[0] : this.file) as File | undefined;
+      if (t) {
+        let extension = t.name.substring(t.name.lastIndexOf("."));
 
-      this.upload(t).then(async (resp) => {
-        await this.loadRequiredDocuments();
-        this.closeClick();
-      });
+        if (uploadExtensions.includes(extension)) {
+          this.upload(t).then(async (resp) => {
+            await this.loadRequiredDocuments();
+            this.closeClick();
+          });
+        } else {
+          this.file = undefined;
+          let m = useNotificationStore();
+          m.notify({ variant: "error", text: "We only accept images, PDF or Word documents." });
+        }
+      }
     },
   },
 };
