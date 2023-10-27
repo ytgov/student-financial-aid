@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import { useUserStore } from "@/store/UserStore";
-import { LOGIN_URL } from "@/urls";
+import { useAuth0, AuthState } from "@/plugins/auth";
 
 export default {
   name: "SignIn",
@@ -56,7 +56,9 @@ export default {
   },
   methods: {
     signInClick() {
-      window.location.replace(LOGIN_URL);
+      const { login } = useAuth0(AuthState);
+      //window.location.replace(LOGIN_URL);
+      login();
     },
   },
 };

@@ -48,7 +48,10 @@ export const useUserStore = defineStore("user", {
         this.isLoaded = true;
         this.lastLoaded = new Date();
         this.user = resp.data;
-      });
+      })
+      .catch(e=> {
+        console.log("ERROR", e)
+      })
     },
     async loadCurrentStudent() {
       let api = useApiStore();
@@ -72,6 +75,8 @@ export const useUserStore = defineStore("user", {
     },
     async isAuthenticated(doCheck = true): Promise<boolean> {
       let that = this;
+
+      console.log("ISAUTH")
 
       return new Promise(async (resolve, reject) => {
         if (this.user && this.user.sub) {

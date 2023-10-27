@@ -2,12 +2,14 @@
 
 import axios from "axios";
 
+import { AuthState } from "@/plugins/auth";
+
 export function SecureAPICall(method: string, token: string) {
   let headers = {
     "Content-Type": "application/json",
   };
-  if (token) {
-    Object.assign(headers, { Authorization: `Bearer ${token}` });
+  if (AuthState.token) {
+    Object.assign(headers, { Authorization: `Bearer ${AuthState.token}` });
   }
   return axios.create({
     method: method,
@@ -19,8 +21,8 @@ export function SecureAPIUpload(method: string, token: string) {
   let headers = {
     "Content-Type": "multipart/form-data",
   };
-  if (token) {
-    Object.assign(headers, { Authorization: `Bearer ${token}` });
+  if (AuthState.token) {
+    Object.assign(headers, { Authorization: `Bearer ${AuthState.token}` });
   }
   return axios.create({
     method: method,
