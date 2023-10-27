@@ -23,9 +23,6 @@ export const FRONTEND_URL = process.env.FRONTEND_URL || "";
 export const AUTH_DOMAIN = `${process.env.AUTH_DOMAIN}/` || "";
 export const AUTH_AUDIENCE = process.env.AUTH_AUDIENCE || "";
 export const AUTH_CLIENT = process.env.AUTH_CLIENT || "";
-export const AUTH_SECRET = process.env.AUTH_SECRET || "";
-export const AUTH_CLIENTSECRET = process.env.AUTH_CLIENTSECRET || "";
-export const AUTH_REDIRECT = process.env.AUTH_REDIRECT || "";
 
 export const APPLICATION_NAME = process.env.APPLICATION_NAME || "";
 
