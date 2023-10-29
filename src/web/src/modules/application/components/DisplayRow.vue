@@ -1,7 +1,7 @@
 <template>
   <tr>
     <th>{{ label }}</th>
-    <td>{{ value }}</td>
+    <td v-html="value"></td>
   </tr>
 </template>
 

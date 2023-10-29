@@ -16,12 +16,9 @@ export async function ReturnValidationErrors(req: Request, res: Response, next: 
 
 export async function loadStudent(req: Request, res: Response, next: NextFunction) {
   if (req.user) {
-    console.log(`/student/${req.user.sub}`);
-
     return proxyService
       .proxy(`/student/${req.user.sub}`, "get")
       .then((resp) => {
-        console.log("DATA", resp.data.data);
         req.student = resp.data.data;
       })
       .catch((err) => {

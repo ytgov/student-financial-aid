@@ -54,9 +54,9 @@ export default {
   data: () => ({
     showCreateDialog: false,
     relevantSections: [
-      { url: "", name: "Overview" },
-      { url: "/status", name: "Status" },
-      { url: "/messages", name: "Messages" },
+      /* { url: "", name: "Overview" }, */
+      { url: "/status", name: "Funding Status" },
+    /*   { url: "/messages", name: "Messages" }, */
       { url: "/details", name: "Application Details" },
       { url: "/documents", name: "Documents" },
     ],
@@ -67,6 +67,8 @@ export default {
     );
 
     this.loadApplication(applicationId);
+    this.loadLetters(applicationId);
+    this.loadDocuments(applicationId);
   },
   computed: {
     ...mapState(useUserStore, ["student", "studentAddress"]),
@@ -76,7 +78,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useApplicationStore, ["loadApplication"]),
+    ...mapActions(useApplicationStore, ["loadApplication", "loadLetters", "loadDocuments"]),
   },
 };
 </script>

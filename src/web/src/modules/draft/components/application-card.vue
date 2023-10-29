@@ -47,7 +47,7 @@ export default {
       return false;
     },
     applicationUrl() {
-      return `/application/${this.application.id}`;
+      return `/application/${this.application.id}/status`;
     },
   },
   methods: {

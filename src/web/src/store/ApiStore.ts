@@ -30,9 +30,9 @@ export const useApiStore = defineStore("api", () => {
     m.notify(message);
   }
 
-  async function secureCall(method: string, url: string, data?: any) {
+  async function secureCall(method: string, url: string, data?: any, config?: any) {
     if (AuthState.token) {
-      return SecureAPICall(method, "")
+      return SecureAPICall(method, config)
         .request({ url, data })
         .then((resp) => {
           return resp.data;
@@ -46,7 +46,7 @@ export const useApiStore = defineStore("api", () => {
   }
 
   async function secureUpload(method: string, url: string, data?: any) {
-    return SecureAPIUpload(method, "")
+    return SecureAPIUpload(method)
       .request({ url, data })
       .then((resp) => {
         return resp.data;
