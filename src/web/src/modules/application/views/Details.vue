@@ -13,7 +13,7 @@
         <display-row label="Email" :value="application.student.person.email" />
         <display-row label="Phone number" :value="application.student.person.telephone" />
         <display-row label="Classification" :value="application.cslClassificationDescription" />
-        <display-row label="Primary address" :value="application.primaryAddress.addressDisplay" />
+        <display-row label="Primary address" :value="application.primaryAddress?.addressDisplay" />
         <display-row label="Language" :value="application.student.person.language.description" />
         <display-row label="Marital status" :value="application.maritalStatusDescription" />
         <display-row label="Citizenship" :value="application.citizenshipStatusDescription" />

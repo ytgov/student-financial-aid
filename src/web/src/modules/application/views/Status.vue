@@ -14,16 +14,32 @@
           </p>
           <v-divider class="my-3" />
           <div v-if="item.assessments">
-            <v-label v-for="(a, ix) of item.assessments">
-              Assessment {{ ix + 1 }}
-              <span v-if="getAmount(a)"
-                >- <strong>Awarded: {{ formatMoney(getAmount(a)) }}</strong></span
-              >
-            </v-label>
+            <div v-for="(a, ix) of item.assessments">
+              <v-table density="compact" style="border: 1px #ccc solid; border-radius: 4px">
+                <thead>
+                  <tr>
+                    <th style="border-bottom: 1px #ccc solid; width: 200px">Amount</th>
+                    <th style="border-bottom: 1px #ccc solid">Release Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(d, id) of a.disbursements">
+                    <td>{{ formatMoney(d.disbursedAmount) }}</td>
+                    <td>{{ formatMonth(d.dueDate) }} {{ d.changeReasonDescription }}</td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <tr>
+                    <th style="border-top: 1px #ccc solid">Total: {{ formatMoney(getAmount(a)) }}</th>
+                    <th style="border-top: 1px #ccc solid"></th>
+                  </tr>
+                </thead>
+              </v-table>
+            </div>
 
             <div v-if="getLettersFor(item.id).length > 0">
               <v-divider class="my-3" />
-              <v-label>Letters</v-label>
+              <v-label>Letters: </v-label>
 
               <v-chip
                 v-for="letter of getLettersFor(item.id)"
@@ -48,7 +64,7 @@ import { mapActions, mapState } from "pinia";
 import { useUserStore } from "@/store/UserStore";
 import { useApplicationStore } from "../store";
 import moment from "moment";
-import { isNumber } from "lodash";
+import { isNumber, sortBy } from "lodash";
 
 export default {
   data: () => ({}),
@@ -72,6 +88,9 @@ export default {
 
       return a.assessedAmount;
     },
+    sortDisbursements(disbursements: any[]) {
+      return sortBy(disbursements, "dueDate");
+    },
     async downloadLetterClick(letter: any) {
       let file = await this.downloadLetter(this.application.id, letter);
 
@@ -92,6 +111,10 @@ export default {
     },
     formatDate(input: Date | undefined): string {
       if (input) return moment.utc(input).format("YYYY-MM-DD");
+      return "";
+    },
+    formatMonth(input: Date | undefined): string {
+      if (input) return moment.utc(input).format("MMM YYYY");
       return "";
     },
   },
