@@ -10,12 +10,17 @@
             <strong>{{ item.statusDescription }}</strong>
             <span v-if="item.statusDate"> as of {{ formatDate(item.statusDate) }}</span>
 
-            <span v-if="item.reasonDescription">{{ item.reasonDescription }}</span>
+            <span v-if="item.reasonDescription" class="ml-0 text-bold text-primary">
+              - {{ item.reasonDescription }}</span
+            >
           </p>
-          <v-divider class="my-3" />
-          <div v-if="item.assessments">
+          <div v-if="item.assessments?.length > 0">
+            <v-divider class="my-3" />
             <div v-for="(a, ix) of item.assessments">
-              <v-table density="compact" style="border: 1px #ccc solid; border-radius: 4px">
+              <v-table
+                density="compact"
+                style="border: 1px #ccc solid; border-radius: 4px"
+                v-if="a.disbursements?.length > 0">
                 <thead>
                   <tr>
                     <th style="border-bottom: 1px #ccc solid; width: 200px">Amount</th>
@@ -25,7 +30,10 @@
                 <tbody>
                   <tr v-for="(d, id) of a.disbursements">
                     <td>{{ formatMoney(d.disbursedAmount) }}</td>
-                    <td>{{ formatMonth(d.dueDate) }} {{ d.changeReasonDescription }}</td>
+                    <td>
+                      {{ formatMonth(d.dueDate) }}
+                      <span v-if="d.changeReasonDescription">&nbsp; - {{ d.changeReasonDescription }}</span>
+                    </td>
                   </tr>
                 </tbody>
                 <thead>
@@ -83,10 +91,10 @@ export default {
       if (a.disbursements && a.disbursements.length > 0) {
         let total = a.disbursements.reduce((a: number, b: any) => a + b.disbursedAmount, 0);
 
-        if (total > 0) return total;
+        return total;
       }
 
-      return a.assessedAmount;
+      return 0;
     },
     sortDisbursements(disbursements: any[]) {
       return sortBy(disbursements, "dueDate");

@@ -17,6 +17,7 @@ export const useUserStore = defineStore("user", {
     feedbackVisible: false,
     contactInfo: undefined,
     addresses: new Array<any>(),
+    currentAcademicYear: 2023,
   }),
   getters: {
     student_id(state) {
@@ -44,14 +45,16 @@ export const useUserStore = defineStore("user", {
     },
     async loadCurrentUser() {
       let api = useApiStore();
-      await api.secureCall("get", PROFILE_URL).then((resp) => {
-        this.isLoaded = true;
-        this.lastLoaded = new Date();
-        this.user = resp.data;
-      })
-      .catch(e=> {
-        console.log("ERROR", e)
-      })
+      await api
+        .secureCall("get", PROFILE_URL)
+        .then((resp) => {
+          this.isLoaded = true;
+          this.lastLoaded = new Date();
+          this.user = resp.data;
+        })
+        .catch((e) => {
+          console.log("ERROR", e);
+        });
     },
     async loadCurrentStudent() {
       let api = useApiStore();
@@ -76,7 +79,7 @@ export const useUserStore = defineStore("user", {
     async isAuthenticated(doCheck = true): Promise<boolean> {
       let that = this;
 
-      console.log("ISAUTH")
+      console.log("ISAUTH");
 
       return new Promise(async (resolve, reject) => {
         if (this.user && this.user.sub) {
@@ -191,6 +194,7 @@ interface UserStore {
   feedbackVisible: boolean;
   contactInfo: { email: string; telephone: string; address: any; address_display?: string } | undefined;
   addresses: any[];
+  currentAcademicYear: number;
 }
 
 export interface User {

@@ -94,10 +94,20 @@
         <h4 class="text-h5 mb-4">My Applications</h4>
       </div>
 
-      <div v-for="(app, index) of myApplications">
+      <div v-for="(app, index) of currentApplications">
         <DraftCard v-if="app.status == 'In Progress'" :application="app" class="mb-5"></DraftCard>
         <ApplicationCard v-else :application="app" class="mb-5"></ApplicationCard>
       </div>
+      <v-expansion-panels value="null" variant="accordion" flat elevation="0" v-if="pastApplications.length > 0">
+        <v-expansion-panel :value="0" title="Previous Academic Years">
+          <v-expansion-panel-text class="dense">
+            <div v-for="(app, index) of pastApplications">
+              <DraftCard v-if="app.status == 'In Progress'" :application="app" class="mb-5"></DraftCard>
+              <ApplicationCard v-else :application="app" class="mb-5"></ApplicationCard>
+            </div>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
 
       <v-alert variant="tonal" type="info" elevation="0" v-if="myApplications.length == 0">
         Your student record doesn't currently have any applications for this academic year.
@@ -135,8 +145,14 @@ export default {
     showCreateDialog: false,
   }),
   computed: {
-    ...mapState(useUserStore, ["student", "studentAddress"]),
+    ...mapState(useUserStore, ["student", "studentAddress", "currentAcademicYear"]),
     ...mapState(useDraftStore, ["myApplications"]),
+    currentApplications() {
+      return this.myApplications?.filter((a) => a.academicYearId >= this.currentAcademicYear);
+    },
+    pastApplications() {
+      return this.myApplications?.filter((a) => a.academicYearId < this.currentAcademicYear);
+    },
   },
   components: { ApplicationCard, DraftCard, AnnouncementList, RecentMessages },
   async mounted() {
@@ -174,3 +190,10 @@ export default {
   },
 };
 </script>
+
+<style>
+.dense .v-expansion-panel-text__wrapper {
+  padding: 12px 12px 0 12px;
+  margin: 5px 0 0 0;
+}
+</style>
