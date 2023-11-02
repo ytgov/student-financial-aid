@@ -98,7 +98,7 @@
         <DraftCard v-if="app.status == 'In Progress'" :application="app" class="mb-5"></DraftCard>
         <ApplicationCard v-else :application="app" class="mb-5"></ApplicationCard>
       </div>
-      <v-expansion-panels value="null" variant="accordion" flat elevation="0" v-if="pastApplications.length > 0">
+      <v-expansion-panels value="null" variant="accordion" flat elevation="0" v-if="pastApplications?.length > 0">
         <v-expansion-panel :value="0" title="Previous Academic Years">
           <v-expansion-panel-text class="dense">
             <div v-for="(app, index) of pastApplications">
@@ -109,7 +109,7 @@
         </v-expansion-panel>
       </v-expansion-panels>
 
-      <v-alert variant="tonal" type="info" elevation="0" v-if="myApplications.length == 0">
+      <v-alert variant="tonal" type="info" elevation="0" v-if="myApplications?.length == 0">
         Your student record doesn't currently have any applications for this academic year.
       </v-alert>
     </v-col>

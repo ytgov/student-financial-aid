@@ -9,9 +9,8 @@
           <p>
             <strong>{{ item.statusDescription }}</strong>
             <span v-if="item.statusDate"> as of {{ formatDate(item.statusDate) }}</span>
-
-            <span v-if="item.reasonDescription" class="ml-0 text-bold text-primary">
-              - {{ item.reasonDescription }}</span
+            <span v-if="item.reasonDescription" class="ml-0 text-bold">
+              - <span class="text-primary">{{ item.reasonDescription }}</span></span
             >
           </p>
           <div v-if="item.assessments?.length > 0">
@@ -32,7 +31,9 @@
                     <td>{{ formatMoney(d.disbursedAmount) }}</td>
                     <td>
                       {{ formatMonth(d.dueDate) }}
-                      <span v-if="d.changeReasonDescription">&nbsp; - {{ d.changeReasonDescription }}</span>
+                      <span v-if="d.changeReasonDescription"
+                        ><span v-if="d.dueDate">&nbsp; - </span>{{ d.changeReasonDescription }}</span
+                      >
                     </td>
                   </tr>
                 </tbody>
