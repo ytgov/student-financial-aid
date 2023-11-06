@@ -10,11 +10,28 @@ export const AuthState = reactive({
   token: undefined,
 });
 
-const config = {
+const prodConfig = {
+  domain: "https://yukon.eu.auth0.com",
+  client_id: "A6tVdfAUUPREDQravpCKN3jPALQzBoC3",
+  audience: "generic-prod",
+};
+
+const uatConfig = {
   domain: "https://yukon-staging.eu.auth0.com",
   client_id: "gtJyuybItVW7gQOCIlAtECqYprL6yUCk",
   audience: "generic-uat",
 };
+
+const devConfig = {
+  domain: "https://dev-0tc6bn14.eu.auth0.com",
+  client_id: "ZGlOd5wvf0bL0USl6jD4QBqX6eiDsitQ",
+  audience: "testing",
+};
+
+let config = prodConfig;
+
+if (window.location.host == "localhost:8080") config = devConfig;
+else if (window.location.host == "test.sfa-portal.ynet.gov.yk.ca") config = uatConfig;
 
 export const useAuth0 = (state: any) => {
   const handleStateChange = async () => {
