@@ -13,7 +13,7 @@ export const AuthState = reactive({
 const prodConfig = {
   domain: "https://yukon.eu.auth0.com",
   client_id: "A6tVdfAUUPREDQravpCKN3jPALQzBoC3",
-  audience: "generic-prod",
+  audience: "generic-production",
 };
 
 const uatConfig = {
