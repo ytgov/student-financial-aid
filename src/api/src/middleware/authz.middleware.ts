@@ -1,28 +1,37 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "express-jwt";
+import { GetVerificationKey, expressjwt } from "express-jwt";
 import axios from "axios";
-import jwksRsa from "jwks-rsa";
-import { AUTH0_DOMAIN, AUTH0_AUDIENCE } from "../config";
+import { expressJwtSecret } from "jwks-rsa";
+import { AUTH_DOMAIN, AUTH_AUDIENCE } from "../config";
 import { UserService } from "../services";
 
 //import { sqldb } from "../data";
 //const db = new UserService(sqldb);
 
-export const checkJwt = jwt({
-  secret: jwksRsa.expressJwtSecret({
+export const checkJwt = expressjwt({
+  secret: expressJwtSecret({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `${AUTH0_DOMAIN}.well-known/jwks.json`,
-  }),
-
+    jwksUri: `${AUTH_DOMAIN}.well-known/jwks.json`,
+  }) as GetVerificationKey,
+  //secret: "secret value",
   // Validate the audience and the issuer.
-  audience: AUTH0_AUDIENCE,
-  issuer: [AUTH0_DOMAIN],
+  audience: AUTH_AUDIENCE,
+  issuer: [AUTH_DOMAIN],
   algorithms: ["RS256"],
+  requestProperty: "user",
 });
 
-console.log("AUTH", AUTH0_AUDIENCE, AUTH0_DOMAIN);
+export function loadUser(req: Request, res: Response, next: NextFunction) {
+  /* if (req.user.isAuthentiated && req.user) {
+    req.user = req.oidc.user;
+  }
+ */
+  return next();
+}
+
+/* 
 
 export async function loadUser(req: Request, res: Response, next: NextFunction) {
   let sub = req.user.sub;
@@ -33,7 +42,7 @@ export async function loadUser(req: Request, res: Response, next: NextFunction) 
   /* if (u) {
     req.user = { ...req.user, ...u };
     return next();
-  } */
+  } *
 
   await axios
     .get(`${AUTH0_DOMAIN}userinfo`, { headers: { authorization: token } })
@@ -63,9 +72,10 @@ export async function loadUser(req: Request, res: Response, next: NextFunction) 
           req.user = { ...req.user, ...createUser };
 
           next();
-        } */
+        } *
         next();
       }
     })
     .catch();
 }
+ */

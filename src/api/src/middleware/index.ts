@@ -14,28 +14,11 @@ export async function ReturnValidationErrors(req: Request, res: Response, next: 
   next();
 }
 
-export function RequiresAuthentication(req: Request, res: Response, next: NextFunction) {
-  if (req.user && req.user.isAuthentiated()) {
-    return next();
-  }
-
-  res.redirect("/api/auth/login");
-}
-
-export function loadUser(req: Request, res: Response, next: NextFunction) {
-  if (req.oidc.isAuthenticated() && req.oidc.user) {
-    req.user = req.oidc.user;
-  }
-
-  return next();
-}
-
 export async function loadStudent(req: Request, res: Response, next: NextFunction) {
-  if (req.oidc.isAuthenticated() && req.oidc.user) {
+  if (req.user) {
     return proxyService
-      .proxy(`/student/${req.oidc.user.sub}`, "get")
+      .proxy(`/student/${req.user.sub}`, "get")
       .then((resp) => {
-        //console.log("DATA", resp.data.data)
         req.student = resp.data.data;
       })
       .catch((err) => {
@@ -45,4 +28,5 @@ export async function loadStudent(req: Request, res: Response, next: NextFunctio
         next();
       });
   }
+  return res.status(400).send("Unsure");
 }

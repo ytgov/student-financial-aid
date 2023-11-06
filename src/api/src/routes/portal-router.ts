@@ -1,12 +1,12 @@
 import express, { Request, Response } from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import { isArray } from "lodash";
-import { loadStudent, loadUser } from "../middleware";
+import { loadStudent } from "../middleware";
 import { PROXY_BASE_URL } from "../config";
 import { ProxyService } from "../services/proxy-service";
 
 export const portalRouter = express.Router();
-portalRouter.use(loadUser);
+//portalRouter.use(loadUser);
 
 const proxyService = new ProxyService();
 

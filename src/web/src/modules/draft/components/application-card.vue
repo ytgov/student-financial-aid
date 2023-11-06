@@ -12,7 +12,8 @@
     }}</v-chip>
     <v-alert-title class="mb-0">Academic Year {{ application.academicYearId }}</v-alert-title>
     <div class="v-alert-subtitle">
-      Last update: {{ formatDate(application.updatedAt || application.onlineSubmitDate || application.update_date) }}
+      {{ application.institutionName }}: {{ formatDate(application.classesStartDate) }} to
+      {{ formatDate(application.classesEndDate) }}
     </div>
     {{ application.description }}
     <div style="margin-left: -16px" class="mt-2">
@@ -47,7 +48,7 @@ export default {
       return false;
     },
     applicationUrl() {
-      return `/application/${this.application.id}`;
+      return `/application/${this.application.id}/status`;
     },
   },
   methods: {
@@ -60,7 +61,7 @@ export default {
     },
     formatDate(input: any) {
       if (input) {
-        return moment(input).format("YYYY/MM/DD @ h:mm A");
+        return moment(input).format("YYYY/MM/DD");
       }
       return "";
     },

@@ -31,7 +31,7 @@
               <v-list-item-title style="font-size: 0.9rem !important">My profile</v-list-item-title>
             </v-list-item> -->
 
-           <!-- <v-list-item to="/messages/inbox">
+          <!-- <v-list-item to="/messages/inbox">
             <template v-slot:prepend>
               <v-icon>mdi-message</v-icon>
             </template>
@@ -89,6 +89,7 @@ import { LOGOUT_URL } from "../urls";
 
 import { mapState, mapActions, mapWritableState } from "pinia";
 import FeedbackDialog from "@/components/FeedbackDialog.vue";
+import { AuthState, useAuth0 } from "@/plugins/auth";
 
 export default {
   name: "Default",
@@ -120,7 +121,9 @@ export default {
     },
 
     logoutClick() {
-      window.location.replace(LOGOUT_URL);
+      const { logout } = useAuth0(AuthState);
+      //window.location.replace(LOGOUT_URL);
+      logout();
     },
 
     openFeedbackClick() {

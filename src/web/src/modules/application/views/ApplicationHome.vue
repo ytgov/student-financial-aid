@@ -3,7 +3,7 @@
     <div class="px-4 py-4">
       <div class="d-flex justify-space-between">
         <div>
-          <h3 class="text-h3 mb-1 ml-1">Application for Academic Year 2023</h3>
+          <h3 class="text-h3 mb-1 ml-1">Application for Academic Year {{ application?.academicYearId }}</h3>
           <v-breadcrumbs
             :items="[{ title: 'Student Home', to: '/student' }, { title: 'Application Information' }]"
             class="py-0 px-0">
@@ -54,9 +54,9 @@ export default {
   data: () => ({
     showCreateDialog: false,
     relevantSections: [
-      { url: "", name: "Overview" },
-      { url: "/status", name: "Status" },
-      { url: "/messages", name: "Messages" },
+      /* { url: "", name: "Overview" }, */
+      { url: "/status", name: "Funding Status" },
+      /*   { url: "/messages", name: "Messages" }, */
       { url: "/details", name: "Application Details" },
       { url: "/documents", name: "Documents" },
     ],
@@ -67,6 +67,8 @@ export default {
     );
 
     this.loadApplication(applicationId);
+    this.loadLetters(applicationId);
+    this.loadDocuments(applicationId);
   },
   computed: {
     ...mapState(useUserStore, ["student", "studentAddress"]),
@@ -76,7 +78,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useApplicationStore, ["loadApplication"]),
+    ...mapActions(useApplicationStore, ["loadApplication", "loadLetters", "loadDocuments"]),
   },
 };
 </script>

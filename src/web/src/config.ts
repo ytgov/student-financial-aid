@@ -4,7 +4,6 @@ export const environment = process.env.NODE_ENV;
 // you may want to use a different URL for the redirect_uri. Make sure you
 // make the related changes in @/config.js and @/plugins/auth.js
 
-//export const AUTH_REDIRECT_URI = import.meta.env.VITE_AUTH_REDIRECT_URI;
 
 export const apiBaseUrl = environment == "production" ? "" : "http://localhost:3000";
 export const applicationUrl = process.env.VUE_APP_FRONTEND_URL || "http://localhost:8080";

@@ -1,6 +1,7 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import { useNotificationStore } from "@/store/NotificationStore";
 import { SecureAPICall, SecureAPIUpload } from "./helpers/axiosAPIConfig";
+import { AuthState } from "@/plugins/auth";
 
 //refs are reactive variables
 //computed are reactive variables that are derived from other reactive variables
@@ -29,20 +30,23 @@ export const useApiStore = defineStore("api", () => {
     m.notify(message);
   }
 
-  async function secureCall(method: string, url: string, data?: any) {
-    return SecureAPICall(method, "")
-      .request({ url, data })
-      .then((resp) => {
-        return resp.data;
-      })
-      .catch((err) => {
-        doApiErrorMessage(err);
-        return { error: err };
-      });
+  async function secureCall(method: string, url: string, data?: any, config?: any) {
+    if (AuthState.token) {
+      return SecureAPICall(method, config)
+        .request({ url, data })
+        .then((resp) => {
+          return resp.data;
+        })
+        .catch((err) => {
+          doApiErrorMessage(err);
+          return { error: err };
+        });
+    }
+    return Promise.reject("No token");
   }
 
   async function secureUpload(method: string, url: string, data?: any) {
-    return SecureAPIUpload(method, "")
+    return SecureAPIUpload(method)
       .request({ url, data })
       .then((resp) => {
         return resp.data;
