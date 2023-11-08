@@ -148,10 +148,14 @@ export default {
     ...mapState(useUserStore, ["student", "studentAddress", "currentAcademicYear"]),
     ...mapState(useDraftStore, ["myApplications"]),
     currentApplications() {
-      return this.myApplications?.filter((a) => a.academicYearId >= this.currentAcademicYear);
+      return this.myApplications?.filter(
+        (a) => a.academicYearId >= this.currentAcademicYear || a.academic_year_id >= this.currentAcademicYear
+      );
     },
     pastApplications() {
-      return this.myApplications?.filter((a) => a.academicYearId < this.currentAcademicYear);
+      return this.myApplications?.filter(
+        (a) => a.academicYearId < this.currentAcademicYear || a.academic_year_id < this.currentAcademicYear
+      );
     },
   },
   components: { ApplicationCard, DraftCard, AnnouncementList, RecentMessages },
