@@ -1,11 +1,8 @@
 import { defineStore } from "pinia";
-
 import { useNotificationStore } from "@/store/NotificationStore";
 import { useApiStore } from "@/store/ApiStore";
 import { PROFILE_URL, STUDENT_URL } from "@/urls";
-import { add, isArray } from "lodash";
-
-//let m = useNotificationStore();
+import { isArray } from "lodash";
 
 export const useUserStore = defineStore("user", {
   state: (): UserStore => ({
@@ -78,8 +75,6 @@ export const useUserStore = defineStore("user", {
     },
     async isAuthenticated(doCheck = true): Promise<boolean> {
       let that = this;
-
-      console.log("ISAUTH");
 
       return new Promise(async (resolve, reject) => {
         if (this.user && this.user.sub) {

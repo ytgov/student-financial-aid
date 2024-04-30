@@ -45,14 +45,10 @@ export const router = createRouter({
   routes,
 });
 
-import { useAuth0, AuthState } from "@/plugins/auth";
-
 router.beforeEach(async (to, from, next) => {
-  console.log("BEFORE GO TO", to.fullPath, to.meta, AuthState.isAuthenticated);
-
   if (to.meta && to.meta.auth == true) {
     const u = useUserStore();
-    let isAuth = true;// await u.isAuthenticated();
+    let isAuth = true; // await u.isAuthenticated();
 
     if (isAuth) next();
     else {
