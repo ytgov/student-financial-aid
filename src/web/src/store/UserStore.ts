@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
 import { useNotificationStore } from "@/store/NotificationStore";
 import { useApiStore } from "@/store/ApiStore";
-import { PROFILE_URL, STUDENT_URL } from "@/urls";
+import { PROFILE_URL, STUDENT_URL, REFERENCE_URL } from "@/urls";
 import { isArray } from "lodash";
+import moment from "moment";
 
 export const useUserStore = defineStore("user", {
   state: (): UserStore => ({
@@ -14,7 +15,7 @@ export const useUserStore = defineStore("user", {
     feedbackVisible: false,
     contactInfo: undefined,
     addresses: new Array<any>(),
-    currentAcademicYear: 2023,
+    academicYears: new Array<AcademicYear>(),
   }),
   getters: {
     student_id(state) {
@@ -25,6 +26,18 @@ export const useUserStore = defineStore("user", {
         return state.contactInfo.address_display;
       }
       return "";
+    },
+    currentAcademicYear(state) {
+      const now = moment();
+
+      if (state.academicYears && isArray(state.academicYears)) {
+        const currentYear = state.academicYears.find((y) =>
+          moment.utc(now).isBetween(y.start_date, y.end_date, "day", "[]")
+        );
+        return currentYear?.id ?? 0;
+      }
+
+      return 0;
     },
   },
   actions: {
@@ -37,9 +50,11 @@ export const useUserStore = defineStore("user", {
 
       await this.loadCurrentUser();
       await this.loadCurrentStudent();
+      await this.loadAcademicYears();
 
       console.log("Initialized user store");
     },
+
     async loadCurrentUser() {
       let api = useApiStore();
       await api
@@ -53,6 +68,7 @@ export const useUserStore = defineStore("user", {
           console.log("ERROR", e);
         });
     },
+
     async loadCurrentStudent() {
       let api = useApiStore();
       if (this.user) {
@@ -73,6 +89,7 @@ export const useUserStore = defineStore("user", {
         this.student = undefined;
       }
     },
+
     async isAuthenticated(doCheck = true): Promise<boolean> {
       let that = this;
 
@@ -160,10 +177,12 @@ export const useUserStore = defineStore("user", {
       this.feedback = { date: new Date(), text: "" };
       this.feedbackVisible = true;
     },
+
     closeFeedback() {
       this.feedback = undefined;
       this.feedbackVisible = false;
     },
+
     async sendFeedback() {
       this.feedback.date = new Date();
       this.feedback.url = window.location.href;
@@ -177,6 +196,25 @@ export const useUserStore = defineStore("user", {
         m.notify({ variant: "success", text: "Thank you for your feedback" });
       });
     },
+
+    async loadAcademicYears() {
+      const api = useApiStore();
+      return api
+        .secureCall("get", `${REFERENCE_URL}/academic-year`)
+        .then((resp) => {
+          this.academicYears = resp.data;
+        })
+        .catch((err) => {
+          console.log("ERROR HAPPENED", err);
+        });
+    },
+
+    determineAcademicYear(input: string): AcademicYear | undefined {
+      if (input && this.academicYears && isArray(this.academicYears)) {
+        return this.academicYears.find((y) => moment.utc(input).isBetween(y.start_date, y.end_date, "day", "[]"));
+      }
+      return undefined;
+    },
   },
 });
 
@@ -189,7 +227,7 @@ interface UserStore {
   feedbackVisible: boolean;
   contactInfo: { email: string; telephone: string; address: any; address_display?: string } | undefined;
   addresses: any[];
-  currentAcademicYear: number;
+  academicYears: AcademicYear[];
 }
 
 export interface User {
@@ -208,4 +246,10 @@ export interface User {
 }
 interface Student {
   id: number;
+}
+
+export interface AcademicYear {
+  id: number;
+  start_date: Date;
+  end_date: Date;
 }

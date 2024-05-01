@@ -15,10 +15,6 @@ let m = useNotificationStore();
 export const useDraftStore = defineStore("draft", {
   state: () => ({
     isLoading: false,
-    academic_year: {
-      id: 2023,
-      year: "2023",
-    },
     myApplications: new Array<any>(),
     application: undefined as Draft | undefined,
     fileUpload: undefined as FileUpload | undefined,
@@ -878,7 +874,7 @@ export const useDraftStore = defineStore("draft", {
       }
     },
 
-    async create(): Promise<any> {
+    async create(academic_year_id: number): Promise<any> {
       let userStore = useUserStore();
       const api = useApiStore();
 
@@ -900,7 +896,7 @@ export const useDraftStore = defineStore("draft", {
 
         return api
           .secureCall("post", `${APPLICATION_URL}/${userStore.user?.sub}`, {
-            academic_year_id: this.academic_year.id,
+            academic_year_id,
             student_id: userStore.student.id,
             is_active: true,
             create_date: new Date(),
@@ -925,7 +921,7 @@ export const useDraftStore = defineStore("draft", {
 
         return api
           .secureCall("put", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}`, {
-            academic_year_id: this.academic_year.id,
+            academic_year_id: this.application.academic_year_id,
             student_id: userStore.student.id,
             application_json: JSON.stringify(this.application.draft),
             is_active: true,

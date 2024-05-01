@@ -9,10 +9,6 @@ let m = useNotificationStore();
 export const useApplicationStore = defineStore("application", {
   state: () => ({
     isLoading: false,
-    academic_year: {
-      id: 2023,
-      year: "2023",
-    },
     application: undefined as any,
     letters: undefined as any[] | undefined,
     documents: undefined as any[] | undefined,
