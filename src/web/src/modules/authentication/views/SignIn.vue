@@ -28,6 +28,11 @@
                 </h6>
 
                 <v-btn @click="signInClick" color="primary">Sign in</v-btn>
+
+                <v-alert color="yg_zinc" type="info" theme="light" class="mt-6 signin-message">
+                  Applications for the 2024 Academic Year (classes beginning on/after August 1<sup>st</sup>) will be
+                  accepted starting July 2<sup>nd</sup>, 2024.
+                </v-alert>
               </div>
             </v-col>
           </v-row>
@@ -36,6 +41,15 @@
     </v-row>
   </v-container>
 </template>
+
+<style>
+.signin-message .v-alert__prepend {
+  color: white !important;
+}
+.signin-message .v-alert__content {
+  color: white !important;
+}
+</style>
 
 <script lang="ts">
 import { useUserStore } from "@/store/UserStore";
