@@ -9,7 +9,7 @@
                 <img src="@/assets/logo.svg" alt="Logo" class="d-md-block pl-6" />
                 <div class="align-center pa-6">
                   <h2 class="text-h5 mb-2" style="line-height: 40px">{{ applicationTitle }}</h2>
-                  <h6 class="text-subtitle-1 mt-0">{{ applicationSubtitle }}</h6>
+                  <h6 class="text-subtitle-1 font-weight-light mt-0">{{ applicationSubtitle }}</h6>
                 </div>
               </div>
             </v-col>
@@ -18,7 +18,7 @@
                 <div style="background-color: #f9f4d4" class="pa-5 d-md-none">
                   <img src="@/assets/logo.svg" alt="Logo" class="d-md-inline" />
                   <h2 class="display-1 font-weight-medium" style="line-height: 40px">{{ applicationTitle }}</h2>
-                  <h6 class="text-subtitle-1 mt-4 op-5 font-weight-regular">{{ applicationSubtitle }}</h6>
+                  <h6 class="text-subtitle-1 font-weight-light mt-4 op-5">{{ applicationSubtitle }}</h6>
                 </div>
 
                 <h2 class="text-h4 font-weight-bold mt-4">Welcome!</h2>
@@ -48,8 +48,8 @@
                 </p>
 
                 <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message">
-                  <strong>Classes starting on or after August 1, 2024?</strong><br />
-                  <span class="font-weight-light"
+                  <strong class="font-weight-medium">Classes starting on or after August 1, 2024?</strong><br />
+                  <span class="font-weight-thin"
                     >We'll begin accepting applications on July 2, 2024, for the 2024/25 academic year.</span
                   >
                 </v-alert>
