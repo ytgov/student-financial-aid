@@ -29,6 +29,7 @@ const devConfig = {
 };
 
 let config = prodConfig;
+let tries = 0;
 
 if (window.location.host == "localhost:8080") config = devConfig;
 else if (window.location.host == "test.sfa-portal.ynet.gov.yk.ca") config = uatConfig;
@@ -37,11 +38,20 @@ export const useAuth0 = (state: any) => {
   const handleStateChange = async () => {
     state.isAuthenticated = !!state.auth0?.isAuthenticated;
     state.user = await state.auth0?.user;
-    state.loading = false;
+    state.loading = state.auth0.isLoading;
 
     if (state.isAuthenticated) {
       state.token = await (state.auth0 as Auth0Plugin).getAccessTokenSilently();
-    } else state.token = undefined;
+    } else {
+      state.token = undefined;
+
+      if (tries < 5)
+        setTimeout(() => {
+          handleStateChange();
+        }, 250);
+
+      tries++;
+    }
 
     if (state.isAuthenticated && state.token) {
       router.push("/");
@@ -64,8 +74,7 @@ export const useAuth0 = (state: any) => {
 
     app.use(state.auth0);
 
-    let s = await state.auth0.checkSession();
-
+    await state.auth0.checkSession();
     await handleStateChange();
   };
 
@@ -73,9 +82,9 @@ export const useAuth0 = (state: any) => {
     let a = toRaw(state.auth0);
 
     if (a) {
-      await a.loginWithPopup();
-      //await a.loginWithRedirect();
-      await handleStateChange();
+      //await a.loginWithPopup();
+      await a.loginWithRedirect();
+      //await handleStateChange();
     }
 
     /*  await toRaw(state.auth0).loginWithRedirect();
