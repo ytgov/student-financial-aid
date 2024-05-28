@@ -33,10 +33,16 @@
                   <li>Canada Student Financial Assistance</li>
                 </ul>
 
-                <v-btn @click="signInClick" color="primary">Sign in / Create Account</v-btn>
+                <v-btn @click="signInClick" color="primary">Sign in</v-btn>
 
                 <p class="mt-4 text-body-2">
-                  New users can <a style="cursor: pointer" @click="signInClick">create an account</a>
+                  New users can
+                  <a
+                    style="cursor: pointer"
+                    href="https://yukon.ca/en/your-government/find-out-how-to-get-a-myyukon-account"
+                    target="_blank"
+                    >create an account</a
+                  >
                 </p>
                 <p class="text-body-2">
                   Get
