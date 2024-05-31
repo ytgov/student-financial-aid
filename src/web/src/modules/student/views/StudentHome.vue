@@ -122,8 +122,29 @@
         <v-btn icon @click="showCreateDialog = false" color="white"><v-icon>mdi-close</v-icon></v-btn>
       </v-toolbar>
       <v-card-text class="py-7">
-        You already have an application in progress for the current academic year. You cannot create a new one until the
-        all other In Progress applications have been cancelled.
+        <h4 class="text-h5 mb-4">Open Academic Years:</h4>
+
+        <ul class="ml-5 mb-4">
+          <li v-for="year of academicYears">
+            <strong>{{ year.id }}</strong> - Classes start between {{ formatDate(year.start_date) }} and
+            {{ formatDate(year.end_date) }}
+          </li>
+        </ul>
+
+        <DateSelector
+          class="mb-4"
+          :min="minStartDate"
+          :max="maxStartDate"
+          v-model="startDate"
+          :label="$t('application.program_details.details.start_date_of_classes')" />
+
+        <div v-if="inProgressItem && startDateYear" class="text-warning">
+          You already have an application in progress for {{ startDateYear }}. You cannot create a new one until the all
+          other In Progress applications have been cancelled.
+        </div>
+        <div v-else-if="startDateYear">
+          <v-btn color="success" @click="doCreateApplication"> Create Application for {{ startDateYear }} </v-btn>
+        </div>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -136,16 +157,23 @@ import DraftCard from "@/modules/draft/components/draft-card.vue";
 import ApplicationCard from "@/modules/draft/components/application-card.vue";
 import AnnouncementList from "@/modules/notifications/components/announcement-list.vue";
 import RecentMessages from "@/modules/messages/components/recent-messages.vue";
-import { useUserStore } from "@/store/UserStore";
+import { AcademicYear, useUserStore } from "@/store/UserStore";
 import moment from "moment";
 import { useStudentStore } from "../store";
+import DateSelector from "@/components/forms/DateSelector.vue";
+import { isArray, maxBy, minBy } from "lodash";
 
 export default {
+  components: { ApplicationCard, DraftCard, AnnouncementList, RecentMessages, DateSelector },
   data: () => ({
     showCreateDialog: false,
+
+    startDate: null,
+    inProgressItem: null,
+    startDateYear: null as number | null,
   }),
   computed: {
-    ...mapState(useUserStore, ["student", "studentAddress", "currentAcademicYear"]),
+    ...mapState(useUserStore, ["student", "studentAddress", "currentAcademicYear", "academicYears"]),
     ...mapState(useDraftStore, ["myApplications"]),
     currentApplications() {
       return this.myApplications?.filter(
@@ -157,8 +185,52 @@ export default {
         (a) => a.academicYearId < this.currentAcademicYear || a.academic_year_id < this.currentAcademicYear
       );
     },
+    minStartDate(): string | null {
+      if (this.academicYears && isArray(this.academicYears)) {
+        const minYear = minBy(this.academicYears, "id") as AcademicYear;
+
+        if (minYear) {
+          return this.formatDate(minYear.start_date);
+        }
+      }
+
+      return null;
+    },
+    maxStartDate(): string | null {
+      if (this.academicYears && isArray(this.academicYears)) {
+        const maxYear = maxBy(this.academicYears, "id") as AcademicYear;
+
+        if (maxYear) {
+          return this.formatDate(maxYear.end_date);
+        }
+      }
+
+      return null;
+    },
   },
-  components: { ApplicationCard, DraftCard, AnnouncementList, RecentMessages },
+  watch: {
+    startDate(nv) {
+      this.startDateYear = null;
+
+      if (nv) {
+        const result = this.determineAcademicYear(nv);
+
+        if (result) {
+          this.startDateYear = result.id;
+
+          let inProgressInYear = this.myApplications.filter(
+            (a) => (a.academic_year_id == result.id || a.academicYearId == result.id) && a.status == "In Progress"
+          );
+
+          if (inProgressInYear.length > 0) {
+            this.inProgressItem = inProgressInYear[0];
+          } else this.inProgressItem = null;
+        }
+      }
+
+      return null;
+    },
+  },
   async mounted() {
     if (this.student) await this.loadApplications();
     else {
@@ -172,15 +244,15 @@ export default {
   },
   methods: {
     ...mapActions(useDraftStore, ["create", "loadApplications"]),
+    ...mapActions(useUserStore, ["determineAcademicYear"]),
     ...mapActions(useStudentStore, ["edit"]),
 
     createApplicationClick() {
-      let inProgressCount = this.myApplications.filter((a) => a.status == "In Progress").length;
-
-      if (inProgressCount > 0) {
-        this.showCreateDialog = true;
-      } else {
-        this.create().then((resp) => {
+      this.showCreateDialog = true;
+    },
+    doCreateApplication() {
+      if (this.startDateYear) {
+        this.create(this.startDateYear).then((resp) => {
           if (resp && resp.id) this.$router.push(`/draft/${resp.id}`);
         });
       }

@@ -18,7 +18,9 @@ html {
 
 *,
 .text-body-1,
+.text-subtitle-1,
 .text-h6,
+.text-h4,
 .text-h5 {
   font-family: Montserrat, Helvetica, Arial, sans-serif !important;
 }

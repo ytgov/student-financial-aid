@@ -4,9 +4,9 @@
       <div class="px-4 py-4">
         <div class="d-flex justify-space-between">
           <div>
-            <h3 class="text-h3 mb-1 ml-1">2023/24 Application</h3>
+            <h3 class="text-h3 mb-1 ml-1">{{ academicYear }} Application</h3>
             <v-breadcrumbs
-              :items="[{ title: 'Student Home', to: '/student' }, { title: '2023/24 Application' }]"
+              :items="[{ title: 'Student Home', to: '/student' }, { title: academicYear + ' Application' }]"
               class="py-0 px-0">
               <template v-slot:divider>
                 <v-icon icon="mdi-square-small"></v-icon>
@@ -70,6 +70,13 @@ export default {
   data: () => ({}),
   computed: {
     ...mapState(useDraftStore, ["relevantSections", "application"]),
+    academicYear() {
+      if (this.application) {
+        let year = this.application.academic_year_id;
+        return `${year}/${(year + 1).toString().substring(2)}`;
+      }
+      return "";
+    },
   },
   async mounted() {
     let id = this.$route.params.draftId;
@@ -78,9 +85,6 @@ export default {
     });
     await this.initialize();
     await this.loadRequiredDocuments();
-  },
-  beforeUnmount() {
-    console.log("BEFORE UNMONT, SHOULD SAVE");
   },
   methods: {
     ...mapActions(useDraftStore, ["selectDraftById", "loadApplications", "save", "loadRequiredDocuments"]),
