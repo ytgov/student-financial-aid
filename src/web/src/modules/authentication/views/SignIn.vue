@@ -63,6 +63,16 @@
             </v-col>
           </v-row>
         </v-card>
+        <p class="mt-6">
+          Students can apply through this online portal for the 2024-2025 academic year in English only. If you would
+          like to apply in French, please contact <a href="mailto:sfa@yukon.ca">sfa@yukon.ca</a> to request a PDF French application form.
+        </p>
+
+        <p class="mt-6">
+          Le service en ligne de demande d’aide financière pour l’année scolaire 2024-2025 n’est disponible qu’en
+          anglais. Pour obtenir un formulaire en français (en format PDF), veuillez écrire à
+          <a href="mailto:sfa@yukon.ca">sfa@yukon.ca</a>.
+        </p>
       </v-col>
     </v-row>
   </v-container>
