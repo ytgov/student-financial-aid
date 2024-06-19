@@ -203,7 +203,7 @@ export const useDraftStore = defineStore("draft", {
           is_part_time: true,
           is_full_time: false,
         },
-        { name: "Canada Student Grant for Students with Disabilities" },
+        { name: "Canada Student Grant for Students with Disabilities", is_part_time: true },
         { name: "Canadian Army Scholarship" },
         { name: "Yukon Huskys CB Radio Club Scholarship" },
         { name: "Nicholas John Harach Scholarship" },
