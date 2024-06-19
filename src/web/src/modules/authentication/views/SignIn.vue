@@ -37,12 +37,7 @@
 
                 <p class="mt-4 text-body-2">
                   New users can
-                  <a
-                    style="cursor: pointer"
-                    href="https://yukon.ca/en/your-government/find-out-how-to-get-a-myyukon-account"
-                    target="_blank"
-                    >create an account</a
-                  >
+                  <a style="cursor: pointer" @click="signUpClick">create an account</a>
                 </p>
                 <p class="text-body-2">
                   Get
@@ -65,7 +60,8 @@
         </v-card>
         <p class="mt-6">
           Students can apply through this online portal for the 2024-2025 academic year in English only. If you would
-          like to apply in French, please contact <a href="mailto:sfa@yukon.ca">sfa@yukon.ca</a> to request a PDF French application form.
+          like to apply in French, please contact <a href="mailto:sfa@yukon.ca">sfa@yukon.ca</a> to request a PDF French
+          application form.
         </p>
 
         <p class="mt-6">
@@ -107,9 +103,11 @@ export default {
   methods: {
     signInClick() {
       const { login } = useAuth0(AuthState);
-      //window.location.replace(LOGIN_URL);
-
       login();
+    },
+    signUpClick() {
+      const { signUp } = useAuth0(AuthState);
+      signUp();
     },
   },
 };

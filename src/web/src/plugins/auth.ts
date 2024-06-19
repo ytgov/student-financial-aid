@@ -82,13 +82,16 @@ export const useAuth0 = (state: any) => {
     let a = toRaw(state.auth0);
 
     if (a) {
-      //await a.loginWithPopup();
       await a.loginWithRedirect();
-      //await handleStateChange();
     }
+  };
 
-    /*  await toRaw(state.auth0).loginWithRedirect();
-    await handleStateChange(); */
+  const signUp = async () => {
+    let a = toRaw(state.auth0) as Auth0Plugin;
+
+    if (a) {
+      await a.loginWithRedirect({ authorizationParams: { screen_hint: "signup" } });
+    }
   };
 
   const logout = async () => {
@@ -101,6 +104,7 @@ export const useAuth0 = (state: any) => {
 
   return {
     login,
+    signUp,
     logout,
     initAuth,
   };
