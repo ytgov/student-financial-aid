@@ -175,7 +175,7 @@ export const useDraftStore = defineStore("draft", {
         list = list.filter((i) => !i.name.startsWith("Spouse"));
 
       // check if has depenants
-      if ([1, 9].includes(this.application?.draft.personal_details.category))
+      if ([1, 9, 10].includes(this.application?.draft.personal_details.category))
         list = list.filter((i) => !i.name.startsWith("Student Dependants"));
 
       // check if is depenant
