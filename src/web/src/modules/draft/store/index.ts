@@ -175,7 +175,7 @@ export const useDraftStore = defineStore("draft", {
         list = list.filter((i) => !i.name.startsWith("Spouse"));
 
       // check if has depenants
-      if ([1, 9].includes(this.application?.draft.personal_details.category))
+      if ([1, 9, 10].includes(this.application?.draft.personal_details.category))
         list = list.filter((i) => !i.name.startsWith("Student Dependants"));
 
       // check if is depenant
@@ -203,7 +203,7 @@ export const useDraftStore = defineStore("draft", {
           is_part_time: true,
           is_full_time: false,
         },
-        { name: "Canada Student Grant for Students with Disabilities" },
+        { name: "Canada Student Grant for Students with Disabilities", is_part_time: true },
         { name: "Canadian Army Scholarship" },
         { name: "Yukon Huskys CB Radio Club Scholarship" },
         { name: "Nicholas John Harach Scholarship" },
