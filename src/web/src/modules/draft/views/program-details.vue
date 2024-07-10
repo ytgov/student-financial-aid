@@ -81,16 +81,21 @@
         <v-col cols="12" md="6">
           <DateSelector
             :min="startMinDate"
+            :max="startMaxDate"
             v-model="application.draft.program_details.start_date_of_classes"
             :label="$t('application.program_details.details.start_date_of_classes')" />
         </v-col>
         <v-col cols="12" md="6">
           <DateSelector
             :min="endMinDate"
+            :max="endMaxDate"
             v-model="application.draft.program_details.end_date_of_classes"
             :label="$t('application.program_details.details.end_date_of_classes')" />
         </v-col>
       </v-row>
+      <v-alert v-if="badDates" type="error" class="mt-5"
+        >The start date and end date must be within 12 months of eachother.</v-alert
+      >
     </v-card-text>
   </v-card>
 
@@ -108,12 +113,15 @@
 </template>
 
 <script>
+import moment from "moment";
 import Select from "@/components/forms/Select.vue";
 import TextField from "@/components/forms/TextField.vue";
 import DateSelector from "@/components/forms/DateSelector.vue";
 import { mapActions, mapState, mapWritableState } from "pinia";
 import { useDraftStore } from "../store";
 import { useReferenceStore } from "@/store/ReferenceStore";
+import { useUserStore } from "@/store/UserStore";
+import { nextTick } from "vue";
 
 export default {
   components: {
@@ -125,13 +133,54 @@ export default {
     ...mapWritableState(useDraftStore, ["application"]),
     ...mapState(useDraftStore, ["availableSectionProgram"]),
     ...mapState(useReferenceStore, ["institutions", "studyAreas", "programs"]),
+    ...mapState(useUserStore, ["academicYears"]),
+
+    selectedAcademicYear() {
+      if (this.academicYears) return this.academicYears.find((a) => a.id == this.application.academic_year_id);
+      return null;
+    },
+
+    badDates() {
+      if (
+        this.application.draft.program_details.start_date_of_classes &&
+        this.application.draft.program_details.end_date_of_classes
+      ) {
+        let start = moment(this.application.draft.program_details.start_date_of_classes);
+        let end = moment(this.application.draft.program_details.end_date_of_classes);
+
+        return start.add(1, "year").subtract(1, "day").isBefore(end);
+      }
+
+      return false;
+    },
 
     startMinDate() {
+      if (this.selectedAcademicYear) {
+        return moment(this.selectedAcademicYear.start_date).add(8, "hours").toDate();
+      }
+
+      return new Date(`${this.application.academic_year_id}-8-1`);
+    },
+    startMaxDate() {
+      if (this.selectedAcademicYear) {
+        return moment(this.selectedAcademicYear.end_date).add(8, "hours").toDate();
+      }
+
       return new Date(`${this.application.academic_year_id}-8-1`);
     },
     endMinDate() {
       if (this.application.draft.program_details.start_date_of_classes)
         return this.application.draft.program_details.start_date_of_classes;
+
+      return this.startMinDate;
+    },
+    endMaxDate() {
+      if (this.application.draft.program_details.start_date_of_classes) {
+        return moment(this.application.draft.program_details.start_date_of_classes)
+          .add(1, "year")
+          .subtract(1, "day")
+          .toDate();
+      }
 
       return this.startMinDate;
     },

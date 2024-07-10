@@ -171,6 +171,25 @@ export default {
     "application.draft.funding_sources.sources": function (n, o) {
       let newOne = xor(n, o);
 
+      // this automatically add the PT or FT Loan if they apply for Disability
+      if (
+        this.application.draft.funding_sources.sources.includes("Canada Student Grant for Students with Disabilities")
+      ) {
+        if (this.application.draft.program_details.attendance == "Full Time") {
+          if (
+            !this.application.draft.funding_sources.sources.includes("Canada Student Financial Assistance (Full-Time)")
+          ) {
+            this.application.draft.funding_sources.sources.push("Canada Student Financial Assistance (Full-Time)");
+          }
+        } else if (this.application.draft.program_details.attendance == "Part Time") {
+          if (
+            !this.application.draft.funding_sources.sources.includes("Canada Student Financial Assistance (Part-Time)")
+          ) {
+            this.application.draft.funding_sources.sources.push("Canada Student Financial Assistance (Part-Time)");
+          }
+        }
+      }
+
       if (
         newOne &&
         newOne.length == 1 &&
@@ -220,7 +239,7 @@ export default {
 <style>
 .disableable .v-selection-control--error .v-label {
   text-decoration: line-through !important;
-  color: #F44336 !important;
+  color: #f44336 !important;
 }
 .disableable .v-selection-control--disabled {
   opacity: 1 !important;
