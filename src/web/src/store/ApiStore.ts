@@ -21,6 +21,11 @@ export const useApiStore = defineStore("api", () => {
       return;
     }
 
+    if (status_code == 403) {
+      window.location.replace("/sign-in");
+      return;
+    }
+
     let message = {
       status_code: status_code,
       text: `${err.message}`, // ${err.response.statusText}`,
@@ -46,15 +51,18 @@ export const useApiStore = defineStore("api", () => {
   }
 
   async function secureUpload(method: string, url: string, data?: any) {
-    return SecureAPIUpload(method)
-      .request({ url, data })
-      .then((resp) => {
-        return resp.data;
-      })
-      .catch((err) => {
-        doApiErrorMessage(err);
-        return { error: err };
-      });
+    if (AuthState.token) {
+      return SecureAPIUpload(method)
+        .request({ url, data })
+        .then((resp) => {
+          return resp.data;
+        })
+        .catch((err) => {
+          doApiErrorMessage(err);
+          return { error: err };
+        });
+    }
+    return Promise.reject("No token");
   }
 
   return {
