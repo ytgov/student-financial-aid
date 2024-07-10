@@ -70,7 +70,7 @@
           To apply, download and complete the
           <a
             target="_blank"
-            href="https://www.canada.ca/content/dam/canada/employment-social-development/migration/documents/assets/portfolio/docs/en/student_loans/forms/SDE0031_EN.pdf"
+            href="https://www.canada.ca/content/dam/canada/employment-social-development/migration/documents/assets/portfolio/docs/en/student_loans/forms/SDE0031_EN_.pdf"
             >application form</a
           >
           and submit it through the Documents section.
