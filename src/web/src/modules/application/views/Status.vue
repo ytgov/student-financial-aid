@@ -45,22 +45,22 @@
                 </thead>
               </v-table>
             </div>
+          </div>
 
-            <div v-if="getLettersFor(item.id).length > 0">
-              <v-divider class="my-3" />
-              <v-label>Letters: </v-label>
+          <div v-if="getLettersFor(item.id).length > 0">
+            <v-divider class="my-3" />
+            <v-label>Letters: </v-label>
 
-              <v-chip
-                v-for="letter of getLettersFor(item.id)"
-                size="small"
-                @click="downloadLetterClick(letter)"
-                color="primary"
-                class="ml-3"
-                variant="flat">
-                <v-icon class="mr-2" color="white">mdi-download</v-icon>
-                <span style="color: white">{{ letter.file_name }}</span>
-              </v-chip>
-            </div>
+            <v-chip
+              v-for="letter of getLettersFor(item.id)"
+              size="small"
+              @click="downloadLetterClick(letter)"
+              color="primary"
+              class="ml-3"
+              variant="flat">
+              <v-icon class="mr-2" color="white">mdi-download</v-icon>
+              <span style="color: white">{{ letter.file_name }}</span>
+            </v-chip>
           </div>
         </v-card-text>
       </v-card>
