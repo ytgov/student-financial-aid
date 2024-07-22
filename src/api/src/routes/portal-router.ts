@@ -4,13 +4,21 @@ import { isArray } from "lodash";
 import { loadStudent } from "../middleware";
 import { PROXY_BASE_URL } from "../config";
 import { ProxyService } from "../services/proxy-service";
+import { loadAuth0User } from "../middleware/authz.middleware";
 
 export const portalRouter = express.Router();
-//portalRouter.use(loadUser);
 
 const proxyService = new ProxyService();
 
 portalRouter.get("/student", loadStudent, async (req: Request, res: Response) => {
+  if (req.student && !req.student.email) {
+    let authUser = await loadAuth0User(req);
+
+    if (authUser && authUser.email) {
+      await proxyService.proxy(`/student/${req.user.sub}/email`, "put", { email: authUser.email });
+    }
+  }
+
   return res.json({ data: req.student });
 });
 
