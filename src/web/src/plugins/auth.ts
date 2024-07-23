@@ -11,7 +11,7 @@ export const AuthState = reactive({
 });
 
 const prodConfig = {
-  domain: "https://yukon.eu.auth0.com",
+  domain: "https://sign-in.service.yukon.ca",
   client_id: "A6tVdfAUUPREDQravpCKN3jPALQzBoC3",
   audience: "generic-production",
 };
