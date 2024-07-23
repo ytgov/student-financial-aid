@@ -1,7 +1,7 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import { useNotificationStore } from "@/store/NotificationStore";
 import { SecureAPICall, SecureAPIUpload } from "./helpers/axiosAPIConfig";
-import { AuthState } from "@/plugins/auth";
+import { AuthState, useAuth0 } from "@/plugins/auth";
 
 //refs are reactive variables
 //computed are reactive variables that are derived from other reactive variables
@@ -36,33 +36,38 @@ export const useApiStore = defineStore("api", () => {
   }
 
   async function secureCall(method: string, url: string, data?: any, config?: any) {
-    if (AuthState.token) {
-      return SecureAPICall(method, config)
-        .request({ url, data })
-        .then((resp) => {
-          return resp.data;
-        })
-        .catch((err) => {
-          doApiErrorMessage(err);
-          return { error: err };
-        });
+    if (AuthState.token && AuthState.isAuthenticated) {
+      return AuthState.auth0?.getAccessTokenSilently().then(async (token) => {
+        return SecureAPICall(method, token, config)
+          .request({ url, data })
+          .then((resp) => {
+            return resp.data;
+          })
+          .catch((err) => {
+            doApiErrorMessage(err);
+            return { error: err };
+          });
+      });
     }
-    return Promise.reject("No token");
+
+    window.location.replace("/sign-in");
   }
 
   async function secureUpload(method: string, url: string, data?: any) {
-    if (AuthState.token) {
-      return SecureAPIUpload(method)
-        .request({ url, data })
-        .then((resp) => {
-          return resp.data;
-        })
-        .catch((err) => {
-          doApiErrorMessage(err);
-          return { error: err };
-        });
+    if (AuthState.token && AuthState.isAuthenticated) {
+      return AuthState.auth0?.getAccessTokenSilently().then(async (token) => {
+        return SecureAPIUpload(method, token)
+          .request({ url, data })
+          .then((resp) => {
+            return resp.data;
+          })
+          .catch((err) => {
+            doApiErrorMessage(err);
+            return { error: err };
+          });
+      });
     }
-    return Promise.reject("No token");
+    window.location.replace("/sign-in");
   }
 
   return {

@@ -6,8 +6,8 @@ import messageRoutes from "@/modules/messages/router";
 import eligibilityRoutes from "@/modules/eligibility/router";
 import { onboardingRoutes } from "@/modules/onboarding/router";
 import { studentRoutes } from "@/modules/student/router";
-import { useUserStore } from "./store/UserStore";
 import { applicationRoutes } from "@/modules/application/router";
+import { useAuth0 } from "@auth0/auth0-vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -47,8 +47,8 @@ export const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   if (to.meta && to.meta.auth == true) {
-    const u = useUserStore();
-    let isAuth = true; // await u.isAuthenticated();
+    const u = useAuth0();
+    let isAuth = await u.getAccessTokenSilently();
 
     if (isAuth) next();
     else {
