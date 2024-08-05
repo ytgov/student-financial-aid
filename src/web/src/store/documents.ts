@@ -1,51 +1,13 @@
 import { defineStore } from "pinia";
 import { find } from "lodash";
 
-import { useNotificationStore } from "@/store/NotificationStore";
 import { useApiStore } from "@/store/ApiStore";
 
 //let m = useNotificationStore();
 
 export const useDocumentStore = defineStore("document", {
   state: () => ({
-    list: [
-      {
-        date: "2020/21",
-        name: {
-          en: "High School Transcript",
-          fr: "Relevé de notes du secondaire",
-        },
-        status: "VERIFIED",
-        resource: "2020-high-school-transcript",
-      },
-      {
-        date: "2020/21",
-        name: {
-          en: "Letter of Acceptance",
-          fr: "Lettre d'acceptation",
-        },
-        status: "UPLOADING",
-        resource: "2020-letter-of-acceptance",
-      },
-      {
-        date: "2020/21",
-        name: {
-          en: "Spouse Income Tax (2018)",
-          fr: "Impôt sur le revenu du conjoint (2018)",
-        },
-        status: "PENDING",
-        resource: "2018-spouse-income-tax",
-      },
-      {
-        date: "2020/21",
-        name: {
-          en: "Student Income Tax (2018)",
-          fr: "Impôt sur le revenu des étudiants (2018)",
-        },
-        status: "PENDING",
-        resource: "2018-student-income-tax",
-      },
-    ],
+    list: [],
   }),
   getters: {
     list(state) {
