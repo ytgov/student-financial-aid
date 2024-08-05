@@ -8,7 +8,6 @@ import { useUserStore } from "@/store/UserStore";
 import blankDraft from "./blank-draft.json";
 import { clone, isInteger, isString, isUndefined } from "lodash";
 import moment from "moment";
-import { copyFileSync } from "fs";
 
 let m = useNotificationStore();
 
