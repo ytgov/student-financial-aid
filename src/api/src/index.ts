@@ -2,16 +2,11 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import path from "path";
 import helmet from "helmet";
+import morgan from "morgan";
 import fileUpload from "express-fileupload";
-import {
-  API_PORT,
-  FRONTEND_URL,
-  APPLICATION_NAME,
-  AUTH_DOMAIN,
-  SENTRY_DSN
-} from "./config";
+import { API_PORT, FRONTEND_URL, APPLICATION_NAME, AUTH_DOMAIN, SENTRY_DSN } from "./config";
 import { doHealthCheck } from "./utils/health-check";
-import {  portalRouter, userRouter } from "./routes";
+import { portalRouter, userRouter } from "./routes";
 
 import * as Sentry from "@sentry/node";
 import { checkJwt } from "./middleware/authz.middleware";
@@ -33,20 +28,21 @@ app.use(
       "object-src": ["'none'"],
       "script-src": ["'self'", "'unsafe-eval'"],
       "script-src-attr": ["'none'"],
-      "style-src": ["'self'", "https:", "'unsafe-inline'"]
-    }
+      "style-src": ["'self'", "https:", "'unsafe-inline'"],
+    },
   })
 );
-
 
 // very basic CORS setup
 app.use(
   cors({
     origin: FRONTEND_URL,
     optionsSuccessStatus: 200,
-    credentials: true
+    credentials: true,
   })
 );
+
+app.use(morgan(":method :status :url :date"));
 
 app.get("/api/healthCheck", (req: Request, res: Response) => {
   // app.get("/api/healthCheck",  (req: Request, res: Response) => {
