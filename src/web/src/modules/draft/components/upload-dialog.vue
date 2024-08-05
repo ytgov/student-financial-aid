@@ -61,7 +61,7 @@ export default {
       if (t) {
         let extension = t.name.substring(t.name.lastIndexOf("."));
 
-        if (uploadExtensions.includes(extension)) {
+        if (uploadExtensions.includes(extension.toLowerCase())) {
           this.upload(t).then(async (resp) => {
             await this.loadRequiredDocuments();
             this.closeClick();
