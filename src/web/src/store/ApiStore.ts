@@ -36,8 +36,8 @@ export const useApiStore = defineStore("api", () => {
   }
 
   async function secureCall(method: string, url: string, data?: any, config?: any) {
-    if (AuthState.token && AuthState.isAuthenticated) {
-      return AuthState.auth0?.getAccessTokenSilently().then(async (token) => {
+    if (AuthState.auth0 && AuthState.auth0.isAuthenticated) {
+      return AuthState.auth0.getAccessTokenSilently().then(async (token) => {
         return SecureAPICall(method, token, config)
           .request({ url, data })
           .then((resp) => {
@@ -49,13 +49,12 @@ export const useApiStore = defineStore("api", () => {
           });
       });
     }
-
     window.location.replace("/sign-in");
   }
 
   async function secureUpload(method: string, url: string, data?: any) {
-    if (AuthState.token && AuthState.isAuthenticated) {
-      return AuthState.auth0?.getAccessTokenSilently().then(async (token) => {
+    if (AuthState.auth0 && AuthState.auth0.isAuthenticated) {
+      return AuthState.auth0.getAccessTokenSilently().then(async (token) => {
         return SecureAPIUpload(method, token)
           .request({ url, data })
           .then((resp) => {
