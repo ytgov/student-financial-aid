@@ -156,7 +156,7 @@ export default {
     await this.loadRequiredDocuments();
   },
   methods: {
-    ...mapActions(useDraftStore, ["getPrevious", "getNext", "save", "loadRequiredDocuments", "getDownloadUrl"]),
+    ...mapActions(useDraftStore, ["getPrevious", "getNext", "save", "loadRequiredDocuments", "downloadFile"]),
 
     async doUpload(doc) {
       this.fileUpload = doc;
@@ -169,8 +169,13 @@ export default {
       this.fileUpload.replace_id = doc.upload.object_key;
     },
 
-    doDownload(doc) {
-      window.open(this.getDownloadUrl(doc.upload), "_blank");
+    async doDownload(doc) {
+      let file = await this.downloadFile(this.application.id, doc.upload);
+
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(file);
+      link.download = doc.upload.file_name;
+      link.click();
     },
 
     statusColor(status) {
