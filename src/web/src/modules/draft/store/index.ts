@@ -1004,12 +1004,26 @@ export const useDraftStore = defineStore("draft", {
       }
     },
 
-    getDownloadUrl(upload: any) {
-      if (this.application) {
-        const userStore = useUserStore();
-        return `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}/files/${upload.object_key}`;
-      }
-      return "";
+    async downloadFile(draftId: number, file: any) {
+      let userStore = useUserStore();
+      const api = useApiStore();
+
+      return api
+        .secureCall(
+          "get",
+          `${APPLICATION_URL}/${userStore.user?.sub}/${draftId}/files/${file.object_key}`,
+          undefined,
+          { responseType: "blob" }
+        )
+        .then((resp) => {
+          return resp;
+        })
+        .catch((err) => {
+          console.log("ERROR HAPPENED", err);
+        })
+        .finally(() => {
+          Promise.resolve();
+        });
     },
 
     resume(current: string = ""): string {
