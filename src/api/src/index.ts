@@ -19,14 +19,14 @@ app.use(fileUpload({ limits: { fileSize: 25000000 } })); // 25mb
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      "default-src": ["'self'", `${AUTH_DOMAIN}`],
+      "default-src": ["'self'", `${AUTH_DOMAIN}`, "https://analytics.gov.yk.ca"],
       "base-uri": ["'self'"],
       "block-all-mixed-content": [],
       "font-src": ["'self'", "https:", "data:"],
       "frame-ancestors": ["'self'"],
-      "img-src": ["'self'", "data:"],
+      "img-src": ["'self'", "data:", "https://analytics.gov.yk.ca"],
       "object-src": ["'none'"],
-      "script-src": ["'self'", "'unsafe-eval'"],
+      "script-src": ["'self'", "'unsafe-eval'", "https://analytics.gov.yk.ca"],
       "script-src-attr": ["'none'"],
       "style-src": ["'self'", "https:", "'unsafe-inline'"],
     },

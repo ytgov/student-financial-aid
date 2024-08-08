@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@auth0/auth0-vue": "^2.3.1",
+    "@auth0/auth0-vue": "^2.3.3",
     "@intlify/unplugin-vue-i18n": "^1.4.0",
     "@mdi/font": "^7.3.67",
     "@vuepic/vue-datepicker": "^7.1.0",
@@ -20,6 +20,7 @@
     "scss": "^0.2.4",
     "vue": "^3.3.4",
     "vue-i18n": "^9.5.0",
+    "vue-matomo": "^4.2.0",
     "vue-router": "^4.2.5",
     "vuetify": "^3.3.20"
   },
