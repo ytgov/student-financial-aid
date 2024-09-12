@@ -62,8 +62,9 @@ portalRouter.post("*", async (req: Request, res: Response) => {
 });
 
 portalRouter.put("*", async (req: Request, res: Response) => {
-  //console.log("PROXYPUT", req.url, req.method);
+  console.log("PROXYPUT", req.url, req.method);
   let response = await proxyService.proxy(req.originalUrl.replace("/api/portal", ""), req.method, req.body);
+  console.log("---PROXY", response)
 
   if (response && response.data && response.data.data) return res.json({ data: response.data.data });
   else if (response && response.data) return res.json({ data: response.data });
