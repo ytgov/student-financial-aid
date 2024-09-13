@@ -918,6 +918,8 @@ export const useDraftStore = defineStore("draft", {
         const userStore = useUserStore();
         this.application.update_date = new Date();
 
+        console.log("A");
+
         return api
           .secureCall("put", `${APPLICATION_URL}/${userStore.user?.sub}/${this.application.id}`, {
             academic_year_id: this.application.academic_year_id,
@@ -928,6 +930,7 @@ export const useDraftStore = defineStore("draft", {
             update_date: new Date(),
           })
           .then((resp) => {
+            console.log("B");
             if (notify) m.notify({ text: "Application Saved", variant: "success" });
             this.loadRequiredDocuments();
 
@@ -1009,12 +1012,9 @@ export const useDraftStore = defineStore("draft", {
       const api = useApiStore();
 
       return api
-        .secureCall(
-          "get",
-          `${APPLICATION_URL}/${userStore.user?.sub}/${draftId}/files/${file.object_key}`,
-          undefined,
-          { responseType: "blob" }
-        )
+        .secureCall("get", `${APPLICATION_URL}/${userStore.user?.sub}/${draftId}/files/${file.object_key}`, undefined, {
+          responseType: "blob",
+        })
         .then((resp) => {
           return resp;
         })

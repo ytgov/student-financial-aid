@@ -36,19 +36,25 @@ export const useApiStore = defineStore("api", () => {
   }
 
   async function secureCall(method: string, url: string, data?: any, config?: any) {
+    console.log("1")
     if (AuthState.auth0 && AuthState.auth0.isAuthenticated) {
+      console.log("2")
       return AuthState.auth0.getAccessTokenSilently().then(async (token) => {
+        console.log("3")
         return SecureAPICall(method, token, config)
           .request({ url, data })
           .then((resp) => {
+            console.log("4")
             return resp.data;
           })
           .catch((err) => {
+            console.log("5")
             doApiErrorMessage(err);
             return { error: err };
           });
       });
     }
+    console.log("6")
     window.location.replace("/sign-in");
   }
 
