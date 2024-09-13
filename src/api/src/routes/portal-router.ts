@@ -82,5 +82,5 @@ portalRouter.use(
 );
 
 function proxyLogger(proxy: any, req: Request, res: Response) {
-  //console.log("PROXYMIDDLEWARE", req.url, req.method);
+  console.log("PROXYMIDDLEWARE", req.url, req.method);
 }
