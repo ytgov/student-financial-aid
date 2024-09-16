@@ -18,8 +18,7 @@
                 <v-radio label="Yes, I have applied for Student Financial Assistance in the Yukon" value="1"></v-radio>
                 <v-radio
                   label="No, I have never applied for Student Financial Assistance in the Yukon"
-                  value="0"
-                ></v-radio>
+                  value="0"></v-radio>
               </v-radio-group>
               <v-divider class="mb-4"></v-divider>
 
@@ -46,8 +45,7 @@
                     label="First name"
                     variant="outlined"
                     density="comfortable"
-                    hide-details
-                  ></v-text-field>
+                    hide-details></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -55,8 +53,7 @@
                     label="Last name"
                     variant="outlined"
                     density="comfortable"
-                    hide-details
-                  ></v-text-field>
+                    hide-details></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -66,8 +63,7 @@
                     variant="outlined"
                     density="comfortable"
                     @update:model-value="sinChanged2"
-                    hide-details
-                  ></v-text-field>
+                    hide-details></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <DateSelector v-model="linkStudent.date_of_birth" label="Date of birth" max="today" />
@@ -78,8 +74,7 @@
                     label="Home phone"
                     variant="outlined"
                     density="comfortable"
-                    hide-details
-                  ></v-text-field>
+                    hide-details></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -87,8 +82,7 @@
                     label="Home postal code"
                     variant="outlined"
                     density="comfortable"
-                    hide-details
-                  ></v-text-field>
+                    hide-details></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -96,8 +90,7 @@
                     label="Email address"
                     variant="outlined"
                     density="comfortable"
-                    hide-details
-                  ></v-text-field>
+                    hide-details></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -109,16 +102,20 @@
                     variant="outlined"
                     density="comfortable"
                     hint=""
-                    hide-details
-                  ></v-text-field>
+                    hide-details></v-text-field>
                 </v-col>
               </v-row>
 
+              <v-alert v-if="hasSIN2Error" type="error" class="mt-4">
+                Your SIN appears to be invalid. Please check the format and try again.</v-alert
+              >
               <v-divider class="my-4"></v-divider>
               <v-card-actions>
                 <v-btn variant="text" @click="step = 1"> Back </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" variant="flat" @click="findMatchClick" :disabled="!linkIsValid"> Next </v-btn>
+                <v-btn color="primary" variant="flat" @click="findMatchClick" :disabled="!linkIsValid || hasSIN2Error">
+                  Next
+                </v-btn>
               </v-card-actions>
             </v-card-text>
           </v-window-item>
@@ -137,8 +134,7 @@
                     label="First name"
                     variant="outlined"
                     density="comfortable"
-                    hide-details
-                  ></v-text-field>
+                    hide-details></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -146,8 +142,7 @@
                     label="Last name"
                     variant="outlined"
                     density="comfortable"
-                    hide-details
-                  ></v-text-field>
+                    hide-details></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <v-text-field
@@ -157,8 +152,7 @@
                     variant="outlined"
                     density="comfortable"
                     @update:model-value="sinChanged"
-                    hide-details
-                  ></v-text-field>
+                    hide-details></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
                   <DateSelector v-model="createStudent.date_of_birth" label="Date of birth" max="today" />
@@ -171,10 +165,18 @@
                 867-667-5929 for assistance setting up your account.
               </v-alert>
 
+              <v-alert v-if="hasSIN1Error" type="error" class="mt-4">
+                Your SIN appears to be invalid. Please check the format and try again.</v-alert
+              >
+
               <v-card-actions>
                 <v-btn variant="text" @click="step = 1"> Back </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="success" variant="flat" @click="createStudentClick" :disabled="!createIsValid">
+                <v-btn
+                  color="success"
+                  variant="flat"
+                  @click="createStudentClick"
+                  :disabled="!createIsValid || hasSIN1Error">
                   Save my Details</v-btn
                 >
               </v-card-actions>
@@ -245,7 +247,9 @@ export default {
   data: () => ({
     step: 1,
     first_time: "1",
-    showCreateError: false
+    showCreateError: false,
+    hasSIN1Error: false,
+    hasSIN2Error: false,
   }),
   computed: {
     ...mapWritableState(useOnboardingStore, ["createStudent", "linkStudent"]),
@@ -253,14 +257,14 @@ export default {
     ...mapState(useUserStore, ["user", "student"]),
     matchFound() {
       return this.linkStudent.sin.length > 0;
-    }
+    },
   },
   async mounted() {
     if (this.user) {
-      this.createStudent.first_name = this.user.given_name;
-      this.createStudent.last_name = this.user.family_name;
-      this.linkStudent.first_name = this.user.given_name;
-      this.linkStudent.last_name = this.user.family_name;
+      this.createStudent.first_name = this.user.given_name || "";
+      this.createStudent.last_name = this.user.family_name || "";
+      this.linkStudent.first_name = this.user.given_name || "";
+      this.linkStudent.last_name = this.user.family_name || "";
     }
 
     if (this.student && this.student.id) {
@@ -272,12 +276,11 @@ export default {
   },
   watch: {
     student(val) {
-      console.log("STUDNET WATCH", val);
       if (val.id) {
         console.log("YOU have been onboarded already");
         this.$router.push("/student");
       }
-    }
+    },
   },
   methods: {
     ...mapActions(useNotificationStore, ["notify"]),
@@ -298,7 +301,7 @@ export default {
     async createStudentClick() {
       if (this.user) {
         this.showCreateError = false;
-        let result = await this.tryCreateStudent(this.user).then(resp => resp);
+        let result = await this.tryCreateStudent(this.user).then((resp) => resp);
 
         if (result && result.id) {
           await this.loadCurrentStudent();
@@ -311,12 +314,47 @@ export default {
       }
     },
 
+    validateSIN(input: string) {
+      // Remove any non-digit characters
+      let sin = input.replace(/\D/g, "");
+
+      // Check if the SIN is exactly 9 digits
+      if (sin.length !== 9) {
+        return false;
+      }
+
+      // Validate using the Luhn algorithm
+      let sum = 0;
+      for (let i = 0; i < sin.length; i++) {
+        let digit = parseInt(sin.charAt(i), 10);
+
+        if (i % 2 === 1) {
+          digit *= 2;
+          if (digit > 9) {
+            digit -= 9;
+          }
+        }
+
+        sum += digit;
+      }
+
+      return sum % 10 === 0;
+    },
+
     sinChanged(newV: any) {
       this.createStudent.sin = this.createStudent.sin.replace(/[^0-9.]/g, "").substring(0, 9);
+      const isValidSIN = this.validateSIN(this.createStudent.sin);
+
+      if (this.createStudent.sin.length == 9 && !isValidSIN) this.hasSIN1Error = true;
+      else this.hasSIN1Error = false;
     },
     sinChanged2(newV: any) {
       this.linkStudent.sin = this.linkStudent.sin.replace(/[^0-9.]/g, "").substring(0, 9);
-    }
-  }
+      const isValidSIN = this.validateSIN(this.linkStudent.sin);
+
+      if (this.linkStudent.sin.length == 9 && !isValidSIN) this.hasSIN2Error = true;
+      else this.hasSIN2Error = false;
+    },
+  },
 };
 </script>

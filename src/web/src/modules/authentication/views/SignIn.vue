@@ -48,7 +48,7 @@
                   >
                 </p>
 
-                <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message">
+                <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message d-none">
                   <strong class="font-weight-medium">Classes starting on or after August 1, 2024?</strong><br />
                   <span class="font-weight-thin"
                     >We'll begin accepting applications on July 2, 2024, for the 2024/25 academic year.</span
