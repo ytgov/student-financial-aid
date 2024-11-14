@@ -241,5 +241,16 @@ export const useReferenceStore = defineStore("reference", {
         })
         .catch();
     },
+
+    async loadRequirementTypes() {
+      const api = useApiStore();
+
+      return api
+        .secureCall("get", `${REFERENCE_URL}/requirement_type`)
+        .then((resp) => {
+          return resp.data;
+        })
+        .catch();
+    },
   },
 });

@@ -16,19 +16,35 @@
       {{ formatDate(application.classesEndDate) }}
     </div>
     {{ application.description }}
-    <div style="margin-left: -16px" class="mt-2">
+    <div style="margin-left: -16px" class="mt-2 d-flex">
       <v-btn color="primary" class="my-0" variant="text"> View </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn
+        v-if="isCurrent"
+        color="info"
+        class="my-0"
+        variant="outlined"
+        size="small"
+        rounded
+        @click.stop="showUpload = true"
+        ><v-icon>mdi-upload</v-icon> &nbsp; Upload Documents
+      </v-btn>
     </div>
+    <UploadDialog v-model="showUpload" :application="application" @close="showUpload = false"></UploadDialog>
   </v-alert>
 </template>
 <script lang="ts">
 import moment from "moment";
 import { mapActions } from "pinia";
 import { useDraftStore } from "../store";
+import UploadDialog from "@/modules/draft/components/application-upload-dialog.vue";
 
 export default {
-  props: ["application"],
-  data: () => ({}),
+  props: ["application", "isCurrent"],
+  components: { UploadDialog },
+  data: () => ({
+    showUpload: false,
+  }),
   computed: {
     color() {
       if (this.application.status == "In Progress") return "yg_moss";

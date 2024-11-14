@@ -1007,6 +1007,31 @@ export const useDraftStore = defineStore("draft", {
       }
     },
 
+    async uploadAdditional(
+      file: any,
+      application_id: number,
+      requirement_type_id: number,
+      notes: string
+    ): Promise<any> {
+      const api = useApiStore();
+      const userStore = useUserStore();
+
+      let form = new FormData();
+      form.append("file", file);
+      form.append("requirement_type_id", requirement_type_id.toString());
+      form.append("comment", notes);
+
+      return api
+        .secureUpload("post", `${APPLICATION_URL}/${userStore.user?.sub}/application/${application_id}/upload`, form)
+        .then((resp) => {
+          return resp.data;
+        })
+        .catch((err) => {
+          console.log("ERROR HAPPENED", err);
+          return {};
+        });
+    },
+
     async downloadFile(draftId: number, file: any) {
       let userStore = useUserStore();
       const api = useApiStore();
