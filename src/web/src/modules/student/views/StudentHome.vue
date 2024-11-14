@@ -96,14 +96,14 @@
 
       <div v-for="(app, index) of currentApplications">
         <DraftCard v-if="app.status == 'In Progress'" :application="app" class="mb-5"></DraftCard>
-        <ApplicationCard v-else :application="app" class="mb-5"></ApplicationCard>
+        <ApplicationCard v-else :application="app" :isCurrent="true" lass="mb-5"></ApplicationCard>
       </div>
       <v-expansion-panels value="null" variant="accordion" flat elevation="0" v-if="pastApplications?.length > 0">
         <v-expansion-panel :value="0" title="Previous Academic Years">
           <v-expansion-panel-text class="dense">
             <div v-for="(app, index) of pastApplications">
               <DraftCard v-if="app.status == 'In Progress'" :application="app" class="mb-5"></DraftCard>
-              <ApplicationCard v-else :application="app" class="mb-5"></ApplicationCard>
+              <ApplicationCard v-else :application="app" :isCurrent="false" class="mb-5"></ApplicationCard>
             </div>
           </v-expansion-panel-text>
         </v-expansion-panel>
