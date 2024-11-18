@@ -48,11 +48,20 @@
                   >
                 </p>
 
-                <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message d-none">
+                <!-- <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message d-none">
                   <strong class="font-weight-medium">Classes starting on or after August 1, 2024?</strong><br />
                   <span class="font-weight-thin"
                     >We'll begin accepting applications on July 2, 2024, for the 2024/25 academic year.</span
                   >
+                </v-alert> -->
+
+                <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message">
+                  <strong class="font-weight-medium">Already have an application?</strong><br />
+                  <span class="font-weight-thin"
+                    >You don't need to re-apply for the Winter semester. Sign in and submit your PIF.</span
+                  ><br /><br />
+                  <strong class="font-weight-medium">Haven't applied yet?</strong><br />
+                  <span class="font-weight-thin">Please sign in and submit your application.</span>
                 </v-alert>
               </div>
             </v-col>
