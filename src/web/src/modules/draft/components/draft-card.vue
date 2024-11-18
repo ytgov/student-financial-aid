@@ -8,7 +8,7 @@
     elevation="0"
     style="cursor: pointer">
     <v-chip size="small" :color="chipColor" variant="flat" class="float-right">{{ application.status }}</v-chip>
-    <v-alert-title class="mb-0">Academic Year {{ application.academic_year_id }}</v-alert-title>
+    <v-alert-title class="mb-0">Academic Year {{ application.academic_year_id }} (Not submitted)</v-alert-title>
     <div class="v-alert-subtitle">Last saved: {{ formatDate(application.update_date) }}</div>
     {{ application.description }}
     <div style="margin-left: -16px" class="mt-2">

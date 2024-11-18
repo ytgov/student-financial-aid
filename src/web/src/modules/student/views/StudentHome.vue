@@ -9,8 +9,8 @@
         still submit your application to meet the deadline(s) and upload additional documents here later.
       </p>
       <p class="mt-2" style="color: #323232cc !important; font-size: 0.95rem">
-        <strong>Upload your PIF for subsequent semester(s):</strong> Click "UPLOAD DOCUMENTS" under an existing
-        application to submit your newly signed PIF for new semester(s). We will extend your application accordingly.
+        <strong>Upload your PIF for subsequent semester(s):</strong> Click "UPLOAD DOCUMENTS" under an submitted
+        application to upload your newly signed PIF for new semester(s). We will extend your application accordingly.
       </p>
     </div>
   </v-card>
