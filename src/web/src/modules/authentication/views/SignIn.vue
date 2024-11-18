@@ -58,10 +58,11 @@
                 <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message">
                   <strong class="font-weight-medium">Already have an application?</strong><br />
                   <span class="font-weight-thin"
-                    >You don't need to re-apply for the Winter semester. Sign in and submit your PIF.</span
+                    >You don't need to re-apply for the winter semester. Sign in and upload your new PIF on a submitted
+                    application.</span
                   ><br /><br />
                   <strong class="font-weight-medium">Haven't applied yet?</strong><br />
-                  <span class="font-weight-thin">Please sign in and submit your application.</span>
+                  <span class="font-weight-thin">Please sign in to submit your application.</span>
                 </v-alert>
               </div>
             </v-col>

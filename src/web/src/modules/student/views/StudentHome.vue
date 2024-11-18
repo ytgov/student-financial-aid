@@ -5,14 +5,12 @@
 
       <v-divider></v-divider>
       <p class="mt-2" style="color: #323232cc !important; font-size: 0.95rem">
-        <strong>Submit your application early: </strong> Don't worry if you don't have all your documents ready. You can
-        still submit your application to meet the deadline(s) and upload additional documents through the Student Portal
-        later.
+        <strong>Submit your application early:</strong> Don't worry if you don't have all your documents ready. You can
+        still submit your application to meet the deadline(s) and upload additional documents here later.
       </p>
       <p class="mt-2" style="color: #323232cc !important; font-size: 0.95rem">
-        <strong>Upload your PIF for subsequent semester(s): </strong>Click "UPLOAD DOCUMENTS" under your existing
-        application to submit your newly signed PIF for the new semester(s). We will extend your application
-        accordingly.
+        <strong>Upload your PIF for subsequent semester(s):</strong> Click "UPLOAD DOCUMENTS" under an existing
+        application to submit your newly signed PIF for new semester(s). We will extend your application accordingly.
       </p>
     </div>
   </v-card>
