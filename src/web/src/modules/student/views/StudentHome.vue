@@ -1,19 +1,17 @@
 <template>
   <v-card color="#eee5d1" variant="elevated" elevation="0" class="mb-8">
     <div class="px-4 py-4">
-      <div class="d-flex justify-space-between">
-        <div>
-          <h3 class="text-h3 mb-1">Student Home</h3>
+      <h3 class="text-h3 mb-1">Student Home</h3>
 
-          <v-divider></v-divider>
-          <p class="mt-2" style="color: #323232cc !important">
-            Yukon students are encouraged to apply for various territorial and federal funding programs through this
-            online portal. You can start a new application, continue with an existing application or review funding that
-            has been previously awarded. Please have your documents ready as all required documents must be uploaded in
-            order to submit a completed application.
-          </p>
-        </div>
-      </div>
+      <v-divider></v-divider>
+      <p class="mt-2" style="color: #323232cc !important; font-size: 0.95rem">
+        <strong>Submit your application early:</strong> Don't worry if you don't have all your documents ready. You can
+        still submit your application to meet the deadline(s) and upload additional documents here later.
+      </p>
+      <p class="mt-2" style="color: #323232cc !important; font-size: 0.95rem">
+        <strong>Upload your PIF for subsequent semester(s):</strong> Click "UPLOAD DOCUMENTS" under an existing
+        application to submit your newly signed PIF for new semester(s). We will extend your application accordingly.
+      </p>
     </div>
   </v-card>
 
