@@ -15,7 +15,8 @@
 
                   <ul class="ml-6 mt-2">
                     <li>Start a new application</li>
-                    <li>Update personal information</li>
+                    <li>Upload documents</li>
+                    <li>Update contact information</li>
                   </ul>
                 </div>
               </div>
@@ -31,7 +32,8 @@
 
                   <ul class="ml-6 mt-2">
                     <li>Start a new application</li>
-                    <li>Update personal information</li>
+                    <li>Upload documents</li>
+                    <li>Update contact information</li>
                   </ul>
                 </div>
 
