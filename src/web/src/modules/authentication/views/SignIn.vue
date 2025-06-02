@@ -9,7 +9,14 @@
                 <img src="@/assets/logo.svg" alt="Logo" class="d-md-block pl-6" />
                 <div class="align-center pa-6">
                   <h2 class="text-h5 mb-2" style="line-height: 40px">{{ applicationTitle }}</h2>
-                  <h6 class="text-subtitle-1 font-weight-light mt-0">{{ applicationSubtitle }}</h6>
+                  <h6 class="text-subtitle-1 font-weight-light mt-0 mb-5">{{ applicationSubtitle }}</h6>
+
+                  <h4>Use this Portal to:</h4>
+
+                  <ul class="ml-6 mt-2">
+                    <li>Start a new application</li>
+                    <li>Update personal information</li>
+                  </ul>
                 </div>
               </div>
             </v-col>
@@ -18,12 +25,19 @@
                 <div style="background-color: #f9f4d4" class="pa-5 d-md-none">
                   <img src="@/assets/logo.svg" alt="Logo" class="d-md-inline" />
                   <h2 class="display-1 font-weight-medium" style="line-height: 40px">{{ applicationTitle }}</h2>
-                  <h6 class="text-subtitle-1 font-weight-light mt-4 op-5">{{ applicationSubtitle }}</h6>
+                  <h6 class="text-subtitle-1 font-weight-light mt-4 mb-3 op-5">{{ applicationSubtitle }}</h6>
+
+                  <h4>Use this Portal to:</h4>
+
+                  <ul class="ml-6 mt-2">
+                    <li>Start a new application</li>
+                    <li>Update personal information</li>
+                  </ul>
                 </div>
 
                 <h2 class="text-h4 font-weight-bold mt-4">Welcome!</h2>
                 <h6 class="text-h6 font-weight-light mt-3 mb-5">
-                  Apply for the following post-secondary student financial assistance programs through this portal:
+                  Apply for the following post-secondary student financial assistance programs:
                 </h6>
 
                 <ul class="ml-6 mb-5">
@@ -48,14 +62,15 @@
                   >
                 </p>
 
-                <!-- <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message d-none">
-                  <strong class="font-weight-medium">Classes starting on or after August 1, 2024?</strong><br />
-                  <span class="font-weight-thin"
-                    >We'll begin accepting applications on July 2, 2024, for the 2024/25 academic year.</span
-                  >
-                </v-alert> -->
-
                 <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message">
+                  <strong class="font-weight-medium">Classes starting on or after August 1, 2025</strong><br />
+                  <span class="font-weight-thin"
+                    >Applications for the 2025/26 academic year will be accepted starting June 16<sup>th</sup>,
+                    2025.</span
+                  >
+                </v-alert>
+
+                <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message d-none">
                   <strong class="font-weight-medium">Already have an application?</strong><br />
                   <span class="font-weight-thin"
                     >You don't need to re-apply for the winter semester. Sign in and upload your new PIF on a submitted
