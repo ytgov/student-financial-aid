@@ -67,8 +67,7 @@
                 <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message">
                   <strong class="font-weight-medium">Classes starting on or after August 1, 2025</strong><br />
                   <span class="font-weight-thin"
-                    >Applications for the 2025/26 academic year will be accepted starting June 16<sup>th</sup>,
-                    2025.</span
+                    >Applications for the 2025-26 academic year will be accepted starting June 16, 2025.</span
                   >
                 </v-alert>
 
