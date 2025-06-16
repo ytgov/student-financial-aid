@@ -80,8 +80,9 @@
       <!-- 
       <v-divider class="mt-7 mb-7"></v-divider>
       <RecentMessages></RecentMessages> -->
-      <v-card class="mb-5" elevation="0">
-        <v-card-text>
+      <v-card class="mb-5" color="#eee5d1" elevation="0">
+        <v-card-text class="d-flex">
+          <div class="mr-4"><v-icon size="30">mdi-alert</v-icon></div>
           <p style="font-size: 17px">
             <strong>Please note:</strong>
             Program Info Forms (PIFs) must be signed within 60 days of the study period start date. PIFs submitted more
