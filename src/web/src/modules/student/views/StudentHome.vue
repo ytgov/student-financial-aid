@@ -80,6 +80,15 @@
       <!-- 
       <v-divider class="mt-7 mb-7"></v-divider>
       <RecentMessages></RecentMessages> -->
+      <v-card class="mb-5" elevation="0">
+        <v-card-text>
+          <p style="font-size: 17px">
+            <strong>Please note:</strong>
+            Program Info Forms (PIFs) must be signed within 60 days of the study period start date. PIFs submitted more
+            than 60 days from the study period start date will be rejected.
+          </p>
+        </v-card-text>
+      </v-card>
     </v-col>
     <v-col cols="12" md="6">
       <AnnouncementList />
