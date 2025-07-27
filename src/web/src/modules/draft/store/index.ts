@@ -8,6 +8,7 @@ import { useUserStore } from "@/store/UserStore";
 import blankDraft from "./blank-draft.json";
 import { clone, isInteger, isString, isUndefined } from "lodash";
 import moment from "moment";
+import { useReferenceStore } from "@/store/ReferenceStore";
 
 let m = useNotificationStore();
 
@@ -222,13 +223,19 @@ export const useDraftStore = defineStore("draft", {
           });
 
       // Alkan and YukonU
-      let STAAllowList = [4664, 5326, 3488, 5648];
+      let STAAllowList = [4664, 5326, 3488, 5648]; // 6322 is Elements
+      const institutions = useReferenceStore().institutions;
+      const elementsCampus = institutions.find((i) => i.name.startsWith("Elements Esthetics Academy"));
+
+      if (elementsCampus) {
+        STAAllowList.push(elementsCampus.id);
+      }
 
       if (!STAAllowList.includes(this.application?.draft.program_details.institution_id))
         fullList
           .filter((s) => s.name == "Student Training Allowance")
           .map(
-            (p) => ((p as any).message = "(Only applicable if attending Yukon University or Alkan Air Flight Training)")
+            (p) => ((p as any).message = "(Only applicable if attending Yukon University or other Yukon institutions)")
           );
 
       if (this.application?.draft.statistical.disability == "None")
