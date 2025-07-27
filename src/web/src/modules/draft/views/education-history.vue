@@ -17,7 +17,6 @@
               v-model="item.school"
               label="School"
               maxlength="4"
-              width="50"
               :items="yukonHighSchools"
               item-title="name"
               item-value="id" />
