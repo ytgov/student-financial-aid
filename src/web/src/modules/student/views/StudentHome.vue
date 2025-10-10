@@ -80,6 +80,18 @@
       <!-- 
       <v-divider class="mt-7 mb-7"></v-divider>
       <RecentMessages></RecentMessages> -->
+
+      <v-card class="mb-5" color="#eee5d1" elevation="0">
+        <v-card-text class="d-flex">
+          <div class="mr-4"><v-icon size="30">mdi-alert</v-icon></div>
+          <p style="font-size: 17px">
+            <strong>Please note: Yukon Grant</strong>
+            applications must be <strong>submitted</strong> within 6 weeks of the study period start date, then all
+            documentation must be received prior to the end of your study period.
+          </p>
+        </v-card-text>
+      </v-card>
+
       <v-card class="mb-5" color="#eee5d1" elevation="0">
         <v-card-text class="d-flex">
           <div class="mr-4"><v-icon size="30">mdi-alert</v-icon></div>
