@@ -1,10 +1,10 @@
 <template>
   <v-container tag="section" class="mt-10">
     <v-row justify="center" class="mt-10">
-      <v-col lg="11" sm="8" xl="7">
+      <v-col lg="11" sm="9" xl="8">
         <v-card class="elevation-5" style="overflow: hidden">
           <v-row>
-            <v-col lg="7" style="background-color: #f9f4d4" class="d-none d-md-flex align-center justify-center">
+            <v-col lg="6" style="background-color: #f9f4d4" class="d-none d-md-flex align-center justify-center">
               <div class="d-none d-sm-block">
                 <img src="@/assets/logo.svg" alt="Logo" class="d-md-block pl-6" />
                 <div class="align-center pa-6">
@@ -21,7 +21,7 @@
                 </div>
               </div>
             </v-col>
-            <v-col lg="5">
+            <v-col lg="6">
               <div class="pa-7 pa-sm-8">
                 <div style="background-color: #f9f4d4" class="pa-5 d-md-none">
                   <img src="@/assets/logo.svg" alt="Logo" class="d-md-inline" />
@@ -64,7 +64,7 @@
                   >
                 </p>
 
-                <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message d-none">
+                <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message">
                   <strong class="font-weight-medium">Classes starting on or after August 1, 2025</strong><br />
                   <span class="font-weight-thin"
                     >Applications for the 2025-26 academic year will be accepted starting June 16, 2025.</span
