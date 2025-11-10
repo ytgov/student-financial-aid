@@ -64,18 +64,17 @@
                   >
                 </p>
 
-                <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message">
+                <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message d-none">
                   <strong class="font-weight-medium">Classes starting on or after August 1, 2025</strong><br />
                   <span class="font-weight-thin"
                     >Applications for the 2025-26 academic year will be accepted starting June 16, 2025.</span
                   >
                 </v-alert>
 
-                <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message d-none">
+                <v-alert color="yg_zinc" theme="light" class="mt-6 signin-message">
                   <strong class="font-weight-medium">Already have an application?</strong><br />
                   <span class="font-weight-thin"
-                    >You don't need to re-apply for the winter semester. Sign in and upload your new PIF on a submitted
-                    application.</span
+                    >You don't need to re-apply for the winter semester. Sign in and upload your new PIF.</span
                   ><br /><br />
                   <strong class="font-weight-medium">Haven't applied yet?</strong><br />
                   <span class="font-weight-thin">Please sign in to submit your application.</span>
